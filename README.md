@@ -1,16 +1,16 @@
-# shop_management
+# Shop Manager
 
-A new Flutter project.
+This is a shop management mobile application.
 
-## Getting Started
+## Tools and Technologies:
+1. Flutter framework.
+2. Dart programming language.
 
-This project is a starting point for a Flutter application.
+## Packages:
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Features:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+## Screens:
+1. Splash screen.
