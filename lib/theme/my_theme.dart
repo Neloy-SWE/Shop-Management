@@ -23,42 +23,37 @@ class AppTheme {
         color: Colors.black,
       ),
     ),
-    textTheme: TextTheme(
+    textTheme: const TextTheme(
       bodyText1: TextStyle(
         fontSize: 18,
         color: Colors.black,
         fontFamily: AllTexts.fontRegular,
       ),
-
       bodyText2: TextStyle(
         fontSize: 18,
         color: Colors.black,
         fontFamily: AllTexts.fontBolt,
       ),
-
       headline1: TextStyle(
         fontSize: 40,
         color: Colors.black,
         fontFamily: AllTexts.fontBolt,
       ),
-
       headline2: TextStyle(
         fontSize: 15,
         color: AllColors.errorColor,
         fontFamily: AllTexts.fontBolt,
       ),
-
       subtitle1: TextStyle(
         fontSize: 28,
         color: Colors.black,
         fontFamily: AllTexts.fontRegular,
       ),
-
       subtitle2: TextStyle(
         fontSize: 10,
         color: Colors.black,
         fontFamily: AllTexts.fontRegular,
-        fontWeight: FontWeight.w100
+        fontWeight: FontWeight.w100,
       ),
     ),
   );

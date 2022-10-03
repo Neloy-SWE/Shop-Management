@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
 
 class AllColors {
   static const Color primaryColor = Color.fromRGBO(18, 179, 215, 1);
