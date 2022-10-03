@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: AllText.title,
+        title: AllTexts.title,
         theme: AppTheme.myTheme,
         home: const SplashScreen(),
       ),
