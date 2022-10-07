@@ -30,7 +30,6 @@ class _SignUpState extends State<SignUp> {
 
   final _fromKeySignUp = GlobalKey<FormState>();
 
-
   void _signUp() {
     if (_fromKeySignUp.currentState!.validate()) {
       FocusScopeNode currentFocus = FocusScope.of(context);
@@ -206,7 +205,7 @@ class _SignUpState extends State<SignUp> {
                   if (value!.isEmpty) {
                     return "Field is required !!";
                   } else if (value.length < 6) {
-                    return "password length is less than 6 !!";
+                    return "Password length is less than 6 !!";
                   }
                   return null;
                 },
@@ -238,7 +237,9 @@ class _SignUpState extends State<SignUp> {
                   if (value!.isEmpty) {
                     return "Field is required !!";
                   } else if (value.length < 6) {
-                    return "password length is less than 6 !!";
+                    return "Password length is less than 6 !!";
+                  } else if (_passwordController.text.trim() != value) {
+                    return "Password is not matched !!";
                   }
                   return null;
                 },
@@ -255,7 +256,6 @@ class _SignUpState extends State<SignUp> {
           ),
           Gap.gapH30,
 
-
           // sign nav
           CustomSignNav.signNav(
             context: context,
@@ -268,7 +268,7 @@ class _SignUpState extends State<SignUp> {
               );
             },
             startText: AllTexts.alreadyHaveAcc,
-            navText: AllTexts.signUp,
+            navText: AllTexts.login,
           ),
           Gap.gapH30,
         ],

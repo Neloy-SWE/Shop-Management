@@ -16,6 +16,7 @@ class AllTexts {
   static const String newHere = "New here ? | ";
   static const String signUp = "Sign Up";
   static const String signUpCap = "SIGN UP";
+  static const String resetPasswordCap = "RESET PASSWORD";
   static const String createAccount = "Create Account";
   static const String toExplore = "To Explore";
   static const String storeName = "Store Name";
@@ -28,4 +29,6 @@ class AllTexts {
   static const String countryHint = "Bangladesh";
   static const String confirmPassword = "Confirm Password";
   static const String alreadyHaveAcc = "Already have account ? | ";
+  static const String resetPassword = "Reset Password";
+  static const String justAStep = "Just A Step";
 }

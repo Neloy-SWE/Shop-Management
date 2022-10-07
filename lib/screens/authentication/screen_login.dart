@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_management/components/custom_input.dart';
 import 'package:shop_management/components/custom_sign_nav.dart';
+import 'package:shop_management/screens/authentication/screen_forget_pass.dart';
 import 'package:shop_management/screens/authentication/screen_sign_up.dart';
 import 'package:shop_management/utilities/app_size.dart';
 import 'package:shop_management/utilities/colors.dart';
@@ -17,7 +18,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   bool passSecure = true;
 
@@ -39,7 +40,7 @@ class _LoginState extends State<Login> {
   @override
   void dispose() {
     _emailController.dispose();
-    _passController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -95,7 +96,7 @@ class _LoginState extends State<Login> {
                 // text field: password
                 AllInput.generalInput(
                   context: context,
-                  controller: _passController,
+                  controller: _passwordController,
                   textInputType: TextInputType.visiblePassword,
                   textInputAction: TextInputAction.done,
                   prefixIcon: Icons.phonelink_lock,
@@ -117,7 +118,7 @@ class _LoginState extends State<Login> {
                     if (value!.isEmpty) {
                       return "Field is required !!";
                     } else if (value.length < 6) {
-                      return "password length is less than 6 !!";
+                      return "Password length is less than 6 !!";
                     }
                     return null;
                   },
@@ -131,7 +132,13 @@ class _LoginState extends State<Login> {
           Align(
             alignment: Alignment.centerRight,
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (builder) => const ForgetPassword(),
+                  ),
+                );
+              },
               child: Text(
                 AllTexts.forgetPass,
                 style: Theme.of(context).textTheme.headline5,
