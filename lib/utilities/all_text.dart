@@ -13,6 +13,19 @@ class AllTexts {
   static const String password = "Password";
   static const String passHint = "+-+-+-+-+";
   static const String forgetPass = "Forget Password?";
-  static const String newHere = "New Here? ";
+  static const String newHere = "New here ? | ";
   static const String signUp = "Sign Up";
+  static const String signUpCap = "SIGN UP";
+  static const String createAccount = "Create Account";
+  static const String toExplore = "To Explore";
+  static const String storeName = "Store Name";
+  static const String storeNameHint = "X Store";
+  static const String address = "Address";
+  static const String addressHint = "Road-1, XYZ";
+  static const String city = "City";
+  static const String cityHint = "Rajshahi";
+  static const String country = "Country";
+  static const String countryHint = "Bangladesh";
+  static const String confirmPassword = "Confirm Password";
+  static const String alreadyHaveAcc = "Already have account ? | ";
 }

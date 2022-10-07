@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_management/components/custom_input.dart';
 import 'package:shop_management/components/custom_sign_nav.dart';
+import 'package:shop_management/screens/authentication/screen_sign_up.dart';
 import 'package:shop_management/utilities/app_size.dart';
 import 'package:shop_management/utilities/colors.dart';
 
@@ -22,8 +23,7 @@ class _LoginState extends State<Login> {
 
   final _formKeyLogIn = GlobalKey<FormState>();
 
-
-  void _login(){
+  void _login() {
     if (_formKeyLogIn.currentState!.validate()) {
       FocusScopeNode currentFocus = FocusScope.of(context);
       if (!currentFocus.hasPrimaryFocus) {
@@ -151,14 +151,20 @@ class _LoginState extends State<Login> {
           // sign nav
           CustomSignNav.signNav(
             context: context,
-            onTap: () {},
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (builder) => const SignUp(),
+                ),
+              );
+            },
             startText: AllTexts.newHere,
             navText: AllTexts.signUp,
           ),
+          Gap.gapH30,
         ],
       ),
     );
   }
-
-
 }
