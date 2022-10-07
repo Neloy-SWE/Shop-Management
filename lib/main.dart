@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shop_management/screens/splash_screen.dart';
+import 'package:shop_management/screens/screen_splash.dart';
 import 'package:shop_management/theme/my_theme.dart';
 import 'package:shop_management/utilities/all_text.dart';
 

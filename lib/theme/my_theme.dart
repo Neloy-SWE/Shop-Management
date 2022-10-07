@@ -24,24 +24,53 @@ class AppTheme {
       ),
     ),
     textTheme: const TextTheme(
+
+      // normal text
       bodyText1: TextStyle(
         fontSize: 18,
         color: Colors.black,
         fontFamily: AllTexts.fontRegular,
       ),
+
+      // bolt normal text
       bodyText2: TextStyle(
         fontSize: 18,
         color: Colors.black,
         fontFamily: AllTexts.fontBolt,
       ),
+
+      // Title
       headline1: TextStyle(
-        fontSize: 40,
+        fontSize: 45,
         color: Colors.black,
         fontFamily: AllTexts.fontBolt,
       ),
+
+      // error text
       headline2: TextStyle(
         fontSize: 15,
         color: AllColors.errorColor,
+        fontFamily: AllTexts.fontBolt,
+      ),
+
+      // bolt button text
+      headline3: TextStyle(
+        fontSize: 18,
+        color: Colors.white,
+        fontFamily: AllTexts.fontBolt,
+      ),
+
+      // normal button text
+      headline4: TextStyle(
+        fontSize: 18,
+        color: Colors.white,
+        fontFamily: AllTexts.fontRegular,
+      ),
+
+      // primary color text
+      headline5: TextStyle(
+        fontSize: 18,
+        color: AllColors.primaryColor,
         fontFamily: AllTexts.fontBolt,
       ),
       subtitle1: TextStyle(
