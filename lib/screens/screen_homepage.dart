@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_management/screens/authentication/screen_login.dart';
 import 'package:shop_management/utilities/all_text.dart';
-import 'package:shop_management/utilities/app_size.dart';
-import 'package:shop_management/utilities/colors.dart';
-
 import '../components/custom_dialogue.dart';
 
 class HomePage extends StatefulWidget {
@@ -27,7 +24,7 @@ class _HomePageState extends State<HomePage> {
       },
       child: Scaffold(
         appBar: AppBar(),
-        body: Center(
+        body: const Center(
           child: Text("Hello this is home page"),
         ),
       ),

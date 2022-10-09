@@ -1,12 +1,11 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:shop_management/managers/manager.dart';
-import 'package:shop_management/models/model_login/login_success.dart';
 import '../../managers/api_constant.dart';
 import 'package:http/http.dart' as http;
 
 import '../../managers/exception_manager.dart';
 import '../../managers/local_storage_manager.dart';
+import '../../models/model_auth/model_login/login_success.dart';
 
 class CallLoginApi implements Manager, ExceptionManager {
   Future<void> callLoginApi({
@@ -49,7 +48,7 @@ class CallLoginApi implements Manager, ExceptionManager {
   @override
   void appException() {}
 
-//save data at shared preference
+//save token at shared preference
   sharedPreference(LoginSuccessModel user) {
     LocalStorageManager.saveData(ApiConstant.userLoginToken, user.token);
   }

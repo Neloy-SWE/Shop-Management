@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:shop_management/api/auth_api_call/api_call_registration.dart';
 import 'package:shop_management/screens/authentication/screen_login.dart';
 
 import '../../components/custom_button.dart';
 import '../../components/custom_input.dart';
 import '../../components/custom_sign_nav.dart';
+import '../../components/custom_snackbar.dart';
+import '../../managers/exception_manager.dart';
+import '../../managers/manager.dart';
+import '../../models/model_auth/model_login/login_fail.dart';
+import '../../models/model_auth/model_registration/registration_success.dart';
 import '../../utilities/all_text.dart';
 import '../../utilities/app_size.dart';
 import '../../utilities/colors.dart';
@@ -15,7 +21,36 @@ class SignUp extends StatefulWidget {
   State<SignUp> createState() => _SignUpState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _SignUpState extends State<SignUp> implements Manager, ExceptionManager {
+  @override
+  void fail({required String fail}) {
+    LoginFailModel responseFail = LoginFailModel.fromJson(fail);
+    String? message =
+        responseFail.errors!.email ?? responseFail.errors!.message;
+    CustomSnackBar(
+            message: message, isSuccess: responseFail.status, context: context)
+        .show();
+  }
+
+  @override
+  void success({required String success}) {
+    RegistrationSuccessModel responseSuccess = RegistrationSuccessModel.fromJson(success);
+    CustomSnackBar(
+            message: responseSuccess.message,
+            isSuccess: responseSuccess.status,
+            context: context)
+        .show();
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (builder) => const Login()));
+  }
+
+  @override
+  void appException() {
+    CustomSnackBar(
+            message: AllTexts.netError, isSuccess: false, context: context)
+        .show();
+  }
+
   final TextEditingController _storeNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
@@ -36,10 +71,16 @@ class _SignUpState extends State<SignUp> {
       if (!currentFocus.hasPrimaryFocus) {
         currentFocus.unfocus();
       }
-      // _logInApiCall(
-      //   email: _emailController.text.trim(),
-      //   password: _passController.text.trim(),
-      // );
+      CallRegistrationApi().callRegApi(
+        register: this,
+        exception: this,
+        name: _storeNameController.text.trim(),
+        email: _emailController.text.trim(),
+        address: _addressController.text.trim(),
+        city: _cityController.text.trim(),
+        country: _countryController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
     }
   }
 
@@ -90,15 +131,10 @@ class _SignUpState extends State<SignUp> {
                 label: AllTexts.storeName,
                 prefixIcon: Icons.store_mall_directory_outlined,
                 validatorFunction: (value) {
-                  String pattern = r"[^a-z^A-Z^0-9]+";
-                  RegExp regExp = RegExp(pattern);
                   if (value!.isEmpty) {
                     return "Field is required !!";
-                  } else if (!regExp.hasMatch(value)) {
-                    return null;
-                  } else {
-                    return "Avoid Special characters";
                   }
+                  return null;
                 },
               ),
               Gap.gapH15,

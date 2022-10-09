@@ -4,7 +4,6 @@ import 'package:shop_management/components/custom_input.dart';
 import 'package:shop_management/components/custom_sign_nav.dart';
 import 'package:shop_management/components/custom_snackbar.dart';
 import 'package:shop_management/managers/manager.dart';
-import 'package:shop_management/models/model_login/login_fail.dart';
 import 'package:shop_management/screens/authentication/screen_forget_pass.dart';
 import 'package:shop_management/screens/authentication/screen_sign_up.dart';
 import 'package:shop_management/screens/screen_homepage.dart';
@@ -13,7 +12,8 @@ import 'package:shop_management/utilities/colors.dart';
 
 import '../../components/custom_button.dart';
 import '../../managers/exception_manager.dart';
-import '../../models/model_login/login_success.dart';
+import '../../models/model_auth/model_login/login_fail.dart';
+import '../../models/model_auth/model_login/login_success.dart';
 import '../../utilities/all_text.dart';
 
 class Login extends StatefulWidget {
