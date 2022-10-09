@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:shop_management/api/auth_api_call/api_call_reset_password.dart';
+import 'package:shop_management/screens/authentication/screen_login.dart';
 
 import '../../components/custom_button.dart';
 import '../../components/custom_input.dart';
+import '../../components/custom_snackbar.dart';
+import '../../managers/exception_manager.dart';
+import '../../managers/manager.dart';
+import '../../models/model_auth/model_reset_pass.dart';
 import '../../utilities/all_text.dart';
 import '../../utilities/app_size.dart';
 import '../../utilities/colors.dart';
@@ -13,7 +19,34 @@ class ForgetPassword extends StatefulWidget {
   State<ForgetPassword> createState() => _ForgetPasswordState();
 }
 
-class _ForgetPasswordState extends State<ForgetPassword> {
+class _ForgetPasswordState extends State<ForgetPassword>
+    implements Manager, ExceptionManager {
+  @override
+  void fail({required String fail}) {
+    CustomSnackBar(
+            message: AllTexts.resetPassFail, isSuccess: false, context: context)
+        .show();
+  }
+
+  @override
+  void success({required String success}) {
+    ResetModel responseSuccess = ResetModel.fromJson(success);
+    CustomSnackBar(
+            message: responseSuccess.message,
+            isSuccess: responseSuccess.status,
+            context: context)
+        .show();
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (builder) => const Login()));
+  }
+
+  @override
+  void appException() {
+    CustomSnackBar(
+            message: AllTexts.netError, isSuccess: false, context: context)
+        .show();
+  }
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
@@ -30,6 +63,13 @@ class _ForgetPasswordState extends State<ForgetPassword> {
       if (!currentFocus.hasPrimaryFocus) {
         currentFocus.unfocus();
       }
+
+      CallResetPassApi().callResetPassApi(
+        reset: this,
+        exception: this,
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
     }
   }
 

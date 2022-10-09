@@ -34,7 +34,8 @@ class _SignUpState extends State<SignUp> implements Manager, ExceptionManager {
 
   @override
   void success({required String success}) {
-    RegistrationSuccessModel responseSuccess = RegistrationSuccessModel.fromJson(success);
+    RegistrationSuccessModel responseSuccess =
+        RegistrationSuccessModel.fromJson(success);
     CustomSnackBar(
             message: responseSuccess.message,
             isSuccess: responseSuccess.status,

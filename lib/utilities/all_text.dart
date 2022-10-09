@@ -37,4 +37,5 @@ class AllTexts {
   static const String signOutSub = "Are you sure you want to log out from the app ?";
   static const String yesCap = "YES";
   static const String noCap = "NO";
+  static const String resetPassFail = "Reset password failed";
 }
