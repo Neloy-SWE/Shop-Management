@@ -23,7 +23,9 @@ class _HomePageState extends State<HomePage> {
         );
       },
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+        ),
         body: const Center(
           child: Text("Hello this is home page"),
         ),

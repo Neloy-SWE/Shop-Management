@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shop_management/api/auth_api_call/api_call_login.dart';
 import 'package:shop_management/components/custom_input.dart';
 import 'package:shop_management/components/custom_sign_nav.dart';
@@ -11,6 +12,7 @@ import 'package:shop_management/utilities/app_size.dart';
 import 'package:shop_management/utilities/colors.dart';
 
 import '../../components/custom_button.dart';
+import '../../components/custom_dialogue.dart';
 import '../../managers/exception_manager.dart';
 import '../../models/model_auth/model_login/login_fail.dart';
 import '../../models/model_auth/model_login/login_success.dart';
@@ -85,132 +87,148 @@ class _LoginState extends State<Login> implements Manager, ExceptionManager {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: ListView(
-        padding: MyPadding.appPadding,
-        children: [
-          // title
-          Gap.gapH20,
-          Text(
-            AllTexts.login,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headline1,
-          ),
-          Text(
-            AllTexts.toContinue,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyText1,
-          ),
-          Gap.gapH70,
-
-          // login form
-          Form(
-            key: _formKeyLogIn,
-            child: Column(
-              children: [
-                // text field: email
-                AllInput.generalInput(
-                  context: context,
-                  controller: _emailController,
-                  textInputType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
-                  hint: AllTexts.emailHint,
-                  label: AllTexts.email,
-                  prefixIcon: Icons.mark_email_read_outlined,
-                  validatorFunction: (value) {
-                    String pattern =
-                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
-                    RegExp regExp = RegExp(pattern);
-                    if (value!.isEmpty) {
-                      return "Field is required !!";
-                    } else if (!regExp.hasMatch(value)) {
-                      return 'Please enter valid email';
-                    }
-                    return null;
-                  },
-                ),
-                Gap.gapH15,
-
-                // text field: password
-                AllInput.generalInput(
-                  context: context,
-                  controller: _passwordController,
-                  textInputType: TextInputType.visiblePassword,
-                  textInputAction: TextInputAction.done,
-                  prefixIcon: Icons.phonelink_lock,
-                  suffixWidget: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        passSecure = !passSecure;
-                      });
-                    },
-                    icon: Icon(
-                      passSecure ? Icons.visibility_off : Icons.visibility,
-                      color: AllColors.primaryColor,
-                    ),
-                  ),
-                  label: AllTexts.password,
-                  hint: AllTexts.passHint,
-                  secure: passSecure,
-                  validatorFunction: (value) {
-                    if (value!.isEmpty) {
-                      return "Field is required !!";
-                    } else if (value.length < 6) {
-                      return "Password length is less than 6 !!";
-                    }
-                    return null;
-                  },
-                ),
-                Gap.gapH10,
-              ],
+    return WillPopScope(
+      onWillPop: () async {
+        return await AllDialogue.backDialogue(
+          context: context,
+          onTap: dialogueNav,
+          title: AllTexts.exitApp,
+          subTitle: AllTexts.exitAppSub,
+        );
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+        ),
+        body: ListView(
+          padding: MyPadding.appPadding,
+          children: [
+            // title
+            Gap.gapH20,
+            Text(
+              AllTexts.login,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headline1,
             ),
-          ),
+            Text(
+              AllTexts.toContinue,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            Gap.gapH70,
 
-          // forget password
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton(
-              onPressed: () {
-                Navigator.of(context).push(
+            // login form
+            Form(
+              key: _formKeyLogIn,
+              child: Column(
+                children: [
+                  // text field: email
+                  AllInput.generalInput(
+                    context: context,
+                    controller: _emailController,
+                    textInputType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    hint: AllTexts.emailHint,
+                    label: AllTexts.email,
+                    prefixIcon: Icons.mark_email_read_outlined,
+                    validatorFunction: (value) {
+                      String pattern =
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+                      RegExp regExp = RegExp(pattern);
+                      if (value!.isEmpty) {
+                        return "Field is required !!";
+                      } else if (!regExp.hasMatch(value)) {
+                        return 'Please enter valid email';
+                      }
+                      return null;
+                    },
+                  ),
+                  Gap.gapH15,
+
+                  // text field: password
+                  AllInput.generalInput(
+                    context: context,
+                    controller: _passwordController,
+                    textInputType: TextInputType.visiblePassword,
+                    textInputAction: TextInputAction.done,
+                    prefixIcon: Icons.phonelink_lock,
+                    suffixWidget: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          passSecure = !passSecure;
+                        });
+                      },
+                      icon: Icon(
+                        passSecure ? Icons.visibility_off : Icons.visibility,
+                        color: AllColors.primaryColor,
+                      ),
+                    ),
+                    label: AllTexts.password,
+                    hint: AllTexts.passHint,
+                    secure: passSecure,
+                    validatorFunction: (value) {
+                      if (value!.isEmpty) {
+                        return "Field is required !!";
+                      } else if (value.length < 6) {
+                        return "Password length is less than 6 !!";
+                      }
+                      return null;
+                    },
+                  ),
+                  Gap.gapH10,
+                ],
+              ),
+            ),
+
+            // forget password
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (builder) => const ForgetPassword(),
+                    ),
+                  );
+                },
+                child: Text(
+                  AllTexts.forgetPass,
+                  style: Theme.of(context).textTheme.headline5,
+                ),
+              ),
+            ),
+            Gap.gapH70,
+
+            // submit button
+            AllButton.generalButton(
+              context: context,
+              btnText: AllTexts.loginCap,
+              onTap: _login,
+            ),
+            Gap.gapH30,
+
+            // sign nav
+            CustomSignNav.signNav(
+              context: context,
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
                   MaterialPageRoute(
-                    builder: (builder) => const ForgetPassword(),
+                    builder: (builder) => const SignUp(),
                   ),
                 );
               },
-              child: Text(
-                AllTexts.forgetPass,
-                style: Theme.of(context).textTheme.headline5,
-              ),
+              startText: AllTexts.newHere,
+              navText: AllTexts.signUp,
             ),
-          ),
-          Gap.gapH70,
-
-          // submit button
-          AllButton.generalButton(
-            context: context,
-            btnText: AllTexts.loginCap,
-            onTap: _login,
-          ),
-          Gap.gapH30,
-
-          // sign nav
-          CustomSignNav.signNav(
-            context: context,
-            onTap: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (builder) => const SignUp(),
-                ),
-              );
-            },
-            startText: AllTexts.newHere,
-            navText: AllTexts.signUp,
-          ),
-          Gap.gapH30,
-        ],
+            Gap.gapH30,
+          ],
+        ),
       ),
     );
+  }
+
+  void dialogueNav() {
+    SystemNavigator.pop();
   }
 }

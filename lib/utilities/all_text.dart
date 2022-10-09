@@ -38,4 +38,6 @@ class AllTexts {
   static const String yesCap = "YES";
   static const String noCap = "NO";
   static const String resetPassFail = "Reset password failed";
+  static const String exitApp = "Exit App";
+  static const String exitAppSub = "Are you sure you want to exit app ?";
 }
