@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:shop_management/api/auth_api_call/api_call_login.dart';
 import 'package:shop_management/components/custom_input.dart';
 import 'package:shop_management/components/custom_sign_nav.dart';
+import 'package:shop_management/components/custom_snackbar.dart';
+import 'package:shop_management/managers/manager.dart';
+import 'package:shop_management/models/model_login/login_fail.dart';
 import 'package:shop_management/screens/authentication/screen_forget_pass.dart';
 import 'package:shop_management/screens/authentication/screen_sign_up.dart';
+import 'package:shop_management/screens/screen_homepage.dart';
 import 'package:shop_management/utilities/app_size.dart';
 import 'package:shop_management/utilities/colors.dart';
 
 import '../../components/custom_button.dart';
+import '../../managers/exception_manager.dart';
+import '../../models/model_login/login_success.dart';
 import '../../utilities/all_text.dart';
 
 class Login extends StatefulWidget {
@@ -16,7 +23,36 @@ class Login extends StatefulWidget {
   State<Login> createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginState extends State<Login> implements Manager, ExceptionManager {
+  @override
+  void fail({required String fail}) {
+    LoginFailModel responseFail = LoginFailModel.fromJson(fail);
+    String? message =
+        responseFail.errors!.email ?? responseFail.errors!.message;
+    CustomSnackBar(
+            message: message, isSuccess: responseFail.status, context: context)
+        .show();
+  }
+
+  @override
+  void success({required String success}) {
+    LoginSuccessModel responseSuccess = LoginSuccessModel.fromJson(success);
+    CustomSnackBar(
+            message: AllTexts.welcomeBack,
+            isSuccess: responseSuccess.status,
+            context: context)
+        .show();
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (builder) => const HomePage()));
+  }
+
+  @override
+  void appException() {
+    CustomSnackBar(
+            message: AllTexts.netError, isSuccess: false, context: context)
+        .show();
+  }
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -24,16 +60,19 @@ class _LoginState extends State<Login> {
 
   final _formKeyLogIn = GlobalKey<FormState>();
 
+  // login method
   void _login() {
     if (_formKeyLogIn.currentState!.validate()) {
       FocusScopeNode currentFocus = FocusScope.of(context);
       if (!currentFocus.hasPrimaryFocus) {
         currentFocus.unfocus();
       }
-      // _logInApiCall(
-      //   email: _emailController.text.trim(),
-      //   password: _passController.text.trim(),
-      // );
+      CallLoginApi().callLoginApi(
+        login: this,
+        exception: this,
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
     }
   }
 

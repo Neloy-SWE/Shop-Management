@@ -79,11 +79,17 @@ class AppTheme {
         fontFamily: AllTexts.fontRegular,
       ),
       subtitle2: TextStyle(
-        fontSize: 10,
+        fontSize: 12,
         color: Colors.black,
         fontFamily: AllTexts.fontRegular,
         fontWeight: FontWeight.w100,
       ),
+      caption: TextStyle(
+      fontSize: 15,
+      color: Colors.black,
+      fontFamily: AllTexts.fontRegular,
+      fontWeight: FontWeight.w100,
+    ),
     ),
   );
 }

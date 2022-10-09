@@ -4,6 +4,7 @@ class AllTexts {
   static const String fontBolt = "fontBolt";
   static const String copyRight = "Copy Right ©neloy";
   static const String welcome = "Welcome";
+  static const String welcomeBack = "Welcome Back";
   static const String toYourShop = "To Your Shop";
   static const String login = "Login";
   static const String loginCap = "LOGIN";
@@ -15,6 +16,7 @@ class AllTexts {
   static const String forgetPass = "Forget Password?";
   static const String newHere = "New here ? | ";
   static const String signUp = "Sign Up";
+  static const String signOut = "Sign Out";
   static const String signUpCap = "SIGN UP";
   static const String resetPasswordCap = "RESET PASSWORD";
   static const String createAccount = "Create Account";
@@ -31,4 +33,8 @@ class AllTexts {
   static const String alreadyHaveAcc = "Already have account ? | ";
   static const String resetPassword = "Reset Password";
   static const String justAStep = "Just A Step";
+  static const String netError = "Network Error !";
+  static const String signOutSub = "Are you sure you want to log out from the app ?";
+  static const String yesCap = "YES";
+  static const String noCap = "NO";
 }
