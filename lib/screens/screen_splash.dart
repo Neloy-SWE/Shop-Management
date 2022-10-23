@@ -7,6 +7,8 @@ import 'package:shop_management/utilities/app_size.dart';
 import 'package:shop_management/utilities/colors.dart';
 import 'package:shop_management/utilities/image_path.dart';
 
+import '../components/custom_loader.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
@@ -55,13 +57,8 @@ class _SplashScreenState extends State<SplashScreen> {
               style: Theme.of(context).textTheme.subtitle1,
             ),
             Gap.gapH50,
-            const SizedBox(
-              height: 15,
-              width: 15,
-              child: CircularProgressIndicator(
-                color: AllColors.primaryColor,
-                strokeWidth: 1.5,
-              ),
+            AllLoader.generalLoader(
+              loaderColor: AllColors.primaryColor,
             ),
             Gap.gapH20,
             Text(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shop_management/api/auth_api_call/api_call_registration.dart';
 import 'package:shop_management/screens/authentication/screen_login.dart';
-
 import '../../components/custom_button.dart';
 import '../../components/custom_dialogue.dart';
 import '../../components/custom_input.dart';
@@ -26,6 +25,9 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> implements Manager, ExceptionManager {
   @override
   void fail({required String fail}) {
+    setState(() {
+      enableButton = false;
+    });
     LoginFailModel responseFail = LoginFailModel.fromJson(fail);
     String? message =
         responseFail.errors!.email ?? responseFail.errors!.message;
@@ -49,6 +51,9 @@ class _SignUpState extends State<SignUp> implements Manager, ExceptionManager {
 
   @override
   void appException() {
+    setState(() {
+      enableButton = false;
+    });
     CustomSnackBar(
             message: AllTexts.netError, isSuccess: false, context: context)
         .show();
@@ -65,6 +70,7 @@ class _SignUpState extends State<SignUp> implements Manager, ExceptionManager {
 
   bool passSecure = true;
   bool confirmPassSecure = true;
+  bool enableButton = false;
 
   final _fromKeySignUp = GlobalKey<FormState>();
 
@@ -74,6 +80,9 @@ class _SignUpState extends State<SignUp> implements Manager, ExceptionManager {
       if (!currentFocus.hasPrimaryFocus) {
         currentFocus.unfocus();
       }
+      setState(() {
+        enableButton = true;
+      });
       CallRegistrationApi().callRegApi(
         register: this,
         exception: this,
@@ -303,6 +312,7 @@ class _SignUpState extends State<SignUp> implements Manager, ExceptionManager {
               context: context,
               btnText: AllTexts.signUpCap,
               onTap: _signUp,
+              enable: enableButton,
             ),
             Gap.gapH30,
 

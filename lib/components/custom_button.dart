@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_management/components/custom_loader.dart';
 import '../utilities/colors.dart';
 
 class AllButton {
@@ -6,13 +7,14 @@ class AllButton {
     required BuildContext context,
     required String btnText,
     required Function onTap,
+    required bool enable,
   }) {
     return SizedBox(
       height: 50,
       width: double.infinity,
       child: MaterialButton(
         onPressed: () {
-          onTap();
+          enable ? null : onTap();
         },
         color: AllColors.primaryColor,
         splashColor: Colors.black,
@@ -21,10 +23,12 @@ class AllButton {
             Radius.circular(7),
           ),
         ),
-        child: Text(
-          btnText,
-          style: Theme.of(context).textTheme.headline3,
-        ),
+        child: enable
+            ? AllLoader.generalLoader(loaderColor: Colors.white)
+            : Text(
+                btnText,
+                style: Theme.of(context).textTheme.headline3,
+              ),
       ),
     );
   }

@@ -23,6 +23,9 @@ class _ForgetPasswordState extends State<ForgetPassword>
     implements Manager, ExceptionManager {
   @override
   void fail({required String fail}) {
+    setState(() {
+      enableButton = false;
+    });
     CustomSnackBar(
             message: AllTexts.resetPassFail, isSuccess: false, context: context)
         .show();
@@ -42,6 +45,9 @@ class _ForgetPasswordState extends State<ForgetPassword>
 
   @override
   void appException() {
+    setState(() {
+      enableButton = false;
+    });
     CustomSnackBar(
             message: AllTexts.netError, isSuccess: false, context: context)
         .show();
@@ -54,6 +60,7 @@ class _ForgetPasswordState extends State<ForgetPassword>
 
   bool passSecure = true;
   bool confirmPassSecure = true;
+  bool enableButton = false;
 
   final _formKeySignUp = GlobalKey<FormState>();
 
@@ -63,7 +70,9 @@ class _ForgetPasswordState extends State<ForgetPassword>
       if (!currentFocus.hasPrimaryFocus) {
         currentFocus.unfocus();
       }
-
+      setState(() {
+        enableButton = true;
+      });
       CallResetPassApi().callResetPassApi(
         reset: this,
         exception: this,
@@ -206,6 +215,7 @@ class _ForgetPasswordState extends State<ForgetPassword>
             context: context,
             btnText: AllTexts.resetPasswordCap,
             onTap: _forgetPass,
+            enable: enableButton,
           ),
           Gap.gapH30,
         ],

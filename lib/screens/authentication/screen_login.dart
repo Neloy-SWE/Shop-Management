@@ -28,6 +28,9 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> implements Manager, ExceptionManager {
   @override
   void fail({required String fail}) {
+    setState(() {
+      enableButton = false;
+    });
     LoginFailModel responseFail = LoginFailModel.fromJson(fail);
     String? message =
         responseFail.errors!.email ?? responseFail.errors!.message;
@@ -50,6 +53,9 @@ class _LoginState extends State<Login> implements Manager, ExceptionManager {
 
   @override
   void appException() {
+    setState(() {
+      enableButton = false;
+    });
     CustomSnackBar(
             message: AllTexts.netError, isSuccess: false, context: context)
         .show();
@@ -59,6 +65,7 @@ class _LoginState extends State<Login> implements Manager, ExceptionManager {
   final TextEditingController _passwordController = TextEditingController();
 
   bool passSecure = true;
+  bool enableButton = false;
 
   final _formKeyLogIn = GlobalKey<FormState>();
 
@@ -69,6 +76,9 @@ class _LoginState extends State<Login> implements Manager, ExceptionManager {
       if (!currentFocus.hasPrimaryFocus) {
         currentFocus.unfocus();
       }
+      setState(() {
+        enableButton = true;
+      });
       CallLoginApi().callLoginApi(
         login: this,
         exception: this,
@@ -204,6 +214,7 @@ class _LoginState extends State<Login> implements Manager, ExceptionManager {
               context: context,
               btnText: AllTexts.loginCap,
               onTap: _login,
+              enable: enableButton,
             ),
             Gap.gapH30,
 
