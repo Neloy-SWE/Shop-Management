@@ -40,4 +40,5 @@ class AllTexts {
   static const String resetPassFail = "Reset password failed";
   static const String exitApp = "Exit App";
   static const String exitAppSub = "Are you sure you want to exit app ?";
+  static const String yourShopList = "Your Shop List";
 }
