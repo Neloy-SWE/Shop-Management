@@ -78,6 +78,9 @@ class _HomePageState extends State<HomePage> {
               btnText: AllTexts.addNewShop,
               onTap: () {},
             ),
+
+            // shop list
+            // GridView.builder(gridDelegate: gridDelegate, itemBuilder: itemBuilder)
           ],
         ),
       ),
