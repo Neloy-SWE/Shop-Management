@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:shop_management/managers/manager.dart';
 import '../../managers/api_constant.dart';
 import 'package:http/http.dart' as http;
@@ -35,6 +36,7 @@ class CallLoginApi implements Manager, ExceptionManager {
         login.fail(fail: str);
       }
     } on Exception catch (e) {
+      log(e.toString());
      exception.appException();
     }
   }

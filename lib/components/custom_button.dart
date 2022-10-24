@@ -33,7 +33,7 @@ class AllButton {
     );
   }
 
-  static addButton({
+  static borderedButton({
     required BuildContext context,
     required String btnText,
     required Function onTap,
@@ -56,9 +56,7 @@ class AllButton {
         ),
         child: Text(
           btnText,
-          style: Theme.of(context).textTheme.headline3!.copyWith(
-                color: AllColors.primaryColor,
-              ),
+          style: Theme.of(context).textTheme.headline5,
         ),
       ),
     );

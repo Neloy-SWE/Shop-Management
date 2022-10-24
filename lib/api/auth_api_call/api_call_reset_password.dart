@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:shop_management/managers/exception_manager.dart';
 import 'package:shop_management/managers/manager.dart';
@@ -27,6 +28,7 @@ class CallResetPassApi implements Manager, ExceptionManager {
         reset.fail(fail: str);
       }
     } on Exception catch (e) {
+      log(e.toString());
       exception.appException();
     }
   }

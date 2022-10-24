@@ -95,6 +95,18 @@ class _LoginState extends State<Login> implements Manager, ExceptionManager {
     super.dispose();
   }
 
+  // todo: after complete world. please remove the code
+  @override
+  void initState() {
+    CallLoginApi().callLoginApi(
+      login: this,
+      exception: this,
+      email: "neloy@gmail.com",
+      password: "12345678",
+    );
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(

@@ -5,6 +5,8 @@ import 'package:shop_management/utilities/all_text.dart';
 import 'package:shop_management/utilities/app_size.dart';
 import 'package:shop_management/utilities/colors.dart';
 import '../components/custom_dialogue.dart';
+import '../components/grid_view_fixed_height.dart';
+import '../managers/option_manager.dart';
 import '../utilities/image_path.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,6 +17,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<OptionManager> options = [
+    OptionManager(
+        optionIcon: Icons.category, optionName: AllTexts.categories),
+    OptionManager(
+        optionIcon: Icons.people_alt_outlined, optionName: AllTexts.users),
+    OptionManager(
+        optionIcon: Icons.shopify_rounded, optionName: AllTexts.orders),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -33,7 +44,7 @@ class _HomePageState extends State<HomePage> {
         body: ListView(
           padding: MyPadding.appPadding,
           children: [
-            // header image
+            // shop view
             Container(
               height: 200,
               width: double.infinity,
@@ -64,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 child: Text(
-                  AllTexts.yourShopList,
+                  "Shop Name",
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyText2,
                 ),
@@ -72,15 +83,31 @@ class _HomePageState extends State<HomePage> {
             ),
             Gap.gapH15,
 
-            // shop add button
-            AllButton.addButton(
+            // update shop button
+            AllButton.borderedButton(
               context: context,
-              btnText: AllTexts.addNewShop,
+              btnText: AllTexts.updateShopInfo,
               onTap: () {},
             ),
+            Gap.gapH30,
 
-            // shop list
-            // GridView.builder(gridDelegate: gridDelegate, itemBuilder: itemBuilder)
+            // option list
+            GridView.builder(
+              padding: MyPadding.appPadding,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const GridViewFixedHeight(
+                crossAxisCount: 2,
+                // childAspectRatio: 0.60,
+                height: 170,
+                crossAxisSpacing: 30,
+                mainAxisSpacing: 30,
+              ),
+              itemCount: options.length,
+              itemBuilder: (context, index) {
+                return _optionContainer(options[index]);
+              },
+            ),
           ],
         ),
       ),
@@ -93,6 +120,49 @@ class _HomePageState extends State<HomePage> {
       MaterialPageRoute(
         builder: (builder) => const Login(),
       ),
+    );
+  }
+
+  Widget _optionContainer(OptionManager optionManager) {
+    return Column(
+      children: [
+        Container(
+          height: 110,
+          width: double.infinity,
+          alignment: Alignment.center,
+          decoration: const BoxDecoration(
+            color: AllColors.optionBackColor,
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(
+                20,
+              ),
+            ),
+          ),
+          child: Icon(
+            optionManager.optionIcon,
+            color: AllColors.primaryColor,
+            size: 90,
+          ),
+        ),
+        Container(
+          height: 60,
+          width: double.infinity,
+          alignment: Alignment.center,
+          decoration: const BoxDecoration(
+            color: AllColors.optionBackColor,
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(
+                20,
+              ),
+            ),
+          ),
+          child: Text(
+            optionManager.optionName,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headline5,
+          ),
+        ),
+      ],
     );
   }
 }

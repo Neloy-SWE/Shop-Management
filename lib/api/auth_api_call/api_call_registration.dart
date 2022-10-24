@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import '../../managers/api_constant.dart';
 import '../../managers/exception_manager.dart';
@@ -39,6 +40,7 @@ class CallRegistrationApi implements Manager, ExceptionManager {
         register.fail(fail: str);
       }
     } on Exception catch (e) {
+      log(e.toString());
       exception.appException();
     }
   }
