@@ -17,7 +17,7 @@ class AllButton {
           enable ? null : onTap();
         },
         color: AllColors.primaryColor,
-        splashColor: Colors.black,
+        splashColor: enable ? AllColors.primaryColor : Colors.black,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(7),
@@ -29,6 +29,37 @@ class AllButton {
                 btnText,
                 style: Theme.of(context).textTheme.headline3,
               ),
+      ),
+    );
+  }
+
+  static addButton({
+    required BuildContext context,
+    required String btnText,
+    required Function onTap,
+  }) {
+    return SizedBox(
+      height: 50,
+      width: double.infinity,
+      child: MaterialButton(
+        onPressed: () {
+          onTap();
+        },
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(7),
+          ),
+          side: BorderSide(
+            color: AllColors.primaryColor,
+            width: 1,
+          ),
+        ),
+        child: Text(
+          btnText,
+          style: Theme.of(context).textTheme.headline3!.copyWith(
+                color: AllColors.primaryColor,
+              ),
+        ),
       ),
     );
   }
