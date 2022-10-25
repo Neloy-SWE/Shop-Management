@@ -5,8 +5,12 @@ import 'package:shop_management/utilities/all_text.dart';
 import 'package:shop_management/utilities/app_size.dart';
 import 'package:shop_management/utilities/colors.dart';
 import '../components/custom_dialogue.dart';
+import '../components/custom_snackbar.dart';
 import '../components/grid_view_fixed_height.dart';
+import '../managers/exception_manager.dart';
+import '../managers/manager.dart';
 import '../managers/option_manager.dart';
+import '../models/model_shop_info.dart';
 import '../utilities/image_path.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,7 +20,27 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> implements Manager, ExceptionManager{
+
+  @override
+  void appException() {
+    CustomSnackBar(
+        message: AllTexts.netError, isSuccess: false, context: context)
+        .show();
+  }
+
+  @override
+  void fail({required String fail}) {
+    CustomSnackBar(
+        message: AllTexts.wentWrong, isSuccess: false, context: context)
+        .show();
+  }
+
+  @override
+  void success({required String success}) {
+    ShopInfoModel shopInfoModel = ShopInfoModel.fromJson(success);
+  }
+
   List<OptionManager> options = [
     OptionManager(
         optionIcon: Icons.category, optionName: AllTexts.categories),

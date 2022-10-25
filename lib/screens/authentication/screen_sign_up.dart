@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shop_management/api/auth_api_call/api_call_registration.dart';
 import 'package:shop_management/screens/authentication/screen_login.dart';
+import '../../api/api_call_auth/api_call_registration.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_dialogue.dart';
 import '../../components/custom_input.dart';
@@ -285,7 +285,9 @@ class _SignUpState extends State<SignUp> implements Manager, ExceptionManager {
                       });
                     },
                     icon: Icon(
-                      confirmPassSecure ? Icons.visibility_off : Icons.visibility,
+                      confirmPassSecure
+                          ? Icons.visibility_off
+                          : Icons.visibility,
                       color: AllColors.primaryColor,
                     ),
                   ),
@@ -336,6 +338,7 @@ class _SignUpState extends State<SignUp> implements Manager, ExceptionManager {
       ),
     );
   }
+
   void dialogueNav() {
     SystemNavigator.pop();
   }

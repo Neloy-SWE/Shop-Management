@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 
-class OptionManager{
+class OptionManager {
   IconData optionIcon;
   String optionName;
-  OptionManager({required this.optionIcon, required this.optionName});
+
+  OptionManager({
+    required this.optionIcon,
+    required this.optionName,
+  });
 }

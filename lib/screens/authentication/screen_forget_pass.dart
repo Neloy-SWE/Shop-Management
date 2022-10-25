@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shop_management/api/auth_api_call/api_call_reset_password.dart';
 import 'package:shop_management/screens/authentication/screen_login.dart';
 
+import '../../api/api_call_auth/api_call_reset_password.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_input.dart';
 import '../../components/custom_snackbar.dart';
