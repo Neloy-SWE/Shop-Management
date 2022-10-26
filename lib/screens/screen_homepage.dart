@@ -1,57 +1,81 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shop_management/components/custom_button.dart';
+import 'package:shop_management/components/custom_loader.dart';
+import 'package:shop_management/models/model_shop_info.dart';
 import 'package:shop_management/screens/authentication/screen_login.dart';
 import 'package:shop_management/utilities/all_text.dart';
 import 'package:shop_management/utilities/app_size.dart';
 import 'package:shop_management/utilities/colors.dart';
+import '../api/api_call_with_provider/api_call_shop_info.dart';
 import '../components/custom_dialogue.dart';
 import '../components/custom_snackbar.dart';
 import '../components/grid_view_fixed_height.dart';
-import '../managers/exception_manager.dart';
 import '../managers/manager.dart';
+import '../managers/manager_exception.dart';
 import '../managers/option_manager.dart';
-import '../models/model_shop_info.dart';
 import '../utilities/image_path.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> implements Manager, ExceptionManager{
-
+class _HomePageState extends ConsumerState<HomePage>
+    implements Manager, ExceptionManager {
   @override
   void appException() {
     CustomSnackBar(
-        message: AllTexts.netError, isSuccess: false, context: context)
+            message: AllTexts.netError, isSuccess: false, context: context)
         .show();
   }
 
   @override
   void fail({required String fail}) {
     CustomSnackBar(
-        message: AllTexts.wentWrong, isSuccess: false, context: context)
+            message: AllTexts.wentWrong, isSuccess: false, context: context)
         .show();
   }
 
   @override
   void success({required String success}) {
-    ShopInfoModel shopInfoModel = ShopInfoModel.fromJson(success);
+    print(success);
+    setState(() {
+      ShopInfoModel shopInfoModel = ShopInfoModel.fromJson(success);
+
+      shopName = shopInfoModel.shopInfoData!.name!;
+      profileImage = shopInfoModel.shopInfoData!.profileImage != null
+          ? shopInfoModel.shopInfoData!.profileImage!
+          : ImagePath.shop;
+    });
   }
 
   List<OptionManager> options = [
-    OptionManager(
-        optionIcon: Icons.category, optionName: AllTexts.categories),
+    OptionManager(optionIcon: Icons.category, optionName: AllTexts.categories),
     OptionManager(
         optionIcon: Icons.people_alt_outlined, optionName: AllTexts.users),
     OptionManager(
         optionIcon: Icons.shopify_rounded, optionName: AllTexts.orders),
   ];
 
+  String shopName = "";
+  String profileImage = "";
+
+  @override
+  void initState() {
+    CallShopInfoApi().callShopInfoApi(
+      shopInfo: this,
+      exception: this,
+    );
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    print("hello shop name: $shopName $profileImage");
+
     return WillPopScope(
       onWillPop: () async {
         return await AllDialogue.backDialogue(
@@ -69,42 +93,51 @@ class _HomePageState extends State<HomePage> implements Manager, ExceptionManage
           padding: MyPadding.appPadding,
           children: [
             // shop view
-            Container(
-              height: 200,
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-              alignment: Alignment.bottomLeft,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  colorFilter: ColorFilter.mode(
-                    AllColors.primaryColor.withOpacity(0.7),
-                    BlendMode.hardLight,
-                  ),
-                  image: const AssetImage(
-                    ImagePath.shop,
-                  ),
-                  fit: BoxFit.fill,
-                ),
-              ),
-              child: Container(
-                height: 50,
-                width: MediaQuery.of(context).size.width * .45,
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(
-                      50,
+            profileImage.isEmpty
+                ? Column(
+                  children: [
+                    Gap.gapH50,
+                    Align(
+                        alignment: Alignment.center,
+                        child: AllLoader.generalLoader(
+                          loaderColor: AllColors.primaryColor,
+                          loaderWidth: 2,
+                          loaderSize: 30,
+                        ),
+                      ),
+                  ],
+                )
+                : Container(
+                    height: 200,
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(20),
+                    alignment: Alignment.bottomLeft,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(
+                          profileImage,
+                        ),
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                    child: Container(
+                      height: 50,
+                      alignment: Alignment.center,
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(
+                            50,
+                          ),
+                        ),
+                      ),
+                      child: Text(
+                        shopName,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyText2,
+                      ),
                     ),
                   ),
-                ),
-                child: Text(
-                  "Shop Name",
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyText2,
-                ),
-              ),
-            ),
             Gap.gapH15,
 
             // update shop button

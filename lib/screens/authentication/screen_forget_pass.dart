@@ -5,7 +5,7 @@ import '../../api/api_call_auth/api_call_reset_password.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_input.dart';
 import '../../components/custom_snackbar.dart';
-import '../../managers/exception_manager.dart';
+import '../../managers/manager_exception.dart';
 import '../../managers/manager.dart';
 import '../../models/model_auth/model_reset_pass.dart';
 import '../../utilities/all_text.dart';

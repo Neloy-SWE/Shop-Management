@@ -7,7 +7,7 @@ import '../../components/custom_dialogue.dart';
 import '../../components/custom_input.dart';
 import '../../components/custom_sign_nav.dart';
 import '../../components/custom_snackbar.dart';
-import '../../managers/exception_manager.dart';
+import '../../managers/manager_exception.dart';
 import '../../managers/manager.dart';
 import '../../models/model_auth/model_login/login_fail.dart';
 import '../../models/model_auth/model_registration/registration_success.dart';

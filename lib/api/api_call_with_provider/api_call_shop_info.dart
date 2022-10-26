@@ -1,9 +1,12 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
-import '../managers/api_constant.dart';
-import '../managers/exception_manager.dart';
-import '../managers/manager.dart';
+import '../../managers/api_constant.dart';
+import '../../managers/manager.dart';
+import '../../managers/manager_exception.dart';
+import '../../managers/manager_local_storage.dart';
+
+
 
 class CallShopInfoApi implements Manager, ExceptionManager {
   Future<void> callShopInfoApi({
@@ -11,7 +14,9 @@ class CallShopInfoApi implements Manager, ExceptionManager {
     required ExceptionManager exception,
 }) async {
     try {
-      var headers = {ApiConstant.contentType: ApiConstant.acceptValue};
+      String userToken =
+      await LocalStorageManager.readData(ApiConstant.userLoginToken);
+      var headers = {ApiConstant.authorization: "${ApiConstant.bearer} $userToken"};
       var request = http.Request(
         'GET',
         Uri.parse('${ApiConstant.baseUrl}/store'),

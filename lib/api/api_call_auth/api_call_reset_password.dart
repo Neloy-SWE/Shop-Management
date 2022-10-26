@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:shop_management/managers/exception_manager.dart';
+import 'package:shop_management/managers/manager_exception.dart';
 import 'package:shop_management/managers/manager.dart';
 import 'package:http/http.dart' as http;
 import '../../managers/api_constant.dart';

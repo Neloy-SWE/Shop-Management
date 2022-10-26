@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import '../../managers/api_constant.dart';
-import '../../managers/exception_manager.dart';
+import '../../managers/manager_exception.dart';
 import '../../managers/manager.dart';
 import 'package:http/http.dart' as http;
 

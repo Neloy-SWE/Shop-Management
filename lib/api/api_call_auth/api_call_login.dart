@@ -4,8 +4,8 @@ import 'package:shop_management/managers/manager.dart';
 import '../../managers/api_constant.dart';
 import 'package:http/http.dart' as http;
 
-import '../../managers/exception_manager.dart';
-import '../../managers/local_storage_manager.dart';
+import '../../managers/manager_exception.dart';
+import '../../managers/manager_local_storage.dart';
 import '../../models/model_auth/model_login/login_success.dart';
 
 class CallLoginApi implements Manager, ExceptionManager {

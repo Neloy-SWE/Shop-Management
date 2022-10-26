@@ -13,7 +13,7 @@ import 'package:shop_management/utilities/colors.dart';
 import '../../api/api_call_auth/api_call_login.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_dialogue.dart';
-import '../../managers/exception_manager.dart';
+import '../../managers/manager_exception.dart';
 import '../../models/model_auth/model_login/login_fail.dart';
 import '../../models/model_auth/model_login/login_success.dart';
 import '../../utilities/all_text.dart';
@@ -101,7 +101,7 @@ class _LoginState extends State<Login> implements Manager, ExceptionManager {
     CallLoginApi().callLoginApi(
       login: this,
       exception: this,
-      email: "neloy@gmail.com",
+      email: "mamun.swe.277@gmail.com",
       password: "12345678",
     );
     super.initState();
