@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
-import '../managers/api_constant.dart';
-import '../managers/manager.dart';
-import '../managers/manager_exception.dart';
-import '../managers/manager_local_storage.dart';
+import '../../managers/api_constant.dart';
+import '../../managers/manager.dart';
+import '../../managers/manager_exception.dart';
+import '../../managers/manager_local_storage.dart';
 
 class CallShopInfoApi implements Manager, ExceptionManager {
   Future<void> callShopInfoApi({

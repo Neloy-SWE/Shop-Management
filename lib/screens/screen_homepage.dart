@@ -8,7 +8,7 @@ import 'package:shop_management/screens/screen_update_shop_info.dart';
 import 'package:shop_management/utilities/all_text.dart';
 import 'package:shop_management/utilities/app_size.dart';
 import 'package:shop_management/utilities/colors.dart';
-import '../api/api_call_shop_info.dart';
+import '../api/api_call_shop/api_call_shop_info.dart';
 import '../components/custom_dialogue.dart';
 import '../components/custom_drawer.dart';
 import '../components/custom_snackbar.dart';
@@ -47,6 +47,9 @@ class _HomePageState extends ConsumerState<HomePage>
       ShopInfoModel shopInfoModel = ShopInfoModel.fromJson(success);
 
       shopName = shopInfoModel.shopInfoData!.name!;
+      address = shopInfoModel.shopInfoData!.address!;
+      city = shopInfoModel.shopInfoData!.city!;
+      country = shopInfoModel.shopInfoData!.country!;
       profileImage = shopInfoModel.shopInfoData!.profileImage != null
           ? shopInfoModel.shopInfoData!.profileImage!
           : ImagePath.shop;
@@ -64,6 +67,9 @@ class _HomePageState extends ConsumerState<HomePage>
   ];
 
   String shopName = "";
+  String address = "";
+  String city = "";
+  String country = "";
   String profileImage = "";
   String location = "";
 
@@ -173,7 +179,12 @@ class _HomePageState extends ConsumerState<HomePage>
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (builder) => const UpdateShopInfo(),
+                    builder: (builder) => UpdateShopInfo(
+                      shopName: shopName,
+                      address: address,
+                      city: city,
+                      country: country,
+                    ),
                   ),
                 );
               },
