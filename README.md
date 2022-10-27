@@ -14,6 +14,7 @@ This is a shop management mobile application.
 ## Features:
 1. Authentication.
 2. Shop details.
+3. User details.
 
 
 ## Screens:
@@ -22,3 +23,5 @@ This is a shop management mobile application.
 3. Sign up screen.
 4. Forget password screen.
 5. Shop information screen.
+6. Update shop information screen.
+7. User list screen.
