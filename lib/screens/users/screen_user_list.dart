@@ -65,19 +65,23 @@ class _UserListState extends State<UserList> {
   }
 
   Widget _userList() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        AllDivider.generalDivider(),
-        Gap.gapH05,
-        Text("Helo"),
-        Text(
-          "Helo",
-          style: Theme.of(context).textTheme.caption,
-        ),
-        Gap.gapH05,
-        AllDivider.generalDivider(),
-      ],
+    return InkWell(
+      onTap: (){},
+      splashColor: AllColors.primaryColor,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AllDivider.generalDivider(),
+          Gap.gapH05,
+          Text("Helo"),
+          Text(
+            "Helo",
+            style: Theme.of(context).textTheme.caption,
+          ),
+          Gap.gapH05,
+          AllDivider.generalDivider(),
+        ],
+      ),
     );
   }
 }
