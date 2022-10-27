@@ -19,7 +19,7 @@ class CallShopInfoApi implements Manager, ExceptionManager {
       };
       var request = http.Request(
         'GET',
-        Uri.parse('${ApiConstant.baseUrl}/store'),
+        Uri.parse('${ApiConstant.baseUrl}store'),
       );
       request.headers.addAll(headers);
 

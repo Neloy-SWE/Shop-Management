@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:shop_management/api/api_call_users/api_call_user_list.dart';
 import 'package:shop_management/components/custom_drawer.dart';
 import 'package:shop_management/utilities/all_text.dart';
 import 'package:shop_management/utilities/app_size.dart';
 import 'package:shop_management/utilities/colors.dart';
-
+import 'package:shop_management/utilities/image_path.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_divider.dart';
+import '../../components/custom_loader.dart';
+import '../../components/custom_snackbar.dart';
+import '../../managers/manager.dart';
+import '../../managers/manager_exception.dart';
+import '../../models/model_users/model_users_list.dart';
 
 class UserList extends StatefulWidget {
   const UserList({Key? key}) : super(key: key);
@@ -14,7 +20,45 @@ class UserList extends StatefulWidget {
   State<UserList> createState() => _UserListState();
 }
 
-class _UserListState extends State<UserList> {
+class _UserListState extends State<UserList>
+    implements Manager, ExceptionManager {
+  @override
+  void appException() {
+    CustomSnackBar(
+            message: AllTexts.netError, isSuccess: false, context: context)
+        .show();
+  }
+
+  @override
+  void fail({required String fail}) {
+    CustomSnackBar(
+            message: AllTexts.wentWrong, isSuccess: false, context: context)
+        .show();
+  }
+
+  @override
+  void success({required String success}) {
+    setState(() {
+      UsersListModel usersListModel = UsersListModel.fromJson(success);
+
+      userList = usersListModel.userListData!;
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    CallUsersListApi().callUsersListApi(
+      usersList: this,
+      exception: this,
+    );
+    super.initState();
+  }
+
+  List<UserListData> userList = [];
+
+  bool isLoading = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,38 +88,65 @@ class _UserListState extends State<UserList> {
 
           // user list title
           Text(
-            "user list",
+            "${AllTexts.usersList} (${userList.length})",
             style: Theme.of(context).textTheme.caption,
           ),
           Gap.gapH10,
 
-          // user list
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: MyPadding.padding10,
-            itemCount: 10,
-            itemBuilder: (context, index) {
-              return _userList();
-            },
-          ),
+          isLoading
+              ? Column(
+                  children: [
+                    Gap.gapH50,
+                    Align(
+                      alignment: Alignment.center,
+                      child: AllLoader.generalLoader(
+                        loaderColor: AllColors.primaryColor,
+                        loaderWidth: 2,
+                        loaderSize: 30,
+                      ),
+                    ),
+                  ],
+                )
+              : userList.isEmpty
+                  ? Column(
+                      children: [
+                        Gap.gapH50,
+                        Image.asset(
+                          ImagePath.error,
+                          height: 200,
+                        ),
+                        Text(AllTexts.noDataFound, style: Theme.of(context).textTheme.headline2,),
+                      ],
+                    )
+                  :
+
+                  // user list
+                  ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: MyPadding.padding10,
+                      itemCount: userList.length,
+                      itemBuilder: (context, index) {
+                        return _userList(userListData: userList[index]);
+                      },
+                    ),
         ],
       ),
     );
   }
 
-  Widget _userList() {
+  Widget _userList({required UserListData userListData}) {
     return InkWell(
-      onTap: (){},
+      onTap: () {},
       splashColor: AllColors.primaryColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AllDivider.generalDivider(),
           Gap.gapH05,
-          Text("Helo"),
+          Text(userListData.name!),
           Text(
-            "Helo",
+            userListData.email!,
             style: Theme.of(context).textTheme.caption,
           ),
           Gap.gapH05,

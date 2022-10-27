@@ -101,7 +101,7 @@ class _LoginState extends State<Login> implements Manager, ExceptionManager {
     CallLoginApi().callLoginApi(
       login: this,
       exception: this,
-      email: "neloy@gmail.com",
+      email: "mamun.swe.277@gmail.com",
       password: "12345678",
     );
     super.initState();

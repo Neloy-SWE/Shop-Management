@@ -50,4 +50,6 @@ class AllTexts {
   static const String updateCap = "UPDATE";
   static const String usersList = "Users List";
   static const String addNewUser = "Add New User";
+  static const String noDataFound = "So sad. No data found...";
+
 }

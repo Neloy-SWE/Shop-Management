@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shop_management/components/custom_button.dart';
 import 'package:shop_management/components/custom_loader.dart';
 import 'package:shop_management/models/model_shop_info.dart';
-import 'package:shop_management/screens/authentication/screen_forget_pass.dart';
 import 'package:shop_management/screens/authentication/screen_login.dart';
 import 'package:shop_management/screens/shop/screen_update_shop_info.dart';
 import 'package:shop_management/screens/users/screen_user_list.dart';

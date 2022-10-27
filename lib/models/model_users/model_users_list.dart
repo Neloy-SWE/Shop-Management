@@ -3,12 +3,12 @@ import 'dart:convert';
 class UsersListModel {
   UsersListModel({
     this.status,
-    this.data,
+    this.userListData,
     this.paginate,
   });
 
   final bool? status;
-  final List<Datum>? data;
+  final List<UserListData>? userListData;
   final Paginate? paginate;
 
   factory UsersListModel.fromJson(String str) => UsersListModel.fromMap(json.decode(str));
@@ -17,19 +17,19 @@ class UsersListModel {
 
   factory UsersListModel.fromMap(Map<String, dynamic> json) => UsersListModel(
     status: json["status"],
-    data: json["data"] == null ? null : List<Datum>.from(json["data"].map((x) => Datum.fromMap(x))),
+    userListData: json["data"] == null ? null : List<UserListData>.from(json["data"].map((x) => UserListData.fromMap(x))),
     paginate: json["paginate"] == null ? null : Paginate.fromMap(json["paginate"]),
   );
 
   Map<String, dynamic> toMap() => {
     "status": status,
-    "data": data == null ? null : List<dynamic>.from(data!.map((x) => x.toMap())),
+    "data": userListData == null ? null : List<dynamic>.from(userListData!.map((x) => x.toMap())),
     "paginate": paginate == null ? null : paginate!.toMap(),
   };
 }
 
-class Datum {
-  Datum({
+class UserListData {
+  UserListData({
     this.id,
     this.name,
     this.email,
@@ -57,11 +57,11 @@ class Datum {
   final DateTime? updatedAt;
   final int? v;
 
-  factory Datum.fromJson(String str) => Datum.fromMap(json.decode(str));
+  factory UserListData.fromJson(String str) => UserListData.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory Datum.fromMap(Map<String, dynamic> json) => Datum(
+  factory UserListData.fromMap(Map<String, dynamic> json) => UserListData(
     id: json["_id"],
     name: json["name"],
     email: json["email"],
@@ -71,8 +71,8 @@ class Datum {
     role: json["role"],
     profileImage: json["profile_image"],
     createdBy: json["created_by"],
-    createdAt: json["createdAt"],
-    updatedAt: json["updatedAt"],
+    createdAt: DateTime.parse(json["createdAt"]),
+    updatedAt: DateTime.parse(json["updatedAt"]),
     v: json["__v"],
   );
 
