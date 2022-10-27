@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:shop_management/models/model_auth/model_reset_pass.dart';
-import 'package:shop_management/screens/screen_homepage.dart';
+import 'package:shop_management/screens/shop/screen_homepage.dart';
 import 'package:shop_management/utilities/all_text.dart';
 import 'package:shop_management/utilities/app_size.dart';
 import 'package:shop_management/utilities/colors.dart';
-import '../api/api_call_shop/api_call_shop_update.dart';
-import '../components/custom_button.dart';
-import '../components/custom_drawer.dart';
-import '../components/custom_input.dart';
-import '../components/custom_snackbar.dart';
-import '../managers/manager.dart';
-import '../managers/manager_exception.dart';
+import '../../api/api_call_shop/api_call_shop_update.dart';
+import '../../components/custom_button.dart';
+import '../../components/custom_drawer.dart';
+import '../../components/custom_input.dart';
+import '../../components/custom_snackbar.dart';
+import '../../managers/manager.dart';
+import '../../managers/manager_exception.dart';
 
 class UpdateShopInfo extends StatefulWidget {
   final String shopName, address, city, country;

@@ -45,6 +45,7 @@ class AllButton {
         onPressed: () {
           onTap();
         },
+          splashColor: AllColors.primaryColor,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(7),

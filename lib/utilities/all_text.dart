@@ -48,4 +48,6 @@ class AllTexts {
   static const String locationColon = "Location: ";
   static const String myShop = "My Shop";
   static const String updateCap = "UPDATE";
+  static const String usersList = "Users List";
+  static const String addNewUser = "Add New User";
 }

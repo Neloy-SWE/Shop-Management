@@ -3,20 +3,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shop_management/components/custom_button.dart';
 import 'package:shop_management/components/custom_loader.dart';
 import 'package:shop_management/models/model_shop_info.dart';
+import 'package:shop_management/screens/authentication/screen_forget_pass.dart';
 import 'package:shop_management/screens/authentication/screen_login.dart';
-import 'package:shop_management/screens/screen_update_shop_info.dart';
+import 'package:shop_management/screens/shop/screen_update_shop_info.dart';
+import 'package:shop_management/screens/users/screen_user_list.dart';
 import 'package:shop_management/utilities/all_text.dart';
 import 'package:shop_management/utilities/app_size.dart';
 import 'package:shop_management/utilities/colors.dart';
-import '../api/api_call_shop/api_call_shop_info.dart';
-import '../components/custom_dialogue.dart';
-import '../components/custom_drawer.dart';
-import '../components/custom_snackbar.dart';
-import '../components/grid_view_fixed_height.dart';
-import '../managers/manager.dart';
-import '../managers/manager_exception.dart';
-import '../managers/option_manager.dart';
-import '../utilities/image_path.dart';
+import '../../api/api_call_shop/api_call_shop_info.dart';
+import '../../components/custom_dialogue.dart';
+import '../../components/custom_drawer.dart';
+import '../../components/custom_snackbar.dart';
+import '../../components/grid_view_fixed_height.dart';
+import '../../managers/manager.dart';
+import '../../managers/manager_exception.dart';
+import '../../managers/option_manager.dart';
+import '../../utilities/image_path.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -59,11 +61,21 @@ class _HomePageState extends ConsumerState<HomePage>
   }
 
   List<OptionManager> options = [
-    OptionManager(optionIcon: Icons.category, optionName: AllTexts.categories),
     OptionManager(
-        optionIcon: Icons.people_alt_outlined, optionName: AllTexts.users),
+      optionIcon: Icons.category,
+      optionName: AllTexts.categories,
+      navOption: const UserList(),
+    ),
     OptionManager(
-        optionIcon: Icons.shopify_rounded, optionName: AllTexts.orders),
+      optionIcon: Icons.people_alt_outlined,
+      optionName: AllTexts.users,
+      navOption: const UserList(),
+    ),
+    OptionManager(
+      optionIcon: Icons.shopify_rounded,
+      optionName: AllTexts.orders,
+      navOption: const UserList(),
+    ),
   ];
 
   String shopName = "";
@@ -225,45 +237,54 @@ class _HomePageState extends ConsumerState<HomePage>
 
   // custom container for option element
   Widget _optionContainer(OptionManager optionManager) {
-    return Column(
-      children: [
-        Container(
-          height: 110,
-          width: double.infinity,
-          alignment: Alignment.center,
-          decoration: const BoxDecoration(
-            color: AllColors.optionBackColor,
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(
-                20,
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (builder) => optionManager.navOption,
+          ),
+        );
+      },
+      child: Column(
+        children: [
+          Container(
+            height: 110,
+            width: double.infinity,
+            alignment: Alignment.center,
+            decoration: const BoxDecoration(
+              color: AllColors.optionBackColor,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(
+                  20,
+                ),
               ),
             ),
-          ),
-          child: Icon(
-            optionManager.optionIcon,
-            color: AllColors.primaryColor,
-            size: 90,
-          ),
-        ),
-        Container(
-          height: 60,
-          width: double.infinity,
-          alignment: Alignment.center,
-          decoration: const BoxDecoration(
-            color: AllColors.optionBackColor,
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(
-                20,
-              ),
+            child: Icon(
+              optionManager.optionIcon,
+              color: AllColors.primaryColor,
+              size: 90,
             ),
           ),
-          child: Text(
-            optionManager.optionName,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headline5,
+          Container(
+            height: 60,
+            width: double.infinity,
+            alignment: Alignment.center,
+            decoration: const BoxDecoration(
+              color: AllColors.optionBackColor,
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(
+                  20,
+                ),
+              ),
+            ),
+            child: Text(
+              optionManager.optionName,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headline5,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

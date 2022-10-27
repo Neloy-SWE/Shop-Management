@@ -6,7 +6,7 @@ import 'package:shop_management/components/custom_snackbar.dart';
 import 'package:shop_management/managers/manager.dart';
 import 'package:shop_management/screens/authentication/screen_forget_pass.dart';
 import 'package:shop_management/screens/authentication/screen_sign_up.dart';
-import 'package:shop_management/screens/screen_homepage.dart';
+import 'package:shop_management/screens/shop/screen_homepage.dart';
 import 'package:shop_management/utilities/app_size.dart';
 import 'package:shop_management/utilities/colors.dart';
 

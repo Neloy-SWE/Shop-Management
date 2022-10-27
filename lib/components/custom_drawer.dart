@@ -5,6 +5,7 @@ import '../utilities/all_text.dart';
 import '../utilities/app_size.dart';
 import '../utilities/colors.dart';
 import 'custom_dialogue.dart';
+import 'custom_divider.dart';
 
 class MyDrawer extends StatefulWidget {
   const MyDrawer({Key? key}) : super(key: key);
@@ -21,11 +22,7 @@ class _MyDrawerState extends State<MyDrawer> {
         padding: MyPadding.padding10,
         children: [
           Gap.gapH70,
-          const Divider(
-            color: Colors.black,
-            height: 0,
-            thickness: 1.5,
-          ),
+          AllDivider.generalDivider(),
           InkWell(
             onTap: (){
               AllDialogue.backDialogue(
@@ -53,11 +50,7 @@ class _MyDrawerState extends State<MyDrawer> {
               ),
             ),
           ),
-          const Divider(
-            color: Colors.black,
-            height: 0,
-            thickness: 1.5,
-          ),
+          AllDivider.generalDivider(),
         ],
       ),
     );
