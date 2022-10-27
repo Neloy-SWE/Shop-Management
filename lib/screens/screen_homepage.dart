@@ -4,11 +4,13 @@ import 'package:shop_management/components/custom_button.dart';
 import 'package:shop_management/components/custom_loader.dart';
 import 'package:shop_management/models/model_shop_info.dart';
 import 'package:shop_management/screens/authentication/screen_login.dart';
+import 'package:shop_management/screens/screen_update_shop_info.dart';
 import 'package:shop_management/utilities/all_text.dart';
 import 'package:shop_management/utilities/app_size.dart';
 import 'package:shop_management/utilities/colors.dart';
-import '../api/api_call_with_provider/api_call_shop_info.dart';
+import '../api/api_call_shop_info.dart';
 import '../components/custom_dialogue.dart';
+import '../components/custom_drawer.dart';
 import '../components/custom_snackbar.dart';
 import '../components/grid_view_fixed_height.dart';
 import '../managers/manager.dart';
@@ -41,7 +43,6 @@ class _HomePageState extends ConsumerState<HomePage>
 
   @override
   void success({required String success}) {
-    print(success);
     setState(() {
       ShopInfoModel shopInfoModel = ShopInfoModel.fromJson(success);
 
@@ -49,6 +50,8 @@ class _HomePageState extends ConsumerState<HomePage>
       profileImage = shopInfoModel.shopInfoData!.profileImage != null
           ? shopInfoModel.shopInfoData!.profileImage!
           : ImagePath.shop;
+      location =
+          "${shopInfoModel.shopInfoData!.address!}, ${shopInfoModel.shopInfoData!.city!}, ${shopInfoModel.shopInfoData!.country!}.";
     });
   }
 
@@ -62,6 +65,7 @@ class _HomePageState extends ConsumerState<HomePage>
 
   String shopName = "";
   String profileImage = "";
+  String location = "";
 
   @override
   void initState() {
@@ -74,8 +78,6 @@ class _HomePageState extends ConsumerState<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    print("hello shop name: $shopName $profileImage");
-
     return WillPopScope(
       onWillPop: () async {
         return await AllDialogue.backDialogue(
@@ -88,16 +90,18 @@ class _HomePageState extends ConsumerState<HomePage>
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
+          title: const Text(AllTexts.myShop),
         ),
+        endDrawer: const MyDrawer(),
         body: ListView(
           padding: MyPadding.appPadding,
           children: [
             // shop view
             profileImage.isEmpty
                 ? Column(
-                  children: [
-                    Gap.gapH50,
-                    Align(
+                    children: [
+                      Gap.gapH50,
+                      Align(
                         alignment: Alignment.center,
                         child: AllLoader.generalLoader(
                           loaderColor: AllColors.primaryColor,
@@ -105,8 +109,8 @@ class _HomePageState extends ConsumerState<HomePage>
                           loaderSize: 30,
                         ),
                       ),
-                  ],
-                )
+                    ],
+                  )
                 : Container(
                     height: 200,
                     width: double.infinity,
@@ -140,11 +144,39 @@ class _HomePageState extends ConsumerState<HomePage>
                   ),
             Gap.gapH15,
 
+            // location
+            Row(
+              children: [
+                const Icon(
+                  Icons.location_on_outlined,
+                  color: Colors.black,
+                ),
+                Gap.gapW05,
+                SizedBox(
+                  width: MediaQuery.of(context).size.width - 100,
+                  child: Text(
+                    location,
+                    maxLines: 1,
+                    softWrap: false,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.caption,
+                  ),
+                ),
+              ],
+            ),
+            Gap.gapH15,
+
             // update shop button
             AllButton.borderedButton(
               context: context,
               btnText: AllTexts.updateShopInfo,
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (builder) => const UpdateShopInfo(),
+                  ),
+                );
+              },
             ),
             Gap.gapH30,
 
@@ -180,6 +212,7 @@ class _HomePageState extends ConsumerState<HomePage>
     );
   }
 
+  // custom container for option element
   Widget _optionContainer(OptionManager optionManager) {
     return Column(
       children: [

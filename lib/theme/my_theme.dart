@@ -19,7 +19,7 @@ class AppTheme {
       centerTitle: true,
       titleTextStyle: TextStyle(
         fontFamily: AllTexts.fontBolt,
-        fontSize: 40,
+        fontSize: 25,
         color: Colors.black,
       ),
     ),

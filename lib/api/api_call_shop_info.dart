@@ -1,22 +1,22 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
-import '../../managers/api_constant.dart';
-import '../../managers/manager.dart';
-import '../../managers/manager_exception.dart';
-import '../../managers/manager_local_storage.dart';
-
-
+import '../managers/api_constant.dart';
+import '../managers/manager.dart';
+import '../managers/manager_exception.dart';
+import '../managers/manager_local_storage.dart';
 
 class CallShopInfoApi implements Manager, ExceptionManager {
   Future<void> callShopInfoApi({
     required Manager shopInfo,
     required ExceptionManager exception,
-}) async {
+  }) async {
     try {
       String userToken =
-      await LocalStorageManager.readData(ApiConstant.userLoginToken);
-      var headers = {ApiConstant.authorization: "${ApiConstant.bearer} $userToken"};
+          await LocalStorageManager.readData(ApiConstant.userLoginToken);
+      var headers = {
+        ApiConstant.authorization: "${ApiConstant.bearer} $userToken"
+      };
       var request = http.Request(
         'GET',
         Uri.parse('${ApiConstant.baseUrl}/store'),
@@ -28,10 +28,9 @@ class CallShopInfoApi implements Manager, ExceptionManager {
 
       Map data = json.decode(str);
 
-      if(data["status"] == true){
+      if (data["status"] == true) {
         shopInfo.success(success: str);
-      }
-      else{
+      } else {
         shopInfo.fail(fail: str);
       }
     } on Exception catch (e) {

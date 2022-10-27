@@ -45,4 +45,6 @@ class AllTexts {
   static const String users = "Users";
   static const String orders = "Orders";
   static const String wentWrong = "Something Went Wrong";
+  static const String locationColon = "Location: ";
+  static const String myShop = "My Shop";
 }

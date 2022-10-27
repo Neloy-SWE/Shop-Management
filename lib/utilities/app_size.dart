@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 class MyPadding {
   static const EdgeInsets appPadding = EdgeInsets.all(15);
+  static const EdgeInsets padding10 = EdgeInsets.all(10);
 }
 
 class Gap {
@@ -9,6 +10,7 @@ class Gap {
 
   // height
   static const SizedBox gapH200 = SizedBox(height: 200);
+  static const SizedBox gapH100 = SizedBox(height: 100);
   static const SizedBox gapH70 = SizedBox(height: 70);
   static const SizedBox gapH50 = SizedBox(height: 50);
   static const SizedBox gapH30 = SizedBox(height: 30);
@@ -18,5 +20,6 @@ class Gap {
 
 
   // width
+  static const SizedBox gapW05 = SizedBox(width: 5);
   static const SizedBox gapW10 = SizedBox(width: 10);
 }
