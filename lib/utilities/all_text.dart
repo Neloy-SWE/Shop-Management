@@ -47,4 +47,5 @@ class AllTexts {
   static const String wentWrong = "Something Went Wrong";
   static const String locationColon = "Location: ";
   static const String myShop = "My Shop";
+  static const String updateCap = "UPDATE";
 }
