@@ -29,6 +29,21 @@ class _AddNewUserState extends State<AddNewUser> {
   bool confirmPassSecure = true;
   bool enableButton = false;
 
+
+
+  void _addUser(){
+    if (_fromKeyAddNewUser.currentState!.validate()){
+      FocusScopeNode currentFocus = FocusScope.of(context);
+      if (!currentFocus.hasPrimaryFocus) {
+        currentFocus.unfocus();
+      }
+      setState(() {
+        enableButton = true;
+      });
+    }
+  }
+
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -234,7 +249,7 @@ class _AddNewUserState extends State<AddNewUser> {
           AllButton.generalButton(
             context: context,
             btnText: AllTexts.addCap,
-            onTap: () {},
+            onTap: _addUser,
             enable: enableButton,
           ),
         ],
