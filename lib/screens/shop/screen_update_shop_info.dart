@@ -1,16 +1,17 @@
-import 'dart:developer';
-import 'dart:io';
+// import 'dart:developer';
+// import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:image_picker/image_picker.dart';
 import 'package:shop_management/components/custom_divider.dart';
 import 'package:shop_management/models/model_auth/model_reset_pass.dart';
 import 'package:shop_management/screens/shop/screen_homepage.dart';
 import 'package:shop_management/utilities/all_text.dart';
 import 'package:shop_management/utilities/app_size.dart';
 import 'package:shop_management/utilities/colors.dart';
-import 'package:shop_management/utilities/image_path.dart';
+// import 'package:shop_management/utilities/image_path.dart';
+// import '../../api/api_call_shop/api_call_add_shop_profile_image.dart';
 import '../../api/api_call_shop/api_call_shop_update.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_drawer.dart';
@@ -18,9 +19,10 @@ import '../../components/custom_input.dart';
 import '../../components/custom_snackbar.dart';
 import '../../managers/manager.dart';
 import '../../managers/manager_exception.dart';
+// import '../../managers/manager_image_upload.dart';
 
 class UpdateShopInfo extends StatefulWidget {
-  final String shopName, address, city, country, image;
+  final String shopName, address, city, country/*, image*/;
 
   const UpdateShopInfo({
     Key? key,
@@ -28,7 +30,7 @@ class UpdateShopInfo extends StatefulWidget {
     required this.address,
     required this.city,
     required this.country,
-    required this.image,
+    //required this.image,
   }) : super(key: key);
 
   @override
@@ -36,7 +38,7 @@ class UpdateShopInfo extends StatefulWidget {
 }
 
 class _UpdateShopInfoState extends State<UpdateShopInfo>
-    implements Manager, ExceptionManager {
+    implements Manager, ExceptionManager/*, ImageUploadManager*/ {
   @override
   void appException() {
     CustomSnackBar(
@@ -64,23 +66,44 @@ class _UpdateShopInfoState extends State<UpdateShopInfo>
         MaterialPageRoute(builder: (builder) => const HomePage()));
   }
 
+  // @override
+  // void uploadDone({required String done}) {}
+  //
+  // @override
+  // void uploadException() {}
+  //
+  // @override
+  // void uploadFail({required String fail}) {}
+
   void _update() {
     if (_fromKeyUpdateShop.currentState!.validate()) {
       FocusScopeNode currentFocus = FocusScope.of(context);
       if (!currentFocus.hasPrimaryFocus) {
         currentFocus.unfocus();
       }
-      setState(() {
-        enableButton = true;
-      });
-      CallShopUpdate().callShopUpdate(
-        shopUpdate: this,
-        exception: this,
-        storeName: _storeNameController.text.trim(),
-        address: _addressController.text.trim(),
-        city: _cityController.text.trim(),
-        country: _countryController.text.trim(),
-      );
+      // if (profileImage.isEmpty || profileImage == ImagePath.shop) {
+      //   setState(() {
+      //     showImageUpload = true;
+      //   });
+      // }
+      // else{
+        setState(() {
+          enableButton = true;
+          //showImageUpload = false;
+        });
+        CallShopUpdate().callShopUpdate(
+          shopUpdate: this,
+          exception: this,
+          storeName: _storeNameController.text.trim(),
+          address: _addressController.text.trim(),
+          city: _cityController.text.trim(),
+          country: _countryController.text.trim(),
+        );
+        // CallAddShopProfileImage().callAddShopProfileImage(
+        //   upload: this,
+        //   imagePath: profileImage,
+        // );
+      // }
     }
   }
 
@@ -89,57 +112,58 @@ class _UpdateShopInfoState extends State<UpdateShopInfo>
   TextEditingController _cityController = TextEditingController();
   TextEditingController _countryController = TextEditingController();
 
-  String profileImage = "";
-
-  File? profileImageFile;
-
-  Future _picImageGallery() async {
-    try {
-      final pickedImage = await ImagePicker().pickImage(
-        source: ImageSource.gallery,
-        imageQuality: 50,
-      );
-      if (pickedImage == null) return;
-      final imageFile = File(pickedImage.path);
-      setState(() {
-        profileImageFile = imageFile;
-        profileImage = pickedImage.path;
-        Navigator.pop(context);
-      });
-    } on PlatformException catch (e) {
-      log(e.toString());
-      CustomSnackBar(
-              message: AllTexts.imageSelectFail,
-              isSuccess: false,
-              context: context)
-          .show();
-    }
-  }
-
-  Future _picImageCamera() async {
-    try {
-      final pickedImage = await ImagePicker().pickImage(
-        source: ImageSource.camera,
-        imageQuality: 50,
-      );
-      if (pickedImage == null) return;
-      final imageFile = File(pickedImage.path);
-      setState(() {
-        profileImageFile = imageFile;
-        profileImage = pickedImage.path;
-        Navigator.pop(context);
-      });
-    } on PlatformException catch (e) {
-      log(e.toString());
-      CustomSnackBar(
-              message: AllTexts.imageSelectFail,
-              isSuccess: false,
-              context: context)
-          .show();
-    }
-  }
+  // String profileImage = "";
+  //
+  // File? profileImageFile;
+  //
+  // Future _picImageGallery() async {
+  //   try {
+  //     final pickedImage = await ImagePicker().pickImage(
+  //       source: ImageSource.gallery,
+  //       imageQuality: 50,
+  //     );
+  //     if (pickedImage == null) return;
+  //     final imageFile = File(pickedImage.path);
+  //     setState(() {
+  //       profileImageFile = imageFile;
+  //       profileImage = pickedImage.path;
+  //       Navigator.pop(context);
+  //     });
+  //   } on PlatformException catch (e) {
+  //     log(e.toString());
+  //     CustomSnackBar(
+  //             message: AllTexts.imageSelectFail,
+  //             isSuccess: false,
+  //             context: context)
+  //         .show();
+  //   }
+  // }
+  //
+  // Future _picImageCamera() async {
+  //   try {
+  //     final pickedImage = await ImagePicker().pickImage(
+  //       source: ImageSource.camera,
+  //       imageQuality: 50,
+  //     );
+  //     if (pickedImage == null) return;
+  //     final imageFile = File(pickedImage.path);
+  //     setState(() {
+  //       profileImageFile = imageFile;
+  //       profileImage = pickedImage.path;
+  //       Navigator.pop(context);
+  //     });
+  //   } on PlatformException catch (e) {
+  //     log(e.toString());
+  //     CustomSnackBar(
+  //             message: AllTexts.imageSelectFail,
+  //             isSuccess: false,
+  //             context: context)
+  //         .show();
+  //   }
+  // }
 
   bool enableButton = false;
+  bool showImageUpload = false;
   final _fromKeyUpdateShop = GlobalKey<FormState>();
 
   @override
@@ -151,10 +175,15 @@ class _UpdateShopInfoState extends State<UpdateShopInfo>
     super.dispose();
   }
 
+  // @override
+  // void initState() {
+  //   profileImage = widget.image;
+  //   super.initState();
+  // }
+
   @override
   Widget build(BuildContext context) {
     setState(() {
-      profileImage = widget.image;
       _storeNameController = TextEditingController(
         text: _storeNameController.text.trim().isEmpty
             ? widget.shopName
@@ -274,39 +303,42 @@ class _UpdateShopInfoState extends State<UpdateShopInfo>
           ),
 
           // image upload
-          Row(
+/*          Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              profileImageFile !=null ?
-              Container(
-                height: 100,
-                width: 100,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.black,
-                      width: 0.5,
-                    ),
-                    image: DecorationImage(
-                      image: FileImage(profileImageFile!),
-                      fit: BoxFit.fill,
-                    )),
-              ) :
-              profileImage==ImagePath.shop? const SizedBox():
-              Container(
-                height: 100,
-                width: 100,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.black,
-                      width: 0.5,
-                    ),
-                    image: DecorationImage(
-                      image: NetworkImage(profileImage),
-                      fit: BoxFit.fill,
-                    )),
-              ),
-              profileImageFile !=null || profileImage !=ImagePath.shop? Gap.gapW10 : const SizedBox(),
+              profileImageFile != null
+                  ? Container(
+                      height: 100,
+                      width: 100,
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.black,
+                            width: 0.5,
+                          ),
+                          image: DecorationImage(
+                            image: FileImage(profileImageFile!),
+                            fit: BoxFit.fill,
+                          )),
+                    )
+                  : profileImage == ImagePath.shop
+                      ? const SizedBox()
+                      : Container(
+                          height: 100,
+                          width: 100,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.black,
+                                width: 0.5,
+                              ),
+                              image: DecorationImage(
+                                image: NetworkImage(profileImage),
+                                fit: BoxFit.fill,
+                              )),
+                        ),
+              profileImageFile != null || profileImage != ImagePath.shop
+                  ? Gap.gapW10
+                  : const SizedBox(),
               // upload button
               GestureDetector(
                 onTap: () {
@@ -362,7 +394,13 @@ class _UpdateShopInfoState extends State<UpdateShopInfo>
               ),
             ],
           ),
-          Gap.gapH30,
+          showImageUpload? Gap.gapH10 : const SizedBox(),
+          showImageUpload? Text(
+            AllTexts.pleaseSelectImage,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headline2,
+          ) : const SizedBox(),
+          Gap.gapH30,*/
 
           // update button
           AllButton.generalButton(

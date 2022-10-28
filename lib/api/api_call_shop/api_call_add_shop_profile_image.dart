@@ -1,19 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:shop_management/managers/manager.dart';
-import 'package:shop_management/managers/manager_exception.dart';
 import 'package:http/http.dart' as http;
 import '../../managers/api_constant.dart';
+import '../../managers/manager_image_upload.dart';
 import '../../managers/manager_local_storage.dart';
 
-class CallShopUpdate implements Manager, ExceptionManager {
-  Future<void> callShopUpdate({
-    required Manager shopUpdate,
-    required ExceptionManager exception,
-    required String storeName,
-    required String address,
-    required String city,
-    required String country,
+class CallAddShopProfileImage implements ImageUploadManager {
+  Future<void> callAddShopProfileImage({
+    required ImageUploadManager upload,
+    required String imagePath,
   }) async {
     try {
       String userToken =
@@ -23,38 +18,37 @@ class CallShopUpdate implements Manager, ExceptionManager {
         ApiConstant.contentType: ApiConstant.acceptValue
       };
       var request = http.Request(
-        'PUT',
-        Uri.parse('${ApiConstant.baseUrl}store'),
+        'POST',
+        Uri.parse('${ApiConstant.baseUrl}store/add-profile-image'),
       );
 
       request.body = json.encode({
-        "name": storeName,
-        "address": address,
-        "city": city,
-        "country": country,
+        "profile_image": imagePath,
       });
-
       request.headers.addAll(headers);
       http.StreamedResponse response = await request.send();
       var str = await response.stream.bytesToString();
       Map data = json.decode(str);
       if (data["status"] == true) {
-        shopUpdate.success(success: str);
+        print("if check image: $imagePath");
+        upload.uploadDone(done: str);
       } else {
-        shopUpdate.fail(fail: str);
+        print("else check image: $imagePath");
+        upload.uploadFail(fail: str);
       }
+
     } on Exception catch (e) {
       log(e.toString());
-      exception.appException();
+      upload.uploadException();
     }
   }
 
   @override
-  void appException() {}
+  void uploadDone({required String done}) {}
 
   @override
-  void fail({required String fail}) {}
+  void uploadException() {}
 
   @override
-  void success({required String success}) {}
+  void uploadFail({required String fail}) {}
 }

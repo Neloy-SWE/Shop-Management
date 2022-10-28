@@ -195,7 +195,7 @@ class _HomePageState extends ConsumerState<HomePage>
                       address: address,
                       city: city,
                       country: country,
-                      image: profileImage,
+                     // image: profileImage,
                     ),
                   ),
                 );

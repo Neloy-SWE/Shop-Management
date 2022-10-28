@@ -54,5 +54,6 @@ class AllTexts {
   static const String camera = "camera";
   static const String gallery = "gallery";
   static const String imageSelectFail = "Image Select Fail !!!";
+  static const String pleaseSelectImage = "Please select Image !!!";
 
 }
