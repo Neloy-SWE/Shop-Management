@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:shop_management/models/model_users/model_required_field.dart';
+import 'package:shop_management/screens/users/screen_user_list.dart';
 
+import '../../api/api_call_users/api_call_update_user_details.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_drawer.dart';
 import '../../components/custom_input.dart';
+import '../../components/custom_snackbar.dart';
+import '../../managers/manager.dart';
+import '../../managers/manager_exception.dart';
+import '../../models/model_auth/model_reset_pass.dart';
 import '../../utilities/all_text.dart';
 import '../../utilities/app_size.dart';
 import '../../utilities/colors.dart';
 
 class UpdateUserInfo extends StatefulWidget {
-  final String name, email, address, city, country;
+  final String userId, name, email, address, city, country;
 
   const UpdateUserInfo({
     Key? key,
+    required this.userId,
     required this.name,
     required this.email,
     required this.address,
@@ -23,12 +31,49 @@ class UpdateUserInfo extends StatefulWidget {
   State<UpdateUserInfo> createState() => _UpdateUserInfoState();
 }
 
-class _UpdateUserInfoState extends State<UpdateUserInfo> {
-   TextEditingController _nameController = TextEditingController();
-   TextEditingController _emailController = TextEditingController();
-   TextEditingController _addressController = TextEditingController();
-   TextEditingController _cityController = TextEditingController();
-   TextEditingController _countryController = TextEditingController();
+class _UpdateUserInfoState extends State<UpdateUserInfo>
+    implements Manager, ExceptionManager {
+  @override
+  void appException() {
+    CustomSnackBar(
+            message: AllTexts.netError, isSuccess: false, context: context)
+        .show();
+    setState(() {
+      enableButton = false;
+    });
+  }
+
+  @override
+  void fail({required String fail}) {
+    UserUpdateRequiredFieldModel requiredField =
+        UserUpdateRequiredFieldModel.fromJson(fail);
+    CustomSnackBar(
+            message: requiredField.errors!.email,
+            isSuccess: requiredField.status,
+            context: context)
+        .show();
+
+    setState(() {
+      enableButton = false;
+    });
+  }
+
+  @override
+  void success({required String success}) {
+    ResetModel update = ResetModel.fromJson(success);
+    CustomSnackBar(
+            message: update.message, isSuccess: update.status, context: context)
+        .show();
+
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (builder) => const UserList()));
+  }
+
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _addressController = TextEditingController();
+  TextEditingController _cityController = TextEditingController();
+  TextEditingController _countryController = TextEditingController();
 
   final _fromKeyUpdateUser = GlobalKey<FormState>();
   bool enableButton = false;
@@ -43,9 +88,31 @@ class _UpdateUserInfoState extends State<UpdateUserInfo> {
     super.dispose();
   }
 
+  void _updateUser() {
+    if (_fromKeyUpdateUser.currentState!.validate()) {
+      FocusScopeNode currentFocus = FocusScope.of(context);
+      if (!currentFocus.hasPrimaryFocus) {
+        currentFocus.unfocus();
+      }
+      setState(() {
+        enableButton = true;
+      });
+
+      CallUpdateUserApi().callUpdateUserApi(
+        update: this,
+        exception: this,
+        userId: widget.userId,
+        name: _nameController.text.trim(),
+        email: _emailController.text.trim(),
+        address: _addressController.text.trim(),
+        city: _cityController.text.trim(),
+        country: _countryController.text.trim(),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-
     setState(() {
       _nameController = TextEditingController(
         text: _nameController.text.trim().isEmpty
@@ -197,7 +264,7 @@ class _UpdateUserInfoState extends State<UpdateUserInfo> {
           AllButton.generalButton(
             context: context,
             btnText: AllTexts.updateCap,
-            onTap: (){},
+            onTap: _updateUser,
             enable: enableButton,
           ),
         ],

@@ -146,6 +146,7 @@ class _UserDetailsState extends State<UserDetails>
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (builder) => UpdateUserInfo(
+                            userId: widget.userId,
                             name: name,
                             email: email,
                             address: address,
