@@ -47,6 +47,7 @@ class AllTexts {
   static const String categories = "Categories";
   static const String users = "Users";
   static const String orders = "Orders";
+  static const String cart = "Cart";
   static const String wentWrong = "Something Went Wrong";
   static const String locationColon = "Location: ";
   static const String myShop = "My Shop";
@@ -60,4 +61,5 @@ class AllTexts {
   static const String imageSelectFail = "Image Select Fail !!!";
   static const String pleaseSelectImage = "Please select Image !!!";
   static const String addCap = "ADD";
+  static const String underConstructions = "Under Constructions";
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shop_management/components/custom_input.dart';
 import 'package:shop_management/components/custom_sign_nav.dart';
-import 'package:shop_management/components/custom_snackbar.dart';
+import 'package:shop_management/components/custom_snack_bar.dart';
 import 'package:shop_management/managers/manager.dart';
 import 'package:shop_management/screens/authentication/screen_forget_pass.dart';
 import 'package:shop_management/screens/authentication/screen_sign_up.dart';

@@ -4,7 +4,7 @@ import 'package:shop_management/screens/users/screen_user_list.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_drawer.dart';
 import '../../components/custom_input.dart';
-import '../../components/custom_snackbar.dart';
+import '../../components/custom_snack_bar.dart';
 import '../../managers/manager.dart';
 import '../../managers/manager_exception.dart';
 import '../../models/model_auth/model_login/login_fail.dart';

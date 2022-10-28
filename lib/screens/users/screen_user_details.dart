@@ -7,7 +7,7 @@ import 'package:shop_management/utilities/all_text.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_drawer.dart';
 import '../../components/custom_loader.dart';
-import '../../components/custom_snackbar.dart';
+import '../../components/custom_snack_bar.dart';
 import '../../managers/manager.dart';
 import '../../managers/manager_exception.dart';
 import '../../models/model_users/model_user_details.dart';

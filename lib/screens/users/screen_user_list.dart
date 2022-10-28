@@ -10,7 +10,7 @@ import 'package:shop_management/utilities/image_path.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_divider.dart';
 import '../../components/custom_loader.dart';
-import '../../components/custom_snackbar.dart';
+import '../../components/custom_snack_bar.dart';
 import '../../managers/manager.dart';
 import '../../managers/manager_exception.dart';
 import '../../models/model_users/model_users_list.dart';

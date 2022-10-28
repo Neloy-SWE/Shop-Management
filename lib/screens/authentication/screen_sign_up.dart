@@ -6,7 +6,7 @@ import '../../components/custom_button.dart';
 import '../../components/custom_dialogue.dart';
 import '../../components/custom_input.dart';
 import '../../components/custom_sign_nav.dart';
-import '../../components/custom_snackbar.dart';
+import '../../components/custom_snack_bar.dart';
 import '../../managers/manager_exception.dart';
 import '../../managers/manager.dart';
 import '../../models/model_auth/model_login/login_fail.dart';

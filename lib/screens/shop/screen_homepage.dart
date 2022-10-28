@@ -4,6 +4,7 @@ import 'package:shop_management/components/custom_button.dart';
 import 'package:shop_management/components/custom_loader.dart';
 import 'package:shop_management/models/model_shop_info.dart';
 import 'package:shop_management/screens/authentication/screen_login.dart';
+import 'package:shop_management/screens/cart/screen_cart.dart';
 import 'package:shop_management/screens/shop/screen_update_shop_info.dart';
 import 'package:shop_management/screens/users/screen_user_list.dart';
 import 'package:shop_management/utilities/all_text.dart';
@@ -12,7 +13,7 @@ import 'package:shop_management/utilities/colors.dart';
 import '../../api/api_call_shop/api_call_shop_info.dart';
 import '../../components/custom_dialogue.dart';
 import '../../components/custom_drawer.dart';
-import '../../components/custom_snackbar.dart';
+import '../../components/custom_snack_bar.dart';
 import '../../components/grid_view_fixed_height.dart';
 import '../../managers/manager.dart';
 import '../../managers/manager_exception.dart';
@@ -74,6 +75,12 @@ class _HomePageState extends ConsumerState<HomePage>
       optionIcon: Icons.shopify_rounded,
       optionName: AllTexts.orders,
       navOption: const UserList(),
+    ),
+
+    OptionManager(
+      optionIcon: Icons.shopping_bag_outlined,
+      optionName: AllTexts.cart,
+      navOption: const Cart(),
     ),
   ];
 
