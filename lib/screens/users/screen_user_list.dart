@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_management/api/api_call_users/api_call_user_list.dart';
 import 'package:shop_management/components/custom_drawer.dart';
+import 'package:shop_management/screens/users/screen_add_new_user.dart';
 import 'package:shop_management/screens/users/screen_user_details.dart';
 import 'package:shop_management/utilities/all_text.dart';
 import 'package:shop_management/utilities/app_size.dart';
@@ -94,7 +95,13 @@ class _UserListState extends State<UserList>
           AllButton.borderedButton(
             context: context,
             btnText: AllTexts.addNewUser,
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (builder) => const AddNewUser(),
+                ),
+              );
+            },
           ),
           Gap.gapH30,
 

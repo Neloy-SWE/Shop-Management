@@ -5,6 +5,7 @@ import 'package:shop_management/utilities/all_text.dart';
 
 import '../../components/custom_button.dart';
 import '../../components/custom_drawer.dart';
+import '../../components/custom_loader.dart';
 import '../../components/custom_snackbar.dart';
 import '../../managers/manager.dart';
 import '../../managers/manager_exception.dart';
@@ -21,19 +22,19 @@ class UserDetails extends StatefulWidget {
   State<UserDetails> createState() => _UserDetailsState();
 }
 
-class _UserDetailsState extends State<UserDetails> implements Manager, ExceptionManager{
-
+class _UserDetailsState extends State<UserDetails>
+    implements Manager, ExceptionManager {
   @override
   void appException() {
     CustomSnackBar(
-        message: AllTexts.netError, isSuccess: false, context: context)
+            message: AllTexts.netError, isSuccess: false, context: context)
         .show();
   }
 
   @override
   void fail({required String fail}) {
     CustomSnackBar(
-        message: AllTexts.wentWrong, isSuccess: false, context: context)
+            message: AllTexts.wentWrong, isSuccess: false, context: context)
         .show();
   }
 
@@ -46,11 +47,10 @@ class _UserDetailsState extends State<UserDetails> implements Manager, Exception
       address = detailsModel.userDetailsData!.address!;
       city = detailsModel.userDetailsData!.city!;
       country = detailsModel.userDetailsData!.country!;
-
-      location =
-      "Address: $address, $city, $country";
+      location = "Address: $address, $city, $country";
     });
   }
+
   String name = "";
   String email = "";
   String address = "";
@@ -85,52 +85,67 @@ class _UserDetailsState extends State<UserDetails> implements Manager, Exception
         title: const Text(AllTexts.userDetails),
       ),
       endDrawer: const MyDrawer(),
-      body: ListView(
-        padding: MyPadding.appPadding,
-        children: [
-          // simple icon for user profile
-          const Icon(
-            Icons.account_circle_outlined,
-            color: AllColors.primaryColor,
-            size: 150,
-          ),
-
-          // user name
-          Text(
-            name,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headline1!.copyWith(
-                  fontSize: 30,
+      body: name.isEmpty
+          ? Column(
+              children: [
+                Gap.gapH50,
+                Align(
+                  alignment: Alignment.center,
+                  child: AllLoader.generalLoader(
+                    loaderColor: AllColors.primaryColor,
+                    loaderWidth: 2,
+                    loaderSize: 30,
+                  ),
                 ),
-          ),
+              ],
+            )
+          : ListView(
+              padding: MyPadding.appPadding,
+              children: [
+                // simple icon for user profile
+                const Icon(
+                  Icons.account_circle_outlined,
+                  color: AllColors.primaryColor,
+                  size: 150,
+                ),
 
-          // user mail
-          Text(
-          email,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyText1,
-          ),
-          Gap.gapH15,
+                // user name
+                Text(
+                  name,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headline1!.copyWith(
+                        fontSize: 30,
+                      ),
+                ),
 
-          Text(
-            location,
-            textAlign: TextAlign.center,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.caption,
-          ),
-          Gap.gapH30,
-          // update user info
-          AllButton.borderedButton(
-            context: context,
-            btnText: AllTexts.updateUserInfo,
-            onTap: () {},
-          ),
-          Gap.gapH30,
-        ],
-      ),
+                // user mail
+                Text(
+                  email,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+                Gap.gapH15,
+
+                Text(
+                  location,
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.caption,
+                ),
+                Gap.gapH30,
+
+                // update user info
+                AllButton.borderedButton(
+                  context: context,
+                  btnText: AllTexts.updateUserInfo,
+                  onTap: () {},
+                ),
+                Gap.gapH30,
+              ],
+            ),
     );
   }
 }

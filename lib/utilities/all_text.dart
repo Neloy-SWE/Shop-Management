@@ -22,6 +22,8 @@ class AllTexts {
   static const String createAccount = "Create Account";
   static const String toExplore = "To Explore";
   static const String storeName = "Store Name";
+  static const String name = "Name";
+  static const String nameHint = "Mr. A...";
   static const String storeNameHint = "X Store";
   static const String address = "Address";
   static const String addressHint = "Road-1, XYZ";
@@ -57,5 +59,5 @@ class AllTexts {
   static const String gallery = "gallery";
   static const String imageSelectFail = "Image Select Fail !!!";
   static const String pleaseSelectImage = "Please select Image !!!";
-
+  static const String addCap = "ADD";
 }
