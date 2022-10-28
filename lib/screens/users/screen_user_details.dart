@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:shop_management/api/api_call_users/api_call_user_details.dart';
 import 'package:shop_management/screens/users/screen_user_list.dart';
 import 'package:shop_management/utilities/all_text.dart';
 
 import '../../components/custom_button.dart';
 import '../../components/custom_drawer.dart';
+import '../../components/custom_snackbar.dart';
+import '../../managers/manager.dart';
+import '../../managers/manager_exception.dart';
+import '../../models/model_users/model_user_details.dart';
 import '../../utilities/app_size.dart';
 import '../../utilities/colors.dart';
 
@@ -16,15 +21,52 @@ class UserDetails extends StatefulWidget {
   State<UserDetails> createState() => _UserDetailsState();
 }
 
-class _UserDetailsState extends State<UserDetails> {
+class _UserDetailsState extends State<UserDetails> implements Manager, ExceptionManager{
 
+  @override
+  void appException() {
+    CustomSnackBar(
+        message: AllTexts.netError, isSuccess: false, context: context)
+        .show();
+  }
 
-  String shopName = "";
+  @override
+  void fail({required String fail}) {
+    CustomSnackBar(
+        message: AllTexts.wentWrong, isSuccess: false, context: context)
+        .show();
+  }
+
+  @override
+  void success({required String success}) {
+    setState(() {
+      UsersDetailsModel detailsModel = UsersDetailsModel.fromJson(success);
+      name = detailsModel.userDetailsData!.name!;
+      email = detailsModel.userDetailsData!.email!;
+      address = detailsModel.userDetailsData!.address!;
+      city = detailsModel.userDetailsData!.city!;
+      country = detailsModel.userDetailsData!.country!;
+
+      location =
+      "Address: $address, $city, $country";
+    });
+  }
+  String name = "";
+  String email = "";
   String address = "";
   String city = "";
   String country = "";
-  String profileImage = "";
   String location = "";
+
+  @override
+  void initState() {
+    CallUserDetailsApi().callUserDetailsApi(
+      exception: this,
+      details: this,
+      userId: widget.userId,
+    );
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +97,7 @@ class _UserDetailsState extends State<UserDetails> {
 
           // user name
           Text(
-            "Name",
+            name,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
@@ -66,14 +108,14 @@ class _UserDetailsState extends State<UserDetails> {
 
           // user mail
           Text(
-            "email",
+          email,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyText1,
           ),
           Gap.gapH15,
 
           Text(
-            "Address: alsdjfla;sdjfl;kajsdflkjasd",
+            location,
             textAlign: TextAlign.center,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
