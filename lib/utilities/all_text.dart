@@ -53,8 +53,10 @@ class AllTexts {
   static const String myShop = "My Shop";
   static const String updateCap = "UPDATE";
   static const String usersList = "Users List";
+  static const String categoryList = "Category List";
   static const String userDetails = "Users Details";
   static const String addNewUser = "Add New User";
+  static const String addNewCategory = "Add New Category";
   static const String noDataFound = "So sad. No data found...";
   static const String camera = "camera";
   static const String gallery = "gallery";

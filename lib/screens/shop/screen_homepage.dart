@@ -19,6 +19,7 @@ import '../../managers/manager.dart';
 import '../../managers/manager_exception.dart';
 import '../../managers/option_manager.dart';
 import '../../utilities/image_path.dart';
+import '../categories/screen_category_list.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -64,7 +65,7 @@ class _HomePageState extends ConsumerState<HomePage>
     OptionManager(
       optionIcon: Icons.category,
       optionName: AllTexts.categories,
-      navOption: const UserList(),
+      navOption: const CategoryList(),
     ),
     OptionManager(
       optionIcon: Icons.people_alt_outlined,
