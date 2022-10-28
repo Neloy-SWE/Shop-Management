@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_management/api/api_call_users/api_call_user_list.dart';
 import 'package:shop_management/components/custom_drawer.dart';
+import 'package:shop_management/screens/users/screen_user_details.dart';
 import 'package:shop_management/utilities/all_text.dart';
 import 'package:shop_management/utilities/app_size.dart';
 import 'package:shop_management/utilities/colors.dart';
@@ -12,6 +13,7 @@ import '../../components/custom_snackbar.dart';
 import '../../managers/manager.dart';
 import '../../managers/manager_exception.dart';
 import '../../models/model_users/model_users_list.dart';
+import '../shop/screen_homepage.dart';
 
 class UserList extends StatefulWidget {
   const UserList({Key? key}) : super(key: key);
@@ -63,6 +65,16 @@ class _UserListState extends State<UserList>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (builder) => const HomePage(),
+              ),
+            );
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
         title: const Text(AllTexts.usersList),
       ),
       endDrawer: const MyDrawer(),
@@ -115,7 +127,10 @@ class _UserListState extends State<UserList>
                           ImagePath.error,
                           height: 200,
                         ),
-                        Text(AllTexts.noDataFound, style: Theme.of(context).textTheme.headline2,),
+                        Text(
+                          AllTexts.noDataFound,
+                          style: Theme.of(context).textTheme.headline2,
+                        ),
                       ],
                     )
                   :
@@ -137,7 +152,15 @@ class _UserListState extends State<UserList>
 
   Widget _userList({required UserListData userListData}) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (builder) => UserDetails(
+              userId: userListData.id.toString(),
+            ),
+          ),
+        );
+      },
       splashColor: AllColors.primaryColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

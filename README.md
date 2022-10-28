@@ -1,6 +1,7 @@
 # Shop Manager
 
 This is a shop management mobile application.
+(Note: Because it is a free server, image file cannot be uploaded. Though I have implemented one of image upload work and commented out the code.)
 
 ## Tools and Technologies:
 1. Flutter framework.

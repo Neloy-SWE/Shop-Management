@@ -41,6 +41,7 @@ class AllTexts {
   static const String exitApp = "Exit App";
   static const String exitAppSub = "Are you sure you want to exit app ?";
   static const String updateShopInfo = "Update Shop Info";
+  static const String updateUserInfo = "Update User Info";
   static const String categories = "Categories";
   static const String users = "Users";
   static const String orders = "Orders";
@@ -49,6 +50,7 @@ class AllTexts {
   static const String myShop = "My Shop";
   static const String updateCap = "UPDATE";
   static const String usersList = "Users List";
+  static const String userDetails = "Users Details";
   static const String addNewUser = "Add New User";
   static const String noDataFound = "So sad. No data found...";
   static const String camera = "camera";
