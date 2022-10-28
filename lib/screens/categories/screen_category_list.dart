@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../../api/api_call_category/api_call_category_list.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_divider.dart';
 import '../../components/custom_drawer.dart';
 import '../../components/custom_loader.dart';
+import '../../components/custom_snack_bar.dart';
+import '../../managers/manager.dart';
+import '../../managers/manager_exception.dart';
+import '../../models/model_category/model_category_list.dart';
 import '../../utilities/all_text.dart';
 import '../../utilities/app_size.dart';
 import '../../utilities/colors.dart';
@@ -16,10 +21,45 @@ class CategoryList extends StatefulWidget {
   State<CategoryList> createState() => _CategoryListState();
 }
 
-class _CategoryListState extends State<CategoryList> {
+class _CategoryListState extends State<CategoryList>
+    implements Manager, ExceptionManager {
+
+  @override
+  void appException() {
+    CustomSnackBar(
+        message: AllTexts.netError, isSuccess: false, context: context)
+        .show();
+  }
+
+  @override
+  void fail({required String fail}) {
+    CustomSnackBar(
+        message: AllTexts.wentWrong, isSuccess: false, context: context)
+        .show();
+  }
+
+  @override
+  void success({required String success}) {
+    setState(() {
+      CategoryListModel categoryList = CategoryListModel.fromJson(success);
+
+      categoryListData = categoryList.categoryListData!;
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    CallCategoryListApi().callCategoryListApi(
+      categoryList: this,
+      exception: this,
+    );
+    super.initState();
+  }
+
   bool isLoading = true;
 
-  List categoryList = [];
+  List<CategoryListData> categoryListData = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +89,7 @@ class _CategoryListState extends State<CategoryList> {
 
           // user list title
           Text(
-            "${AllTexts.categoryList} (${categoryList.length})",
+            "${AllTexts.categoryList} (${categoryListData.length})",
             style: Theme.of(context).textTheme.caption,
           ),
           Gap.gapH10,
@@ -69,7 +109,7 @@ class _CategoryListState extends State<CategoryList> {
               ),
             ],
           )
-              : categoryList.isEmpty
+              : categoryListData.isEmpty
               ? Column(
             children: [
               Gap.gapH50,
@@ -90,16 +130,16 @@ class _CategoryListState extends State<CategoryList> {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             padding: MyPadding.padding10,
-            itemCount: categoryList.length,
+            itemCount: categoryListData.length,
             itemBuilder: (context, index) {
-              return _categoryList();
+              return _categoryList(categoryListData: categoryListData[index]);
             },
           ),
         ],
       ),
     );
   }
-  Widget _categoryList() {
+  Widget _categoryList({required CategoryListData categoryListData}) {
     return InkWell(
       onTap: () {
         // Navigator.of(context).push(
@@ -115,9 +155,9 @@ class _CategoryListState extends State<CategoryList> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AllDivider.generalDivider(),
-          Gap.gapH05,
-          Text("Category Name"),
-          Gap.gapH05,
+          Gap.gapH10,
+          Text(categoryListData.title!),
+          Gap.gapH10,
           AllDivider.generalDivider(),
         ],
       ),
