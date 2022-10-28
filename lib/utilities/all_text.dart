@@ -51,5 +51,8 @@ class AllTexts {
   static const String usersList = "Users List";
   static const String addNewUser = "Add New User";
   static const String noDataFound = "So sad. No data found...";
+  static const String camera = "camera";
+  static const String gallery = "gallery";
+  static const String imageSelectFail = "Image Select Fail !!!";
 
 }

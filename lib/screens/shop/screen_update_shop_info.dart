@@ -1,9 +1,16 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:shop_management/components/custom_divider.dart';
 import 'package:shop_management/models/model_auth/model_reset_pass.dart';
 import 'package:shop_management/screens/shop/screen_homepage.dart';
 import 'package:shop_management/utilities/all_text.dart';
 import 'package:shop_management/utilities/app_size.dart';
 import 'package:shop_management/utilities/colors.dart';
+import 'package:shop_management/utilities/image_path.dart';
 import '../../api/api_call_shop/api_call_shop_update.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_drawer.dart';
@@ -13,15 +20,16 @@ import '../../managers/manager.dart';
 import '../../managers/manager_exception.dart';
 
 class UpdateShopInfo extends StatefulWidget {
-  final String shopName, address, city, country;
+  final String shopName, address, city, country, image;
 
-  const UpdateShopInfo(
-      {Key? key,
-      required this.shopName,
-      required this.address,
-      required this.city,
-      required this.country})
-      : super(key: key);
+  const UpdateShopInfo({
+    Key? key,
+    required this.shopName,
+    required this.address,
+    required this.city,
+    required this.country,
+    required this.image,
+  }) : super(key: key);
 
   @override
   State<UpdateShopInfo> createState() => _UpdateShopInfoState();
@@ -81,6 +89,56 @@ class _UpdateShopInfoState extends State<UpdateShopInfo>
   TextEditingController _cityController = TextEditingController();
   TextEditingController _countryController = TextEditingController();
 
+  String profileImage = "";
+
+  File? profileImageFile;
+
+  Future _picImageGallery() async {
+    try {
+      final pickedImage = await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 50,
+      );
+      if (pickedImage == null) return;
+      final imageFile = File(pickedImage.path);
+      setState(() {
+        profileImageFile = imageFile;
+        profileImage = pickedImage.path;
+        Navigator.pop(context);
+      });
+    } on PlatformException catch (e) {
+      log(e.toString());
+      CustomSnackBar(
+              message: AllTexts.imageSelectFail,
+              isSuccess: false,
+              context: context)
+          .show();
+    }
+  }
+
+  Future _picImageCamera() async {
+    try {
+      final pickedImage = await ImagePicker().pickImage(
+        source: ImageSource.camera,
+        imageQuality: 50,
+      );
+      if (pickedImage == null) return;
+      final imageFile = File(pickedImage.path);
+      setState(() {
+        profileImageFile = imageFile;
+        profileImage = pickedImage.path;
+        Navigator.pop(context);
+      });
+    } on PlatformException catch (e) {
+      log(e.toString());
+      CustomSnackBar(
+              message: AllTexts.imageSelectFail,
+              isSuccess: false,
+              context: context)
+          .show();
+    }
+  }
+
   bool enableButton = false;
   final _fromKeyUpdateShop = GlobalKey<FormState>();
 
@@ -96,6 +154,7 @@ class _UpdateShopInfoState extends State<UpdateShopInfo>
   @override
   Widget build(BuildContext context) {
     setState(() {
+      profileImage = widget.image;
       _storeNameController = TextEditingController(
         text: _storeNameController.text.trim().isEmpty
             ? widget.shopName
@@ -117,7 +176,6 @@ class _UpdateShopInfoState extends State<UpdateShopInfo>
             : _countryController.text.trim(),
       );
     });
-
     return Scaffold(
       appBar: AppBar(
         title: const Text(AllTexts.updateShopInfo),
@@ -210,10 +268,101 @@ class _UpdateShopInfoState extends State<UpdateShopInfo>
                     return null;
                   },
                 ),
-                Gap.gapH70,
+                Gap.gapH30,
               ],
             ),
           ),
+
+          // image upload
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              profileImageFile !=null ?
+              Container(
+                height: 100,
+                width: 100,
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 0.5,
+                    ),
+                    image: DecorationImage(
+                      image: FileImage(profileImageFile!),
+                      fit: BoxFit.fill,
+                    )),
+              ) :
+              profileImage==ImagePath.shop? const SizedBox():
+              Container(
+                height: 100,
+                width: 100,
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 0.5,
+                    ),
+                    image: DecorationImage(
+                      image: NetworkImage(profileImage),
+                      fit: BoxFit.fill,
+                    )),
+              ),
+              profileImageFile !=null || profileImage !=ImagePath.shop? Gap.gapW10 : const SizedBox(),
+              // upload button
+              GestureDetector(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (builder) => SizedBox(
+                      height: 150,
+                      child: Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                _picImageGallery();
+                              },
+                              child: Text(
+                                AllTexts.gallery,
+                                style: Theme.of(context).textTheme.headline5,
+                              ),
+                            ),
+                            AllDivider.generalDivider(),
+                            TextButton(
+                              onPressed: () {
+                                _picImageCamera();
+                              },
+                              child: Text(
+                                AllTexts.camera,
+                                style: Theme.of(context).textTheme.headline5,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                child: Container(
+                  height: 100,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 0.5,
+                    ),
+                  ),
+                  child: const Icon(
+                    Icons.file_upload_outlined,
+                    size: 50,
+                    color: Colors.black38,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Gap.gapH30,
 
           // update button
           AllButton.generalButton(
