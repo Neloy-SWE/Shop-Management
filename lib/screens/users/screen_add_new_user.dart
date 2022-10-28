@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:shop_management/api/api_call_users/api_call_add_new_user.dart';
+import 'package:shop_management/screens/users/screen_user_list.dart';
 
 import '../../components/custom_button.dart';
 import '../../components/custom_drawer.dart';
 import '../../components/custom_input.dart';
+import '../../components/custom_snackbar.dart';
+import '../../managers/manager.dart';
+import '../../managers/manager_exception.dart';
+import '../../models/model_auth/model_reset_pass.dart';
 import '../../utilities/all_text.dart';
 import '../../utilities/app_size.dart';
 import '../../utilities/colors.dart';
@@ -14,7 +20,38 @@ class AddNewUser extends StatefulWidget {
   State<AddNewUser> createState() => _AddNewUserState();
 }
 
-class _AddNewUserState extends State<AddNewUser> {
+class _AddNewUserState extends State<AddNewUser>
+    implements Manager, ExceptionManager {
+  @override
+  void appException() {
+    CustomSnackBar(
+            message: AllTexts.netError, isSuccess: false, context: context)
+        .show();
+  }
+
+  @override
+  void fail({required String fail}) {
+    ResetModel addFail = ResetModel.fromJson(fail);
+    CustomSnackBar(
+            message: addFail.message,
+            isSuccess: addFail.status,
+            context: context)
+        .show();
+  }
+
+  @override
+  void success({required String success}) {
+    ResetModel addDone = ResetModel.fromJson(success);
+    CustomSnackBar(
+            message: addDone.message,
+            isSuccess: addDone.status,
+            context: context)
+        .show();
+
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (builder) => const UserList()));
+  }
+
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
@@ -29,10 +66,8 @@ class _AddNewUserState extends State<AddNewUser> {
   bool confirmPassSecure = true;
   bool enableButton = false;
 
-
-
-  void _addUser(){
-    if (_fromKeyAddNewUser.currentState!.validate()){
+  void _addUser() {
+    if (_fromKeyAddNewUser.currentState!.validate()) {
       FocusScopeNode currentFocus = FocusScope.of(context);
       if (!currentFocus.hasPrimaryFocus) {
         currentFocus.unfocus();
@@ -40,9 +75,19 @@ class _AddNewUserState extends State<AddNewUser> {
       setState(() {
         enableButton = true;
       });
+
+      CallAddNewUserApi().callAddNewUserApi(
+        add: this,
+        exception: this,
+        name: _nameController.text.trim(),
+        email: _emailController.text.trim(),
+        address: _addressController.text.trim(),
+        city: _cityController.text.trim(),
+        country: _countryController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
     }
   }
-
 
   @override
   void dispose() {
