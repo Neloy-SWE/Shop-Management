@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:shop_management/api/api_call_users/api_call_add_new_user.dart';
 import 'package:shop_management/screens/users/screen_user_list.dart';
-
 import '../../components/custom_button.dart';
 import '../../components/custom_drawer.dart';
 import '../../components/custom_input.dart';
 import '../../components/custom_snackbar.dart';
 import '../../managers/manager.dart';
 import '../../managers/manager_exception.dart';
+import '../../models/model_auth/model_login/login_fail.dart';
 import '../../models/model_auth/model_reset_pass.dart';
 import '../../utilities/all_text.dart';
 import '../../utilities/app_size.dart';
@@ -27,16 +27,22 @@ class _AddNewUserState extends State<AddNewUser>
     CustomSnackBar(
             message: AllTexts.netError, isSuccess: false, context: context)
         .show();
+    setState(() {
+      enableButton = false;
+    });
   }
 
   @override
   void fail({required String fail}) {
-    ResetModel addFail = ResetModel.fromJson(fail);
+    LoginFailModel addFail = LoginFailModel.fromJson(fail);
     CustomSnackBar(
-            message: addFail.message,
+            message: addFail.errors!.message,
             isSuccess: addFail.status,
             context: context)
         .show();
+    setState(() {
+      enableButton = false;
+    });
   }
 
   @override
@@ -290,7 +296,7 @@ class _AddNewUserState extends State<AddNewUser>
             ),
           ),
 
-          // update button
+          // add button
           AllButton.generalButton(
             context: context,
             btnText: AllTexts.addCap,

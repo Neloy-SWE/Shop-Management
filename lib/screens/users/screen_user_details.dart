@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_management/api/api_call_users/api_call_user_details.dart';
+import 'package:shop_management/screens/users/screen_update_user_info.dart';
 import 'package:shop_management/screens/users/screen_user_list.dart';
 import 'package:shop_management/utilities/all_text.dart';
 
@@ -141,7 +142,18 @@ class _UserDetailsState extends State<UserDetails>
                 AllButton.borderedButton(
                   context: context,
                   btnText: AllTexts.updateUserInfo,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (builder) => UpdateUserInfo(
+                            name: name,
+                            email: email,
+                            address: address,
+                            city: city,
+                            country: country),
+                      ),
+                    );
+                  },
                 ),
                 Gap.gapH30,
               ],

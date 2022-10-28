@@ -26,3 +26,6 @@ This is a shop management mobile application.
 5. Shop information screen.
 6. Update shop information screen.
 7. User list screen.
+8. User details screen.
+9. Add new user screen.
+10. Update user information screen.

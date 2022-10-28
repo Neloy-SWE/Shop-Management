@@ -1,17 +1,17 @@
 // import 'dart:developer';
 // import 'dart:io';
+// import 'package:shop_management/utilities/image_path.dart';
+// import '../../api/api_call_shop/api_call_add_shop_profile_image.dart';
+// import 'package:image_picker/image_picker.dart';
+// import 'package:shop_management/components/custom_divider.dart';
+// import '../../managers/manager_image_upload.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-// import 'package:image_picker/image_picker.dart';
-import 'package:shop_management/components/custom_divider.dart';
 import 'package:shop_management/models/model_auth/model_reset_pass.dart';
 import 'package:shop_management/screens/shop/screen_homepage.dart';
 import 'package:shop_management/utilities/all_text.dart';
 import 'package:shop_management/utilities/app_size.dart';
 import 'package:shop_management/utilities/colors.dart';
-// import 'package:shop_management/utilities/image_path.dart';
-// import '../../api/api_call_shop/api_call_add_shop_profile_image.dart';
 import '../../api/api_call_shop/api_call_shop_update.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_drawer.dart';
@@ -19,7 +19,7 @@ import '../../components/custom_input.dart';
 import '../../components/custom_snackbar.dart';
 import '../../managers/manager.dart';
 import '../../managers/manager_exception.dart';
-// import '../../managers/manager_image_upload.dart';
+
 
 class UpdateShopInfo extends StatefulWidget {
   final String shopName, address, city, country/*, image*/;
@@ -44,6 +44,9 @@ class _UpdateShopInfoState extends State<UpdateShopInfo>
     CustomSnackBar(
             message: AllTexts.netError, isSuccess: false, context: context)
         .show();
+    setState(() {
+      enableButton = false;
+    });
   }
 
   @override
@@ -51,6 +54,10 @@ class _UpdateShopInfoState extends State<UpdateShopInfo>
     CustomSnackBar(
             message: AllTexts.wentWrong, isSuccess: false, context: context)
         .show();
+
+    setState(() {
+      enableButton = false;
+    });
   }
 
   @override
@@ -163,7 +170,7 @@ class _UpdateShopInfoState extends State<UpdateShopInfo>
   // }
 
   bool enableButton = false;
-  bool showImageUpload = false;
+  //bool showImageUpload = false;
   final _fromKeyUpdateShop = GlobalKey<FormState>();
 
   @override
