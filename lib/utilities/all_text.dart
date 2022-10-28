@@ -64,4 +64,6 @@ class AllTexts {
   static const String pleaseSelectImage = "Please select Image !!!";
   static const String addCap = "ADD";
   static const String underConstructions = "Under Constructions";
+  static const String categoryTitle = "Category Title";
+  static const String menDot = "Men...";
 }

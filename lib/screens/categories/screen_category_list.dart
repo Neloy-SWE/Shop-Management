@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_management/screens/categories/screen_add_new_category.dart';
 
 import '../../api/api_call_category/api_call_category_list.dart';
 import '../../components/custom_button.dart';
@@ -79,11 +80,17 @@ class _CategoryListState extends State<CategoryList>
           ),
           Gap.gapH20,
 
-          // update shop button
+          // add new category button
           AllButton.borderedButton(
             context: context,
             btnText: AllTexts.addNewCategory,
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (builder) => const AddNewCategory(),
+                ),
+              );
+            },
           ),
           Gap.gapH30,
 

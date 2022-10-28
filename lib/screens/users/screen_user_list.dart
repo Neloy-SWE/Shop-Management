@@ -91,7 +91,7 @@ class _UserListState extends State<UserList>
           ),
           Gap.gapH20,
 
-          // update shop button
+          // add new user button
           AllButton.borderedButton(
             context: context,
             btnText: AllTexts.addNewUser,
