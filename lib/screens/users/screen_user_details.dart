@@ -17,6 +17,15 @@ class UserDetails extends StatefulWidget {
 }
 
 class _UserDetailsState extends State<UserDetails> {
+
+
+  String shopName = "";
+  String address = "";
+  String city = "";
+  String country = "";
+  String profileImage = "";
+  String location = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
