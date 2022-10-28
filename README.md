@@ -16,6 +16,10 @@ This is a shop management mobile application.
 1. Authentication.
 2. Shop details.
 3. User details.
+4. Product category.
+5. Product.
+6. Cart (depend on customer app side).
+7. Order (depend on customer app side).
 
 
 ## Screens:
@@ -29,3 +33,10 @@ This is a shop management mobile application.
 8. User details screen.
 9. Add new user screen.
 10. Update user information screen.
+11. Category list screen.
+12. Category wise product screen.
+13. Add new category screen.
+14. Update category information screen.
+15. Add new product screen.
+16. Product details screen.
+17. Product update screen.
