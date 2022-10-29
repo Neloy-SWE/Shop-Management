@@ -73,4 +73,5 @@ class AllTexts {
   static const String priceHint = "100 /=";
   static const String quantity = "Quantity";
   static const String quantityHint = "KG/Piece";
+  static const String description = "Description";
 }

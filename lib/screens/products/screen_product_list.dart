@@ -30,12 +30,10 @@ class ProductList extends StatefulWidget {
 
 class _ProductListState extends State<ProductList>
     implements Manager, ExceptionManager {
-
-
   @override
   void appException() {
     CustomSnackBar(
-        message: AllTexts.netError, isSuccess: false, context: context)
+            message: AllTexts.netError, isSuccess: false, context: context)
         .show();
     setState(() {
       isLoading = false;
@@ -45,21 +43,20 @@ class _ProductListState extends State<ProductList>
   @override
   void fail({required String fail}) {
     CustomSnackBar(
-        message: AllTexts.wentWrong, isSuccess: false, context: context)
+            message: AllTexts.wentWrong, isSuccess: false, context: context)
         .show();
     setState(() {
       isLoading = false;
     });
   }
 
-
   @override
   void success({required String success}) {
     setState(() {
       ProductListModel productList = ProductListModel.fromJson(success);
 
-      for(int i =0; i< productList.productListData!.length; i++){
-        if (productList.productListData![i].category!.id == widget.categoryId){
+      for (int i = 0; i < productList.productListData!.length; i++) {
+        if (productList.productListData![i].category!.id == widget.categoryId) {
           productListData.add(productList.productListData![i]);
         }
       }
@@ -76,11 +73,9 @@ class _ProductListState extends State<ProductList>
     super.initState();
   }
 
-
   bool isLoading = true;
 
   List<ProductListData> productListData = [];
-
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +103,10 @@ class _ProductListState extends State<ProductList>
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (builder) => AddNewProduct(categoryId: widget.categoryId,),
+                  builder: (builder) => AddNewProduct(
+                    categoryId: widget.categoryId,
+                    categoryName: widget.categoryName,
+                  ),
                 ),
               );
             },
@@ -124,44 +122,45 @@ class _ProductListState extends State<ProductList>
 
           isLoading
               ? Column(
-            children: [
-              Gap.gapH50,
-              Align(
-                alignment: Alignment.center,
-                child: AllLoader.generalLoader(
-                  loaderColor: AllColors.primaryColor,
-                  loaderWidth: 2,
-                  loaderSize: 30,
-                ),
-              ),
-            ],
-          )
+                  children: [
+                    Gap.gapH50,
+                    Align(
+                      alignment: Alignment.center,
+                      child: AllLoader.generalLoader(
+                        loaderColor: AllColors.primaryColor,
+                        loaderWidth: 2,
+                        loaderSize: 30,
+                      ),
+                    ),
+                  ],
+                )
               : productListData.isEmpty
-              ? Column(
-            children: [
-              Gap.gapH50,
-              Image.asset(
-                ImagePath.error,
-                height: 200,
-              ),
-              Text(
-                AllTexts.noDataFound,
-                style: Theme.of(context).textTheme.headline2,
-              ),
-            ],
-          )
-              :
+                  ? Column(
+                      children: [
+                        Gap.gapH50,
+                        Image.asset(
+                          ImagePath.error,
+                          height: 200,
+                        ),
+                        Text(
+                          AllTexts.noDataFound,
+                          style: Theme.of(context).textTheme.headline2,
+                        ),
+                      ],
+                    )
+                  :
 
-          // product list
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: MyPadding.padding10,
-            itemCount: productListData.length,
-            itemBuilder: (context, index) {
-              return _productList(productListData: productListData[index]);
-            },
-          ),
+                  // product list
+                  ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: MyPadding.padding10,
+                      itemCount: productListData.length,
+                      itemBuilder: (context, index) {
+                        return _productList(
+                            productListData: productListData[index]);
+                      },
+                    ),
         ],
       ),
     );

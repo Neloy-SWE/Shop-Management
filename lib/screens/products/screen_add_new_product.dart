@@ -1,22 +1,70 @@
 import 'package:flutter/material.dart';
+import 'package:shop_management/screens/products/screen_product_list.dart';
 
+import '../../api/api_call_product/api_call_add_new_product.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_drawer.dart';
 import '../../components/custom_input.dart';
+import '../../components/custom_snack_bar.dart';
+import '../../managers/manager.dart';
+import '../../managers/manager_exception.dart';
+import '../../models/model_auth/model_reset_pass.dart';
 import '../../utilities/all_text.dart';
 import '../../utilities/app_size.dart';
 import '../../utilities/colors.dart';
 
 class AddNewProduct extends StatefulWidget {
-  final String categoryId;
+  final String categoryId, categoryName;
 
-  const AddNewProduct({Key? key, required this.categoryId}) : super(key: key);
+  const AddNewProduct(
+      {Key? key, required this.categoryId, required this.categoryName})
+      : super(key: key);
 
   @override
   State<AddNewProduct> createState() => _AddNewProductState();
 }
 
-class _AddNewProductState extends State<AddNewProduct> {
+class _AddNewProductState extends State<AddNewProduct>
+    implements Manager, ExceptionManager {
+  @override
+  void appException() {
+    CustomSnackBar(
+            message: AllTexts.netError, isSuccess: false, context: context)
+        .show();
+    setState(() {
+      enableButton = false;
+    });
+  }
+
+  @override
+  void fail({required String fail}) {
+    CustomSnackBar(
+            message: AllTexts.wentWrong, isSuccess: false, context: context)
+        .show();
+    setState(() {
+      enableButton = false;
+    });
+  }
+
+  @override
+  void success({required String success}) {
+    ResetModel addDone = ResetModel.fromJson(success);
+    CustomSnackBar(
+            message: addDone.message,
+            isSuccess: addDone.status,
+            context: context)
+        .show();
+
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (builder) => ProductList(
+          categoryId: widget.categoryId,
+          categoryName: widget.categoryName,
+        ),
+      ),
+    );
+  }
+
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
@@ -24,7 +72,6 @@ class _AddNewProductState extends State<AddNewProduct> {
 
   final _fromKeyAddNewProduct = GlobalKey<FormState>();
   bool enableButton = false;
-
 
   void _addProduct() {
     if (_fromKeyAddNewProduct.currentState!.validate()) {
@@ -36,10 +83,14 @@ class _AddNewProductState extends State<AddNewProduct> {
         enableButton = true;
       });
 
-      CallAddNewCategoryApi().callAddNewCategoryApi(
+      CallAddNewProductApi().callAddNewProductApi(
         add: this,
         exception: this,
-        title: _categoryNameController.text.trim(),
+        categoryId: widget.categoryId,
+        title: _titleController.text.trim(),
+        price: _priceController.text.trim(),
+        quantity: _quantityController.text.trim(),
+        description: _descriptionController.text.trim(),
       );
     }
   }
@@ -67,7 +118,6 @@ class _AddNewProductState extends State<AddNewProduct> {
             key: _fromKeyAddNewProduct,
             child: Column(
               children: [
-
                 // text field: product name
                 AllInput.generalInput(
                   context: context,
@@ -127,8 +177,8 @@ class _AddNewProductState extends State<AddNewProduct> {
                   controller: _descriptionController,
                   textInputType: TextInputType.multiline,
                   textInputAction: TextInputAction.done,
-                  hint: AllTexts.menDot,
-                  label: AllTexts.categoryTitle,
+                  hint: AllTexts.description,
+                  label: AllTexts.description,
                   validatorFunction: (value) {
                     if (value!.isEmpty) {
                       return "Field is required !!";
@@ -145,7 +195,7 @@ class _AddNewProductState extends State<AddNewProduct> {
           AllButton.generalButton(
             context: context,
             btnText: AllTexts.addCap,
-            onTap: (){},
+            onTap: _addProduct,
             enable: enableButton,
           ),
         ],
