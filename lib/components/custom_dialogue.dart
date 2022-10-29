@@ -10,6 +10,7 @@ class AllDialogue {
     required Function() onTap,
     required String title,
     required String subTitle,
+    Color color = AllColors.primaryColor,
   }) {
     return showDialog(
       context: context,
@@ -65,7 +66,7 @@ class AllDialogue {
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    color: AllColors.primaryColor,
+                    color: color,
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(

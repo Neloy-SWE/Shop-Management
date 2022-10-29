@@ -1,22 +1,19 @@
 import 'dart:convert';
 import 'dart:developer';
-
+import 'package:shop_management/managers/manager_delete.dart';
 import '../../managers/api_constant.dart';
-import '../../managers/manager.dart';
-import '../../managers/manager_exception.dart';
 import 'package:http/http.dart' as http;
 
 import '../../managers/manager_local_storage.dart';
 
-class CallDeleteProductApi implements Manager, ExceptionManager {
+class CallDeleteProductApi implements DeleteManager {
   Future<void> callDeleteProductApi({
-    required Manager add,
-    required ExceptionManager exception,
+    required DeleteManager delete,
     required String productId,
   }) async {
     try {
       String userToken =
-      await LocalStorageManager.readData(ApiConstant.userLoginToken);
+          await LocalStorageManager.readData(ApiConstant.userLoginToken);
       var headers = {
         ApiConstant.authorization: "${ApiConstant.bearer} $userToken"
       };
@@ -30,22 +27,22 @@ class CallDeleteProductApi implements Manager, ExceptionManager {
       var str = await response.stream.bytesToString();
       Map data = json.decode(str);
       if (data["status"] == true) {
-        add.success(success: str);
+        delete.deleteDone(done: str);
       } else {
-        add.fail(fail: str);
+        delete.deleteFail(fail: str);
       }
     } on Exception catch (e) {
       log(e.toString());
-      exception.appException();
+      delete.deleteException();
     }
   }
 
   @override
-  void appException() {}
+  void deleteException() {}
 
   @override
-  void fail({required String fail}) {}
+  void deleteFail({required String fail}) {}
 
   @override
-  void success({required String success}) {}
+  void deleteDone({required String done}) {}
 }

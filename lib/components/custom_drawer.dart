@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_management/screens/shop/screen_homepage.dart';
 
 import '../screens/authentication/screen_login.dart';
 import '../utilities/all_text.dart';
@@ -8,7 +9,9 @@ import 'custom_dialogue.dart';
 import 'custom_divider.dart';
 
 class MyDrawer extends StatefulWidget {
-  const MyDrawer({Key? key}) : super(key: key);
+  final bool isHome;
+
+  const MyDrawer({Key? key, this.isHome = true}) : super(key: key);
 
   @override
   State<MyDrawer> createState() => _MyDrawerState();
@@ -24,7 +27,7 @@ class _MyDrawerState extends State<MyDrawer> {
           Gap.gapH70,
           AllDivider.generalDivider(),
           InkWell(
-            onTap: (){
+            onTap: () {
               AllDialogue.backDialogue(
                 context: context,
                 onTap: dialogueNav,
@@ -41,8 +44,8 @@ class _MyDrawerState extends State<MyDrawer> {
                   Text(
                     AllTexts.signOut,
                     style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                      fontSize: 22,
-                    ),
+                          fontSize: 22,
+                        ),
                   ),
                   Gap.gapW10,
                   const Icon(Icons.logout)
@@ -51,6 +54,36 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
           ),
           AllDivider.generalDivider(),
+          widget.isHome
+              ? InkWell(
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (builder) => const HomePage(),
+                      ),
+                    );
+                  },
+                  splashColor: AllColors.primaryColor,
+                  child: SizedBox(
+                    height: 50,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          AllTexts.returnHome,
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontSize: 22,
+                                  ),
+                        ),
+                        Gap.gapW10,
+                        const Icon(Icons.home_filled)
+                      ],
+                    ),
+                  ),
+                )
+              : const SizedBox(),
+          widget.isHome ? AllDivider.generalDivider() : const SizedBox(),
         ],
       ),
     );

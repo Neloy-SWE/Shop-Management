@@ -1,25 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:shop_management/api/api_call_product/api_call_product_delete.dart';
+import 'package:shop_management/screens/products/screen_product_list.dart';
 import 'package:shop_management/screens/products/screen_update_product.dart';
 
 import '../../api/api_call_product/api_call_product_details.dart';
 import '../../components/custom_button.dart';
+import '../../components/custom_dialogue.dart';
 import '../../components/custom_drawer.dart';
 import '../../components/custom_loader.dart';
 import '../../components/custom_snack_bar.dart';
 import '../../managers/manager.dart';
+import '../../managers/manager_delete.dart';
 import '../../managers/manager_exception.dart';
+import '../../models/model_auth/model_reset_pass.dart';
 import '../../models/model_product/model_product_details.dart';
 import '../../utilities/all_text.dart';
 import '../../utilities/app_size.dart';
 import '../../utilities/colors.dart';
 
 class ProductDetails extends StatefulWidget {
-  final String categoryId, productId;
+  final String categoryId, productId, categoryName;
 
   const ProductDetails({
     Key? key,
     required this.categoryId,
     required this.productId,
+    required this.categoryName,
   }) : super(key: key);
 
   @override
@@ -27,17 +33,18 @@ class ProductDetails extends StatefulWidget {
 }
 
 class _ProductDetailsState extends State<ProductDetails>
-    implements Manager, ExceptionManager {
+    implements Manager, ExceptionManager, DeleteManager {
   @override
   void appException() {
     CustomSnackBar(
-        message: AllTexts.netError, isSuccess: false, context: context)
+            message: AllTexts.netError, isSuccess: false, context: context)
         .show();
   }
+
   @override
   void fail({required String fail}) {
     CustomSnackBar(
-        message: AllTexts.wentWrong, isSuccess: false, context: context)
+            message: AllTexts.wentWrong, isSuccess: false, context: context)
         .show();
   }
 
@@ -53,6 +60,45 @@ class _ProductDetailsState extends State<ProductDetails>
   }
 
   @override
+  void deleteException() {
+    CustomSnackBar(
+            message: AllTexts.netError, isSuccess: false, context: context)
+        .show();
+    setState(() {
+      enableButton = false;
+    });
+  }
+
+  @override
+  void deleteFail({required String fail}) {
+    CustomSnackBar(
+            message: AllTexts.wentWrong, isSuccess: false, context: context)
+        .show();
+    setState(() {
+      enableButton = false;
+    });
+  }
+
+  @override
+  void deleteDone({required String done}) {
+    ResetModel deleteDone = ResetModel.fromJson(done);
+    CustomSnackBar(
+            message: deleteDone.message,
+            isSuccess: deleteDone.status,
+            context: context)
+        .show();
+
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (builder) => ProductList(
+          categoryId: widget.categoryId,
+          categoryName: widget.categoryName,
+        ),
+      ),
+    );
+  }
+
+  @override
   void initState() {
     CallProductDetailsApi().callProductDetailsApi(
       exception: this,
@@ -61,11 +107,13 @@ class _ProductDetailsState extends State<ProductDetails>
     );
     super.initState();
   }
+
   String productName = "";
   String price = "";
   String quantity = "";
   String description = "";
   bool enableButton = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,8 +158,8 @@ class _ProductDetailsState extends State<ProductDetails>
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.headline1!.copyWith(
-                          fontSize: 25,
-                        ),
+                              fontSize: 25,
+                            ),
                       ),
                       Text(
                         "Price: $price /=",
@@ -138,12 +186,13 @@ class _ProductDetailsState extends State<ProductDetails>
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (builder) => UpdateProduct(
-                          productId: widget.productId,
-                          categoryId: widget.categoryId,
-                          description: description,
-                          price: price,
-                          productName: productName,
-                          quantity: quantity,
+                            productId: widget.productId,
+                            categoryId: widget.categoryId,
+                            description: description,
+                            price: price,
+                            productName: productName,
+                            quantity: quantity,
+                            categoryName: widget.categoryName,
                           ),
                         ),
                       );
@@ -155,11 +204,29 @@ class _ProductDetailsState extends State<ProductDetails>
                   AllButton.generalButton(
                     context: context,
                     btnText: AllTexts.deleteProductCap,
-                    onTap: (){},
+                    onTap: () {
+                      AllDialogue.backDialogue(
+                        context: context,
+                        onTap: _delete,
+                        title: AllTexts.deleteExc,
+                        subTitle: AllTexts.deleteProduct,
+                        color: AllColors.errorColor,
+                      );
+                    },
                     enable: enableButton,
                     color: AllColors.errorColor,
                   ),
                 ],
               ));
+  }
+
+  void _delete() {
+    CallDeleteProductApi().callDeleteProductApi(
+      delete: this,
+      productId: widget.productId,
+    );
+    setState(() {
+      enableButton=true;
+    });
   }
 }

@@ -15,6 +15,7 @@ import '../../utilities/all_text.dart';
 import '../../utilities/app_size.dart';
 import '../../utilities/colors.dart';
 import '../../utilities/image_path.dart';
+import '../categories/screen_update_category.dart';
 
 class ProductList extends StatefulWidget {
   final String categoryId, categoryName;
@@ -112,6 +113,24 @@ class _ProductListState extends State<ProductList>
               );
             },
           ),
+          Gap.gapH15,
+
+
+          // update category button
+          AllButton.borderedButton(
+            context: context,
+            btnText: AllTexts.updateCategoryInfo,
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (builder) => UpdateCategory(
+                    categoryId: widget.categoryId,
+                    categoryName: widget.categoryName,
+                  ),
+                ),
+              );
+            },
+          ),
           Gap.gapH30,
 
           // product list title
@@ -175,6 +194,7 @@ class _ProductListState extends State<ProductList>
             builder: (builder) => ProductDetails(
               categoryId: productListData.category!.id!,
               productId: productListData.id!,
+              categoryName: productListData.category!.title!,
             ),
           ),
         );

@@ -36,7 +36,8 @@ class AllTexts {
   static const String resetPassword = "Reset Password";
   static const String justAStep = "Just A Step";
   static const String netError = "Network Error !";
-  static const String signOutSub = "Are you sure you want to log out from the app ?";
+  static const String signOutSub =
+      "Are you sure you want to log out from the app ?";
   static const String yesCap = "YES";
   static const String noCap = "NO";
   static const String resetPassFail = "Reset password failed";
@@ -77,4 +78,9 @@ class AllTexts {
   static const String quantity = "Quantity";
   static const String quantityHint = "KG/Piece";
   static const String description = "Description";
+  static const String returnHome = "Return Home";
+  static const String deleteExc = "Delete !!!";
+  static const String deleteProduct =
+      "Are you sure you want to delete this product ?";
+  static const String updateCategoryInfo = "Update Category Info";
 }

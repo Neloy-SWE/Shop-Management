@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shop_management/screens/products/screen_product_details.dart';
-import 'package:shop_management/screens/products/screen_product_list.dart';
-
-import '../../api/api_call_product/api_call_add_new_product.dart';
 import '../../api/api_call_product/api_call_product_update.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_drawer.dart';
@@ -16,7 +13,13 @@ import '../../utilities/app_size.dart';
 import '../../utilities/colors.dart';
 
 class UpdateProduct extends StatefulWidget {
-  final String categoryId, productName, price, quantity, description, productId;
+  final String categoryId,
+      productName,
+      price,
+      quantity,
+      description,
+      productId,
+      categoryName;
 
   const UpdateProduct({
     Key? key,
@@ -26,6 +29,7 @@ class UpdateProduct extends StatefulWidget {
     required this.quantity,
     required this.description,
     required this.productId,
+    required this.categoryName,
   }) : super(key: key);
 
   @override
@@ -68,6 +72,7 @@ class _UpdateProductState extends State<UpdateProduct>
         builder: (builder) => ProductDetails(
           categoryId: widget.categoryId,
           productId: widget.productId,
+          categoryName: widget.categoryName,
         ),
       ),
     );
@@ -222,7 +227,7 @@ class _UpdateProductState extends State<UpdateProduct>
             ),
           ),
 
-          // add button
+          // update button
           AllButton.generalButton(
             context: context,
             btnText: AllTexts.updateCap,
