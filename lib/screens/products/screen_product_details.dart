@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../../api/api_call_product/api_call_product_details.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_drawer.dart';
 import '../../components/custom_loader.dart';
+import '../../components/custom_snack_bar.dart';
+import '../../managers/manager.dart';
+import '../../managers/manager_exception.dart';
+import '../../models/model_product/model_product_details.dart';
 import '../../utilities/all_text.dart';
 import '../../utilities/app_size.dart';
 import '../../utilities/colors.dart';
@@ -20,8 +25,42 @@ class ProductDetails extends StatefulWidget {
   State<ProductDetails> createState() => _ProductDetailsState();
 }
 
-class _ProductDetailsState extends State<ProductDetails> {
-  String productName = "jkl";
+class _ProductDetailsState extends State<ProductDetails>
+    implements Manager, ExceptionManager {
+  @override
+  void appException() {
+    CustomSnackBar(
+        message: AllTexts.netError, isSuccess: false, context: context)
+        .show();
+  }
+  @override
+  void fail({required String fail}) {
+    CustomSnackBar(
+        message: AllTexts.wentWrong, isSuccess: false, context: context)
+        .show();
+  }
+
+  @override
+  void success({required String success}) {
+    setState(() {
+      ProductDetailsModel detailsModel = ProductDetailsModel.fromJson(success);
+      productName = detailsModel.productDetailsData!.title!;
+      price = detailsModel.productDetailsData!.price.toString();
+      quantity = detailsModel.productDetailsData!.quantity.toString();
+      description = detailsModel.productDetailsData!.description!;
+    });
+  }
+
+  @override
+  void initState() {
+    CallProductDetailsApi().callProductDetailsApi(
+      exception: this,
+      details: this,
+      productId: widget.productId,
+    );
+    super.initState();
+  }
+  String productName = "";
   String price = "";
   String quantity = "";
   String description = "";
@@ -110,7 +149,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   ),
                   Gap.gapH15,
 
-                  // add button
+                  // delete button
                   AllButton.generalButton(
                     context: context,
                     btnText: AllTexts.deleteProductCap,
