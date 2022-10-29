@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shop_management/screens/categories/screen_category_list.dart';
-
-import '../../api/api_call_category/api_call_add_new_category.dart';
 import '../../api/api_call_category/api_call_update_category.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_drawer.dart';
@@ -17,9 +15,11 @@ import '../../utilities/colors.dart';
 
 class UpdateCategory extends StatefulWidget {
   final String categoryId, categoryName;
-  const UpdateCategory({Key? key,
-  required this.categoryId,
-  required this.categoryName,
+
+  const UpdateCategory({
+    Key? key,
+    required this.categoryId,
+    required this.categoryName,
   }) : super(key: key);
 
   @override
@@ -31,7 +31,7 @@ class _UpdateCategoryState extends State<UpdateCategory>
   @override
   void appException() {
     CustomSnackBar(
-        message: AllTexts.netError, isSuccess: false, context: context)
+            message: AllTexts.netError, isSuccess: false, context: context)
         .show();
     setState(() {
       enableButton = false;
@@ -42,9 +42,9 @@ class _UpdateCategoryState extends State<UpdateCategory>
   void fail({required String fail}) {
     LoginFailModel addFail = LoginFailModel.fromJson(fail);
     CustomSnackBar(
-        message: addFail.errors!.message,
-        isSuccess: addFail.status,
-        context: context)
+            message: addFail.errors!.message,
+            isSuccess: addFail.status,
+            context: context)
         .show();
     setState(() {
       enableButton = false;
@@ -55,9 +55,9 @@ class _UpdateCategoryState extends State<UpdateCategory>
   void success({required String success}) {
     ResetModel addDone = ResetModel.fromJson(success);
     CustomSnackBar(
-        message: addDone.message,
-        isSuccess: addDone.status,
-        context: context)
+            message: addDone.message,
+            isSuccess: addDone.status,
+            context: context)
         .show();
 
     Navigator.of(context).pushReplacement(
@@ -110,7 +110,7 @@ class _UpdateCategoryState extends State<UpdateCategory>
       body: ListView(
         padding: MyPadding.appPadding,
         children: [
-          // simple icon for add new category
+          // simple icon for update category
           Gap.gapH30,
           const Icon(
             Icons.upload_outlined,

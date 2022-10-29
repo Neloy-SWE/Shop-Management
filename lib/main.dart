@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shop_management/screens/screen_splash.dart';
 import 'package:shop_management/theme/my_theme.dart';
 import 'package:shop_management/utilities/all_text.dart';
 
 void main() {
-  runApp(
-    const ProviderScope(
-      child: MyApp(),
-    ),
-  );
+  runApp(const MyApp(),);
 }
 
 class MyApp extends StatelessWidget {

@@ -30,10 +30,8 @@ class CallAddShopProfileImage implements ImageUploadManager {
       var str = await response.stream.bytesToString();
       Map data = json.decode(str);
       if (data["status"] == true) {
-        print("if check image: $imagePath");
         upload.uploadDone(done: str);
       } else {
-        print("else check image: $imagePath");
         upload.uploadFail(fail: str);
       }
 
