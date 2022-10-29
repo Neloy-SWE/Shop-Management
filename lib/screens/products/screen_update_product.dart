@@ -3,6 +3,7 @@ import 'package:shop_management/screens/products/screen_product_details.dart';
 import 'package:shop_management/screens/products/screen_product_list.dart';
 
 import '../../api/api_call_product/api_call_add_new_product.dart';
+import '../../api/api_call_product/api_call_product_update.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_drawer.dart';
 import '../../components/custom_input.dart';
@@ -90,7 +91,7 @@ class _UpdateProductState extends State<UpdateProduct>
         enableButton = true;
       });
 
-      CallAddNewProductApi().callAddNewProductApi(
+      CallUpdateProductApi().callUpdateProductApi(
         add: this,
         exception: this,
         categoryId: widget.categoryId,
@@ -98,6 +99,7 @@ class _UpdateProductState extends State<UpdateProduct>
         price: _priceController.text.trim(),
         quantity: _quantityController.text.trim(),
         description: _descriptionController.text.trim(),
+        productId: widget.productId,
       );
     }
   }
