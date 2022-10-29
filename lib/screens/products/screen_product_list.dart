@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../../api/api_call_product/api_call_product_list.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_divider.dart';
 import '../../components/custom_drawer.dart';
 import '../../components/custom_loader.dart';
+import '../../components/custom_snack_bar.dart';
+import '../../managers/manager.dart';
+import '../../managers/manager_exception.dart';
 import '../../models/model_product/model_product_list.dart';
 import '../../utilities/all_text.dart';
 import '../../utilities/app_size.dart';
@@ -23,7 +27,48 @@ class ProductList extends StatefulWidget {
   State<ProductList> createState() => _ProductListState();
 }
 
-class _ProductListState extends State<ProductList> {
+class _ProductListState extends State<ProductList>
+    implements Manager, ExceptionManager {
+
+
+  @override
+  void appException() {
+    CustomSnackBar(
+        message: AllTexts.netError, isSuccess: false, context: context)
+        .show();
+  }
+
+  @override
+  void fail({required String fail}) {
+    CustomSnackBar(
+        message: AllTexts.wentWrong, isSuccess: false, context: context)
+        .show();
+  }
+
+
+  @override
+  void success({required String success}) {
+    setState(() {
+      ProductListModel productList = ProductListModel.fromJson(success);
+
+      for(int i =0; i< productList.productListData!.length; i++){
+        if (productList.productListData![i].category!.id == widget.categoryId){
+          productListData.add(productList.productListData![i]);
+        }
+      }
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    CallProductListApi().callProductListApi(
+      productList: this,
+      exception: this,
+    );
+    super.initState();
+  }
+
 
   bool isLoading = true;
 
@@ -40,7 +85,7 @@ class _ProductListState extends State<ProductList> {
       body: ListView(
         padding: MyPadding.appPadding,
         children: [
-          // simple icon for users list
+          // simple icon for product list
           Gap.gapH30,
           const Icon(
             Icons.fact_check_outlined,
@@ -70,44 +115,44 @@ class _ProductListState extends State<ProductList> {
           ),
           Gap.gapH10,
 
-          // isLoading
-          //     ? Column(
-          //   children: [
-          //     Gap.gapH50,
-          //     Align(
-          //       alignment: Alignment.center,
-          //       child: AllLoader.generalLoader(
-          //         loaderColor: AllColors.primaryColor,
-          //         loaderWidth: 2,
-          //         loaderSize: 30,
-          //       ),
-          //     ),
-          //   ],
-          // )
-          //     : productListData.isEmpty
-          //     ? Column(
-          //   children: [
-          //     Gap.gapH50,
-          //     Image.asset(
-          //       ImagePath.error,
-          //       height: 200,
-          //     ),
-          //     Text(
-          //       AllTexts.noDataFound,
-          //       style: Theme.of(context).textTheme.headline2,
-          //     ),
-          //   ],
-          // )
-          //     :
+          isLoading
+              ? Column(
+            children: [
+              Gap.gapH50,
+              Align(
+                alignment: Alignment.center,
+                child: AllLoader.generalLoader(
+                  loaderColor: AllColors.primaryColor,
+                  loaderWidth: 2,
+                  loaderSize: 30,
+                ),
+              ),
+            ],
+          )
+              : productListData.isEmpty
+              ? Column(
+            children: [
+              Gap.gapH50,
+              Image.asset(
+                ImagePath.error,
+                height: 200,
+              ),
+              Text(
+                AllTexts.noDataFound,
+                style: Theme.of(context).textTheme.headline2,
+              ),
+            ],
+          )
+              :
 
           // product list
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             padding: MyPadding.padding10,
-            itemCount: /*productListData.length*/ 5,
+            itemCount: productListData.length,
             itemBuilder: (context, index) {
-              return _productList();
+              return _productList(productListData: productListData[index]);
             },
           ),
         ],
@@ -115,7 +160,7 @@ class _ProductListState extends State<ProductList> {
     );
   }
 
-  Widget _productList() {
+  Widget _productList({required ProductListData productListData}) {
     return InkWell(
       onTap: () {
 /*        Navigator.of(context).push(
@@ -133,9 +178,9 @@ class _ProductListState extends State<ProductList> {
         children: [
           AllDivider.generalDivider(),
           Gap.gapH05,
-          Text("Product"),
+          Text(productListData.title!),
           Text(
-            "Price: ",
+            "Price: ${productListData.price} /=",
             style: Theme.of(context).textTheme.caption,
           ),
           Gap.gapH05,
