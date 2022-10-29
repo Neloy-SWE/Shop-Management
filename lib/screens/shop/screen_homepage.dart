@@ -17,7 +17,7 @@ import '../../components/custom_snack_bar.dart';
 import '../../components/grid_view_fixed_height.dart';
 import '../../managers/manager.dart';
 import '../../managers/manager_exception.dart';
-import '../../managers/option_manager.dart';
+import '../../managers/manager_option.dart';
 import '../../utilities/image_path.dart';
 import '../categories/screen_category_list.dart';
 
