@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_management/screens/products/screen_add_new_product.dart';
 
 import '../../api/api_call_product/api_call_product_list.dart';
 import '../../components/custom_button.dart';
@@ -36,6 +37,9 @@ class _ProductListState extends State<ProductList>
     CustomSnackBar(
         message: AllTexts.netError, isSuccess: false, context: context)
         .show();
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -43,6 +47,9 @@ class _ProductListState extends State<ProductList>
     CustomSnackBar(
         message: AllTexts.wentWrong, isSuccess: false, context: context)
         .show();
+    setState(() {
+      isLoading = false;
+    });
   }
 
 
@@ -94,16 +101,16 @@ class _ProductListState extends State<ProductList>
           ),
           Gap.gapH20,
 
-          // add new category button
+          // add new product button
           AllButton.borderedButton(
             context: context,
-            btnText: AllTexts.addNewCategory,
+            btnText: AllTexts.addNewProduct,
             onTap: () {
-              /*Navigator.of(context).push(
+              Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (builder) => const AddNewCategory(),
+                  builder: (builder) => AddNewProduct(categoryId: widget.categoryId,),
                 ),
-              );*/
+              );
             },
           ),
           Gap.gapH30,

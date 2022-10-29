@@ -31,6 +31,9 @@ class _CategoryListState extends State<CategoryList>
     CustomSnackBar(
         message: AllTexts.netError, isSuccess: false, context: context)
         .show();
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -38,6 +41,9 @@ class _CategoryListState extends State<CategoryList>
     CustomSnackBar(
         message: AllTexts.wentWrong, isSuccess: false, context: context)
         .show();
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override

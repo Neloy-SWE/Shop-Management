@@ -57,6 +57,7 @@ class AllTexts {
   static const String userDetails = "Users Details";
   static const String addNewUser = "Add New User";
   static const String addNewCategory = "Add New Category";
+  static const String addNewProduct = "Add New Product";
   static const String noDataFound = "So sad. No data found...";
   static const String camera = "camera";
   static const String gallery = "gallery";
@@ -66,4 +67,10 @@ class AllTexts {
   static const String underConstructions = "Under Constructions";
   static const String categoryTitle = "Category Title";
   static const String menDot = "Men...";
+  static const String productName = "Product Name";
+  static const String productHint = "T-shirt...";
+  static const String price = "Price";
+  static const String priceHint = "100 /=";
+  static const String quantity = "Quantity";
+  static const String quantityHint = "KG/Piece";
 }

@@ -130,7 +130,7 @@ class _AddNewUserState extends State<AddNewUser>
             key: _fromKeyAddNewUser,
             child: Column(
               children: [
-                // text field: store name
+                // text field: user name
                 AllInput.generalInput(
                   context: context,
                   controller: _nameController,
