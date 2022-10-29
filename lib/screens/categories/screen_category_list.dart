@@ -14,6 +14,7 @@ import '../../utilities/all_text.dart';
 import '../../utilities/app_size.dart';
 import '../../utilities/colors.dart';
 import '../../utilities/image_path.dart';
+import '../products/screen_product_list.dart';
 
 class CategoryList extends StatefulWidget {
   const CategoryList({Key? key}) : super(key: key);
@@ -149,13 +150,14 @@ class _CategoryListState extends State<CategoryList>
   Widget _categoryList({required CategoryListData categoryListData}) {
     return InkWell(
       onTap: () {
-        // Navigator.of(context).push(
-        //   MaterialPageRoute(
-        //     builder: (builder) => UserDetails(
-        //       userId: userListData.id.toString(),
-        //     ),
-        //   ),
-        // );
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (builder) => ProductList(
+              categoryId: categoryListData.id.toString(),
+              categoryName: categoryListData.title!,
+            ),
+          ),
+        );
       },
       splashColor: AllColors.primaryColor,
       child: Column(
