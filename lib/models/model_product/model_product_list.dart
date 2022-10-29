@@ -3,12 +3,12 @@ import 'dart:convert';
 class ProductListModel {
   ProductListModel({
     this.status,
-    this.data,
+    this.productListData,
     this.paginate,
   });
 
   final bool? status;
-  final List<Datum>? data;
+  final List<ProductListData>? productListData;
   final Paginate? paginate;
 
   factory ProductListModel.fromJson(String str) => ProductListModel.fromMap(json.decode(str));
@@ -17,19 +17,19 @@ class ProductListModel {
 
   factory ProductListModel.fromMap(Map<String, dynamic> json) => ProductListModel(
     status: json["status"],
-    data: json["data"] == null ? null : List<Datum>.from(json["data"].map((x) => Datum.fromMap(x))),
+    productListData: json["data"] == null ? null : List<ProductListData>.from(json["data"].map((x) => ProductListData.fromMap(x))),
     paginate: json["paginate"] == null ? null : Paginate.fromMap(json["paginate"]),
   );
 
   Map<String, dynamic> toMap() => {
     "status": status,
-    "data": data == null ? null : List<dynamic>.from(data!.map((x) => x.toMap())),
+    "data": productListData == null ? null : List<dynamic>.from(productListData!.map((x) => x.toMap())),
     "paginate": paginate == null ? null : paginate!.toMap(),
   };
 }
 
-class Datum {
-  Datum({
+class ProductListData {
+  ProductListData({
     this.id,
     this.category,
     this.title,
@@ -53,11 +53,11 @@ class Datum {
   final DateTime? updatedAt;
   final int? v;
 
-  factory Datum.fromJson(String str) => Datum.fromMap(json.decode(str));
+  factory ProductListData.fromJson(String str) => ProductListData.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory Datum.fromMap(Map<String, dynamic> json) => Datum(
+  factory ProductListData.fromMap(Map<String, dynamic> json) => ProductListData(
     id: json["_id"],
     category: json["category"] == null ? null : Category.fromMap(json["category"]),
     title: json["title"],

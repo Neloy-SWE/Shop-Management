@@ -95,7 +95,7 @@ class _CategoryListState extends State<CategoryList>
           ),
           Gap.gapH30,
 
-          // user list title
+          // category list title
           Text(
             "${AllTexts.categoryList} (${categoryListData.length})",
             style: Theme.of(context).textTheme.caption,
@@ -133,7 +133,7 @@ class _CategoryListState extends State<CategoryList>
           )
               :
 
-          // user list
+          // category list
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
