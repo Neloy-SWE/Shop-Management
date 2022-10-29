@@ -59,6 +59,7 @@ class AllTexts {
   static const String addNewUser = "Add New User";
   static const String addNewCategory = "Add New Category";
   static const String addNewProduct = "Add New Product";
+  static const String updateProductInfo = "Update Product Info";
   static const String noDataFound = "So sad. No data found...";
   static const String camera = "camera";
   static const String gallery = "gallery";

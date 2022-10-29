@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_management/screens/products/screen_update_product.dart';
 
 import '../../api/api_call_product/api_call_product_details.dart';
 import '../../components/custom_button.dart';
@@ -134,17 +135,18 @@ class _ProductDetailsState extends State<ProductDetails>
                     context: context,
                     btnText: AllTexts.updateUserInfo,
                     onTap: () {
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //     builder: (builder) => UpdateUserInfo(
-                      //         userId: widget.userId,
-                      //         name: name,
-                      //         email: email,
-                      //         address: address,
-                      //         city: city,
-                      //         country: country),
-                      //   ),
-                      // );
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (builder) => UpdateProduct(
+                          productId: widget.productId,
+                          categoryId: widget.categoryId,
+                          description: description,
+                          price: price,
+                          productName: productName,
+                          quantity: quantity,
+                          ),
+                        ),
+                      );
                     },
                   ),
                   Gap.gapH15,
