@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_management/screens/products/screen_add_new_product.dart';
+import 'package:shop_management/screens/products/screen_product_details.dart';
 
 import '../../api/api_call_product/api_call_product_list.dart';
 import '../../components/custom_button.dart';
@@ -169,14 +170,14 @@ class _ProductListState extends State<ProductList>
   Widget _productList({required ProductListData productListData}) {
     return InkWell(
       onTap: () {
-/*        Navigator.of(context).push(
+        Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (builder) => ProductList(
-              categoryId: categoryListData.id.toString(),
-              categoryName: categoryListData.title!,
+            builder: (builder) => ProductDetails(
+              categoryId: productListData.category!.id!,
+              productId: productListData.id!,
             ),
           ),
-        );*/
+        );
       },
       splashColor: AllColors.primaryColor,
       child: Column(

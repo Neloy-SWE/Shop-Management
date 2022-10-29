@@ -8,6 +8,7 @@ class AllButton {
     required String btnText,
     required Function onTap,
     required bool enable,
+    Color color = AllColors.primaryColor,
   }) {
     return SizedBox(
       height: 50,
@@ -16,8 +17,8 @@ class AllButton {
         onPressed: () {
           enable ? null : onTap();
         },
-        color: AllColors.primaryColor,
-        splashColor: enable ? AllColors.primaryColor : Colors.black,
+        color: color,
+        splashColor: enable ? color : Colors.black,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(7),

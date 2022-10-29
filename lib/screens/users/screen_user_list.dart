@@ -163,7 +163,7 @@ class _UserListState extends State<UserList>
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (builder) => UserDetails(
-              userId: userListData.id.toString(),
+              userId: userListData.id!,
             ),
           ),
         );

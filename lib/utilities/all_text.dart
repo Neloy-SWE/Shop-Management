@@ -55,6 +55,7 @@ class AllTexts {
   static const String usersList = "Users List";
   static const String categoryList = "Category List";
   static const String userDetails = "Users Details";
+  static const String productDetails = "Product Details";
   static const String addNewUser = "Add New User";
   static const String addNewCategory = "Add New Category";
   static const String addNewProduct = "Add New Product";
@@ -64,6 +65,7 @@ class AllTexts {
   static const String imageSelectFail = "Image Select Fail !!!";
   static const String pleaseSelectImage = "Please select Image !!!";
   static const String addCap = "ADD";
+  static const String deleteProductCap = "DELETE PRODUCT !!!";
   static const String underConstructions = "Under Constructions";
   static const String categoryTitle = "Category Title";
   static const String menDot = "Men...";

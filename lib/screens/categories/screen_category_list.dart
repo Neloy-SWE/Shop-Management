@@ -159,7 +159,7 @@ class _CategoryListState extends State<CategoryList>
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (builder) => ProductList(
-              categoryId: categoryListData.id.toString(),
+              categoryId: categoryListData.id!,
               categoryName: categoryListData.title!,
             ),
           ),
