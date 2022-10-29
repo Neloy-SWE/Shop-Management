@@ -1,6 +1,6 @@
 # Shop Manager
 
-This is a shop management mobile application.
+This is a demo shop management mobile application.
 (Note: Because it is a free server, image file cannot be uploaded. Though I have implemented one of image upload work and commented out the code.)
 
 ## Tools and Technologies:
@@ -9,8 +9,7 @@ This is a shop management mobile application.
 
 ## Packages:
 1. shared preferences (For save token in local storage)
-2. flutter riverpod (For state management)
-3. http (For http request)
+2. http (For http request)
 
 ## Features:
 1. Authentication.
@@ -40,3 +39,35 @@ This is a shop management mobile application.
 15. Add new product screen.
 16. Product details screen.
 17. Product update screen.
+
+
+## API resources:
+https://storexapi.herokuapp.com/
+
+
+## Screenshots
+<p float="left">
+  <img src="screenshots/1.splash.jpg" width="200" />
+  <img src="screenshots/2.login.jpg" width="200" />
+  <img src="screenshots/3.signup.jpg" width="200" />
+  <img src="screenshots/4.resetpass.jpg" width="200" />
+  <img src="screenshots/5.home1.jpg" width="200" />
+  <img src="screenshots/6.home2.jpg" width="200" />
+  <img src="screenshots/7.drawer1.jpg" width="200" />
+  <img src="screenshots/8.drawer2.jpg" width="200" />
+  <img src="screenshots/9.catlist.jpg" width="200" />
+  <img src="screenshots/10.newcat.jpg" width="200" />
+  <img src="screenshots/11.cateup.jpg" width="200" />
+  <img src="screenshots/12.prodlist.jpg" width="200" />
+  <img src="screenshots/13.addprod.jpg" width="200" />
+  <img src="screenshots/14.proddetails.jpg" width="200" />
+  <img src="screenshots/15.upprod.jpg" width="200" />
+  <img src="screenshots/16.deleteprod.jpg" width="200" />
+  <img src="screenshots/17.userlist.jpg" width="200" />
+  <img src="screenshots/18.adduser.jpg" width="200" />
+  <img src="screenshots/19.userdetails.jpg" width="200" />
+  <img src="screenshots/20.userup.jpg" width="200" />
+  <img src="screenshots/21.order.jpg" width="200" />
+  <img src="screenshots/22.cart.jpg" width="200" />
+  <img src="screenshots/23.signout.jpg" width="200" />
+  <img src="screenshots/24.exit.jpg" width="200" />

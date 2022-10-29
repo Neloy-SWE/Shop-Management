@@ -195,7 +195,7 @@ class _ProductDetailsState extends State<ProductDetails>
                     // update product info
                     AllButton.borderedButton(
                       context: context,
-                      btnText: AllTexts.updateUserInfo,
+                      btnText: AllTexts.updateProductInfo,
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
