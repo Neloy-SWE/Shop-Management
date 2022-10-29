@@ -8,38 +8,23 @@ import 'package:http/http.dart' as http;
 
 import '../../managers/manager_local_storage.dart';
 
-class CallUpdateProductApi implements Manager, ExceptionManager {
-  Future<void> callUpdateProductApi({
+class CallDeleteProductApi implements Manager, ExceptionManager {
+  Future<void> callDeleteProductApi({
     required Manager add,
     required ExceptionManager exception,
-    required String categoryId,
     required String productId,
-    required String title,
-    required String price,
-    required String quantity,
-    required String description,
   }) async {
     try {
       String userToken =
-          await LocalStorageManager.readData(ApiConstant.userLoginToken);
+      await LocalStorageManager.readData(ApiConstant.userLoginToken);
       var headers = {
-        ApiConstant.authorization: "${ApiConstant.bearer} $userToken",
-        ApiConstant.contentType: ApiConstant.acceptValue
+        ApiConstant.authorization: "${ApiConstant.bearer} $userToken"
       };
 
       var request = http.Request(
-        'PUT',
+        'DELETE',
         Uri.parse('${ApiConstant.baseUrl}product/$productId'),
       );
-
-      request.body = json.encode({
-        "category": categoryId,
-        "title": title,
-        "price": price,
-        "quantity": quantity,
-        "description": description,
-        "image": "https://m.media-amazon.com/images/I/61yXL70-RaL._SX679_.jpg"
-      });
       request.headers.addAll(headers);
       http.StreamedResponse response = await request.send();
       var str = await response.stream.bytesToString();
