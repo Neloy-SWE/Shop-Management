@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_management/screens/categories/screen_category_list.dart';
 
 import '../../api/api_call_category/api_call_add_new_category.dart';
+import '../../api/api_call_category/api_call_update_category.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_drawer.dart';
 import '../../components/custom_input.dart';
@@ -59,8 +60,8 @@ class _UpdateCategoryState extends State<UpdateCategory>
         context: context)
         .show();
 
-   /* Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (builder) => const CategoryList()));*/
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (builder) => const CategoryList()));
   }
 
   TextEditingController _categoryNameController = TextEditingController();
@@ -77,9 +78,10 @@ class _UpdateCategoryState extends State<UpdateCategory>
         enableButton = true;
       });
 
-      CallAddNewCategoryApi().callAddNewCategoryApi(
+      CallUpdateCategoryApi().callUpdateCategoryApi(
         add: this,
         exception: this,
+        categoryId: widget.categoryId,
         title: _categoryNameController.text.trim(),
       );
     }
