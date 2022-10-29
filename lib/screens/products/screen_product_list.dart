@@ -4,6 +4,7 @@ import 'package:shop_management/screens/products/screen_product_details.dart';
 
 import '../../api/api_call_product/api_call_product_list.dart';
 import '../../components/custom_button.dart';
+import '../../components/custom_dialogue.dart';
 import '../../components/custom_divider.dart';
 import '../../components/custom_drawer.dart';
 import '../../components/custom_loader.dart';
@@ -15,6 +16,8 @@ import '../../utilities/all_text.dart';
 import '../../utilities/app_size.dart';
 import '../../utilities/colors.dart';
 import '../../utilities/image_path.dart';
+import '../authentication/screen_login.dart';
+import '../categories/screen_category_list.dart';
 import '../categories/screen_update_category.dart';
 
 class ProductList extends StatefulWidget {
@@ -81,107 +84,135 @@ class _ProductListState extends State<ProductList>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.categoryName),
-      ),
-      endDrawer: const MyDrawer(),
-      body: ListView(
-        padding: MyPadding.appPadding,
-        children: [
-          // simple icon for product list
-          Gap.gapH30,
-          const Icon(
-            Icons.fact_check_outlined,
-            color: AllColors.primaryColor,
-            size: 50,
-          ),
-          Gap.gapH20,
-
-          // add new product button
-          AllButton.borderedButton(
-            context: context,
-            btnText: AllTexts.addNewProduct,
-            onTap: () {
-              Navigator.of(context).push(
+    return WillPopScope(
+      onWillPop: () async {
+        return await AllDialogue.backDialogue(
+          context: context,
+          onTap: dialogueNav,
+          title: AllTexts.signOut,
+          subTitle: AllTexts.signOutSub,
+        );
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (builder) => AddNewProduct(
-                    categoryId: widget.categoryId,
-                    categoryName: widget.categoryName,
-                  ),
+                  builder: (builder) => const CategoryList(),
                 ),
               );
             },
+            icon: const Icon(Icons.arrow_back),
           ),
-          Gap.gapH15,
+          title: Text(widget.categoryName),
+        ),
+        endDrawer: const MyDrawer(),
+        body: ListView(
+          padding: MyPadding.appPadding,
+          children: [
+            // simple icon for product list
+            Gap.gapH30,
+            const Icon(
+              Icons.fact_check_outlined,
+              color: AllColors.primaryColor,
+              size: 50,
+            ),
+            Gap.gapH20,
 
-
-          // update category button
-          AllButton.borderedButton(
-            context: context,
-            btnText: AllTexts.updateCategoryInfo,
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (builder) => UpdateCategory(
-                    categoryId: widget.categoryId,
-                    categoryName: widget.categoryName,
+            // add new product button
+            AllButton.borderedButton(
+              context: context,
+              btnText: AllTexts.addNewProduct,
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (builder) => AddNewProduct(
+                      categoryId: widget.categoryId,
+                      categoryName: widget.categoryName,
+                    ),
                   ),
-                ),
-              );
-            },
-          ),
-          Gap.gapH30,
+                );
+              },
+            ),
+            Gap.gapH15,
 
-          // product list title
-          Text(
-            "${AllTexts.categoryList} (${productListData.length})",
-            style: Theme.of(context).textTheme.caption,
-          ),
-          Gap.gapH10,
+            // update category button
+            AllButton.borderedButton(
+              context: context,
+              btnText: AllTexts.updateCategoryInfo,
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (builder) => UpdateCategory(
+                      categoryId: widget.categoryId,
+                      categoryName: widget.categoryName,
+                    ),
+                  ),
+                );
+              },
+            ),
+            Gap.gapH30,
 
-          isLoading
-              ? Column(
-                  children: [
-                    Gap.gapH50,
-                    Align(
-                      alignment: Alignment.center,
-                      child: AllLoader.generalLoader(
-                        loaderColor: AllColors.primaryColor,
-                        loaderWidth: 2,
-                        loaderSize: 30,
+            // product list title
+            Text(
+              "${AllTexts.categoryList} (${productListData.length})",
+              style: Theme.of(context).textTheme.caption,
+            ),
+            Gap.gapH10,
+
+            isLoading
+                ? Column(
+                    children: [
+                      Gap.gapH50,
+                      Align(
+                        alignment: Alignment.center,
+                        child: AllLoader.generalLoader(
+                          loaderColor: AllColors.primaryColor,
+                          loaderWidth: 2,
+                          loaderSize: 30,
+                        ),
                       ),
-                    ),
-                  ],
-                )
-              : productListData.isEmpty
-                  ? Column(
-                      children: [
-                        Gap.gapH50,
-                        Image.asset(
-                          ImagePath.error,
-                          height: 200,
-                        ),
-                        Text(
-                          AllTexts.noDataFound,
-                          style: Theme.of(context).textTheme.headline2,
-                        ),
-                      ],
-                    )
-                  :
+                    ],
+                  )
+                : productListData.isEmpty
+                    ? Column(
+                        children: [
+                          Gap.gapH50,
+                          Image.asset(
+                            ImagePath.error,
+                            height: 200,
+                          ),
+                          Text(
+                            AllTexts.noDataFound,
+                            style: Theme.of(context).textTheme.headline2,
+                          ),
+                        ],
+                      )
+                    :
 
-                  // product list
-                  ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: MyPadding.padding10,
-                      itemCount: productListData.length,
-                      itemBuilder: (context, index) {
-                        return _productList(
-                            productListData: productListData[index]);
-                      },
-                    ),
-        ],
+                    // product list
+                    ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: MyPadding.padding10,
+                        itemCount: productListData.length,
+                        itemBuilder: (context, index) {
+                          return _productList(
+                              productListData: productListData[index]);
+                        },
+                      ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void dialogueNav() {
+    Navigator.of(context).pop();
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (builder) => const Login(),
       ),
     );
   }

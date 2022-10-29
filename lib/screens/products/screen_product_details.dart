@@ -17,6 +17,7 @@ import '../../models/model_product/model_product_details.dart';
 import '../../utilities/all_text.dart';
 import '../../utilities/app_size.dart';
 import '../../utilities/colors.dart';
+import '../authentication/screen_login.dart';
 
 class ProductDetails extends StatefulWidget {
   final String categoryId, productId, categoryName;
@@ -116,108 +117,131 @@ class _ProductDetailsState extends State<ProductDetails>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          //     leading: IconButton(
-          //     onPressed: () {
-          //   Navigator.of(context).pushReplacement(
-          //     MaterialPageRoute(
-          //       builder: (builder) => const UserList(),
-          //     ),
-          //   );
-          // },
-          // icon: const Icon(Icons.arrow_back),
-          // ),
-          title: const Text(AllTexts.productDetails),
-        ),
-        endDrawer: const MyDrawer(),
-        body: productName.isEmpty
-            ? Column(
-                children: [
-                  Gap.gapH50,
-                  Align(
-                    alignment: Alignment.center,
-                    child: AllLoader.generalLoader(
-                      loaderColor: AllColors.primaryColor,
-                      loaderWidth: 2,
-                      loaderSize: 30,
+    return WillPopScope(
+      onWillPop: () async {
+        return await AllDialogue.backDialogue(
+          context: context,
+          onTap: dialogueNav,
+          title: AllTexts.signOut,
+          subTitle: AllTexts.signOutSub,
+        );
+      },
+      child: Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (builder) => ProductList(
+                      categoryId: widget.categoryId,
+                      categoryName: widget.categoryName,
                     ),
                   ),
-                ],
-              )
-            : ListView(
-                padding: MyPadding.appPadding,
-                children: [
-                  // details
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        productName,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.headline1!.copyWith(
-                              fontSize: 25,
-                            ),
+                );
+              },
+              icon: const Icon(Icons.arrow_back),
+            ),
+            title: const Text(AllTexts.productDetails),
+          ),
+          endDrawer: const MyDrawer(),
+          body: productName.isEmpty
+              ? Column(
+                  children: [
+                    Gap.gapH50,
+                    Align(
+                      alignment: Alignment.center,
+                      child: AllLoader.generalLoader(
+                        loaderColor: AllColors.primaryColor,
+                        loaderWidth: 2,
+                        loaderSize: 30,
                       ),
-                      Text(
-                        "Price: $price /=",
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                      Text(
-                        "Quantity Left: $quantity (KG or pieces)",
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                      Text(
-                        "Description: $description",
-                        maxLines: 10,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    ],
-                  ),
-                  Gap.gapH30,
-
-                  // update product info
-                  AllButton.borderedButton(
-                    context: context,
-                    btnText: AllTexts.updateUserInfo,
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (builder) => UpdateProduct(
-                            productId: widget.productId,
-                            categoryId: widget.categoryId,
-                            description: description,
-                            price: price,
-                            productName: productName,
-                            quantity: quantity,
-                            categoryName: widget.categoryName,
-                          ),
+                    ),
+                  ],
+                )
+              : ListView(
+                  padding: MyPadding.appPadding,
+                  children: [
+                    // details
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          productName,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style:
+                              Theme.of(context).textTheme.headline1!.copyWith(
+                                    fontSize: 25,
+                                  ),
                         ),
-                      );
-                    },
-                  ),
-                  Gap.gapH15,
+                        Text(
+                          "Price: $price /=",
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                        Text(
+                          "Quantity Left: $quantity (KG or pieces)",
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                        Text(
+                          "Description: $description",
+                          maxLines: 10,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ],
+                    ),
+                    Gap.gapH30,
 
-                  // delete button
-                  AllButton.generalButton(
-                    context: context,
-                    btnText: AllTexts.deleteProductCap,
-                    onTap: () {
-                      AllDialogue.backDialogue(
-                        context: context,
-                        onTap: _delete,
-                        title: AllTexts.deleteExc,
-                        subTitle: AllTexts.deleteProduct,
-                        color: AllColors.errorColor,
-                      );
-                    },
-                    enable: enableButton,
-                    color: AllColors.errorColor,
-                  ),
-                ],
-              ));
+                    // update product info
+                    AllButton.borderedButton(
+                      context: context,
+                      btnText: AllTexts.updateUserInfo,
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (builder) => UpdateProduct(
+                              productId: widget.productId,
+                              categoryId: widget.categoryId,
+                              description: description,
+                              price: price,
+                              productName: productName,
+                              quantity: quantity,
+                              categoryName: widget.categoryName,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    Gap.gapH15,
+
+                    // delete button
+                    AllButton.generalButton(
+                      context: context,
+                      btnText: AllTexts.deleteProductCap,
+                      onTap: () {
+                        AllDialogue.backDialogue(
+                          context: context,
+                          onTap: _delete,
+                          title: AllTexts.deleteExc,
+                          subTitle: AllTexts.deleteProduct,
+                          color: AllColors.errorColor,
+                        );
+                      },
+                      enable: enableButton,
+                      color: AllColors.errorColor,
+                    ),
+                  ],
+                )),
+    );
+  }
+
+  void dialogueNav() {
+    Navigator.of(context).pop();
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (builder) => const Login(),
+      ),
+    );
   }
 
   void _delete() {
@@ -226,7 +250,7 @@ class _ProductDetailsState extends State<ProductDetails>
       productId: widget.productId,
     );
     setState(() {
-      enableButton=true;
+      enableButton = true;
     });
   }
 }

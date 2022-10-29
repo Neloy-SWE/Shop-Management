@@ -8,21 +8,22 @@
 
 import 'package:flutter/material.dart';
 import 'package:shop_management/models/model_auth/model_reset_pass.dart';
+import 'package:shop_management/screens/authentication/screen_login.dart';
 import 'package:shop_management/screens/shop/screen_homepage.dart';
 import 'package:shop_management/utilities/all_text.dart';
 import 'package:shop_management/utilities/app_size.dart';
 import 'package:shop_management/utilities/colors.dart';
 import '../../api/api_call_shop/api_call_shop_update.dart';
 import '../../components/custom_button.dart';
+import '../../components/custom_dialogue.dart';
 import '../../components/custom_drawer.dart';
 import '../../components/custom_input.dart';
 import '../../components/custom_snack_bar.dart';
 import '../../managers/manager.dart';
 import '../../managers/manager_exception.dart';
 
-
 class UpdateShopInfo extends StatefulWidget {
-  final String shopName, address, city, country/*, image*/;
+  final String shopName, address, city, country /*, image*/;
 
   const UpdateShopInfo({
     Key? key,
@@ -38,7 +39,7 @@ class UpdateShopInfo extends StatefulWidget {
 }
 
 class _UpdateShopInfoState extends State<UpdateShopInfo>
-    implements Manager, ExceptionManager/*, ImageUploadManager*/ {
+    implements Manager, ExceptionManager /*, ImageUploadManager*/ {
   @override
   void appException() {
     CustomSnackBar(
@@ -94,22 +95,22 @@ class _UpdateShopInfoState extends State<UpdateShopInfo>
       //   });
       // }
       // else{
-        setState(() {
-          enableButton = true;
-          //showImageUpload = false;
-        });
-        CallShopUpdate().callShopUpdate(
-          shopUpdate: this,
-          exception: this,
-          storeName: _storeNameController.text.trim(),
-          address: _addressController.text.trim(),
-          city: _cityController.text.trim(),
-          country: _countryController.text.trim(),
-        );
-        // CallAddShopProfileImage().callAddShopProfileImage(
-        //   upload: this,
-        //   imagePath: profileImage,
-        // );
+      setState(() {
+        enableButton = true;
+        //showImageUpload = false;
+      });
+      CallShopUpdate().callShopUpdate(
+        shopUpdate: this,
+        exception: this,
+        storeName: _storeNameController.text.trim(),
+        address: _addressController.text.trim(),
+        city: _cityController.text.trim(),
+        country: _countryController.text.trim(),
+      );
+      // CallAddShopProfileImage().callAddShopProfileImage(
+      //   upload: this,
+      //   imagePath: profileImage,
+      // );
       // }
     }
   }
@@ -170,6 +171,7 @@ class _UpdateShopInfoState extends State<UpdateShopInfo>
   // }
 
   bool enableButton = false;
+
   //bool showImageUpload = false;
   final _fromKeyUpdateShop = GlobalKey<FormState>();
 
@@ -212,211 +214,236 @@ class _UpdateShopInfoState extends State<UpdateShopInfo>
             : _countryController.text.trim(),
       );
     });
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(AllTexts.updateShopInfo),
-      ),
-      endDrawer: const MyDrawer(),
-      body: ListView(
-        padding: MyPadding.appPadding,
-        children: [
-          // simple icon for update
-          Gap.gapH30,
-          const Icon(
-            Icons.upload_outlined,
-            color: AllColors.primaryColor,
-            size: 50,
+    return WillPopScope(
+      onWillPop: () async {
+        return await AllDialogue.backDialogue(
+          context: context,
+          onTap: dialogueNav,
+          title: AllTexts.signOut,
+          subTitle: AllTexts.signOutSub,
+        );
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(Icons.arrow_back),
           ),
-          Gap.gapH50,
-
-          // update form
-          Form(
-            key: _fromKeyUpdateShop,
-            child: Column(
-              children: [
-                // text field: store name
-                AllInput.generalInput(
-                  context: context,
-                  controller: _storeNameController,
-                  textInputType: TextInputType.text,
-                  textInputAction: TextInputAction.next,
-                  hint: AllTexts.storeNameHint,
-                  label: AllTexts.storeName,
-                  prefixIcon: Icons.store_mall_directory_outlined,
-                  validatorFunction: (value) {
-                    if (value!.isEmpty) {
-                      return "Field is required !!";
-                    }
-                    return null;
-                  },
-                ),
-                Gap.gapH15,
-
-                // text field: address
-                AllInput.generalInput(
-                  context: context,
-                  controller: _addressController,
-                  textInputType: TextInputType.text,
-                  textInputAction: TextInputAction.next,
-                  hint: AllTexts.addressHint,
-                  label: AllTexts.address,
-                  prefixIcon: Icons.location_on_outlined,
-                  validatorFunction: (value) {
-                    if (value!.isEmpty) {
-                      return "Field is required !!";
-                    }
-                    return null;
-                  },
-                ),
-                Gap.gapH15,
-
-                // text field: city
-                AllInput.generalInput(
-                  context: context,
-                  controller: _cityController,
-                  textInputType: TextInputType.text,
-                  textInputAction: TextInputAction.next,
-                  hint: AllTexts.cityHint,
-                  label: AllTexts.city,
-                  prefixIcon: Icons.location_city,
-                  validatorFunction: (value) {
-                    if (value!.isEmpty) {
-                      return "Field is required !!";
-                    }
-                    return null;
-                  },
-                ),
-                Gap.gapH15,
-
-                // text field: country
-                AllInput.generalInput(
-                  context: context,
-                  controller: _countryController,
-                  textInputType: TextInputType.text,
-                  textInputAction: TextInputAction.next,
-                  hint: AllTexts.countryHint,
-                  label: AllTexts.country,
-                  prefixIcon: Icons.my_location_outlined,
-                  validatorFunction: (value) {
-                    if (value!.isEmpty) {
-                      return "Field is required !!";
-                    }
-                    return null;
-                  },
-                ),
-                Gap.gapH30,
-              ],
+          title: const Text(AllTexts.updateShopInfo),
+        ),
+        endDrawer: const MyDrawer(isHome: false),
+        body: ListView(
+          padding: MyPadding.appPadding,
+          children: [
+            // simple icon for update
+            Gap.gapH30,
+            const Icon(
+              Icons.upload_outlined,
+              color: AllColors.primaryColor,
+              size: 50,
             ),
-          ),
+            Gap.gapH50,
 
-          // image upload
-/*          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              profileImageFile != null
-                  ? Container(
-                      height: 100,
-                      width: 100,
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.black,
-                            width: 0.5,
-                          ),
-                          image: DecorationImage(
-                            image: FileImage(profileImageFile!),
-                            fit: BoxFit.fill,
-                          )),
-                    )
-                  : profileImage == ImagePath.shop
-                      ? const SizedBox()
-                      : Container(
-                          height: 100,
-                          width: 100,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.black,
-                                width: 0.5,
-                              ),
-                              image: DecorationImage(
-                                image: NetworkImage(profileImage),
-                                fit: BoxFit.fill,
-                              )),
-                        ),
-              profileImageFile != null || profileImage != ImagePath.shop
-                  ? Gap.gapW10
-                  : const SizedBox(),
-              // upload button
-              GestureDetector(
-                onTap: () {
-                  showModalBottomSheet(
+            // update form
+            Form(
+              key: _fromKeyUpdateShop,
+              child: Column(
+                children: [
+                  // text field: store name
+                  AllInput.generalInput(
                     context: context,
-                    builder: (builder) => SizedBox(
-                      height: 150,
-                      child: Center(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            TextButton(
-                              onPressed: () {
-                                _picImageGallery();
-                              },
-                              child: Text(
-                                AllTexts.gallery,
-                                style: Theme.of(context).textTheme.headline5,
-                              ),
+                    controller: _storeNameController,
+                    textInputType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    hint: AllTexts.storeNameHint,
+                    label: AllTexts.storeName,
+                    prefixIcon: Icons.store_mall_directory_outlined,
+                    validatorFunction: (value) {
+                      if (value!.isEmpty) {
+                        return "Field is required !!";
+                      }
+                      return null;
+                    },
+                  ),
+                  Gap.gapH15,
+
+                  // text field: address
+                  AllInput.generalInput(
+                    context: context,
+                    controller: _addressController,
+                    textInputType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    hint: AllTexts.addressHint,
+                    label: AllTexts.address,
+                    prefixIcon: Icons.location_on_outlined,
+                    validatorFunction: (value) {
+                      if (value!.isEmpty) {
+                        return "Field is required !!";
+                      }
+                      return null;
+                    },
+                  ),
+                  Gap.gapH15,
+
+                  // text field: city
+                  AllInput.generalInput(
+                    context: context,
+                    controller: _cityController,
+                    textInputType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    hint: AllTexts.cityHint,
+                    label: AllTexts.city,
+                    prefixIcon: Icons.location_city,
+                    validatorFunction: (value) {
+                      if (value!.isEmpty) {
+                        return "Field is required !!";
+                      }
+                      return null;
+                    },
+                  ),
+                  Gap.gapH15,
+
+                  // text field: country
+                  AllInput.generalInput(
+                    context: context,
+                    controller: _countryController,
+                    textInputType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    hint: AllTexts.countryHint,
+                    label: AllTexts.country,
+                    prefixIcon: Icons.my_location_outlined,
+                    validatorFunction: (value) {
+                      if (value!.isEmpty) {
+                        return "Field is required !!";
+                      }
+                      return null;
+                    },
+                  ),
+                  Gap.gapH30,
+                ],
+              ),
+            ),
+
+            // image upload
+/*          Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                profileImageFile != null
+                    ? Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.black,
+                              width: 0.5,
                             ),
-                            AllDivider.generalDivider(),
-                            TextButton(
-                              onPressed: () {
-                                _picImageCamera();
-                              },
-                              child: Text(
-                                AllTexts.camera,
-                                style: Theme.of(context).textTheme.headline5,
+                            image: DecorationImage(
+                              image: FileImage(profileImageFile!),
+                              fit: BoxFit.fill,
+                            )),
+                      )
+                    : profileImage == ImagePath.shop
+                        ? const SizedBox()
+                        : Container(
+                            height: 100,
+                            width: 100,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.black,
+                                  width: 0.5,
+                                ),
+                                image: DecorationImage(
+                                  image: NetworkImage(profileImage),
+                                  fit: BoxFit.fill,
+                                )),
+                          ),
+                profileImageFile != null || profileImage != ImagePath.shop
+                    ? Gap.gapW10
+                    : const SizedBox(),
+                // upload button
+                GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (builder) => SizedBox(
+                        height: 150,
+                        child: Center(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              TextButton(
+                                onPressed: () {
+                                  _picImageGallery();
+                                },
+                                child: Text(
+                                  AllTexts.gallery,
+                                  style: Theme.of(context).textTheme.headline5,
+                                ),
                               ),
-                            ),
-                          ],
+                              AllDivider.generalDivider(),
+                              TextButton(
+                                onPressed: () {
+                                  _picImageCamera();
+                                },
+                                child: Text(
+                                  AllTexts.camera,
+                                  style: Theme.of(context).textTheme.headline5,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
+                    );
+                  },
+                  child: Container(
+                    height: 100,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 0.5,
+                      ),
                     ),
-                  );
-                },
-                child: Container(
-                  height: 100,
-                  width: 100,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.black,
-                      width: 0.5,
+                    child: const Icon(
+                      Icons.file_upload_outlined,
+                      size: 50,
+                      color: Colors.black38,
                     ),
-                  ),
-                  child: const Icon(
-                    Icons.file_upload_outlined,
-                    size: 50,
-                    color: Colors.black38,
                   ),
                 ),
-              ),
-            ],
-          ),
-          showImageUpload? Gap.gapH10 : const SizedBox(),
-          showImageUpload? Text(
-            AllTexts.pleaseSelectImage,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headline2,
-          ) : const SizedBox(),
-          Gap.gapH30,*/
+              ],
+            ),
+            showImageUpload? Gap.gapH10 : const SizedBox(),
+            showImageUpload? Text(
+              AllTexts.pleaseSelectImage,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headline2,
+            ) : const SizedBox(),
+            Gap.gapH30,*/
 
-          // update button
-          AllButton.generalButton(
-            context: context,
-            btnText: AllTexts.updateCap,
-            onTap: _update,
-            enable: enableButton,
-          ),
-        ],
+            // update button
+            AllButton.generalButton(
+              context: context,
+              btnText: AllTexts.updateCap,
+              onTap: _update,
+              enable: enableButton,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void dialogueNav() {
+    Navigator.of(context).pop();
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (builder) => const Login(),
       ),
     );
   }

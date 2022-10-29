@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shop_management/models/model_users/model_required_field.dart';
-import 'package:shop_management/screens/users/screen_user_list.dart';
-
+import 'package:shop_management/screens/users/screen_user_details.dart';
 import '../../api/api_call_users/api_call_update_user_details.dart';
 import '../../components/custom_button.dart';
+import '../../components/custom_dialogue.dart';
 import '../../components/custom_drawer.dart';
 import '../../components/custom_input.dart';
 import '../../components/custom_snack_bar.dart';
@@ -13,6 +13,7 @@ import '../../models/model_auth/model_reset_pass.dart';
 import '../../utilities/all_text.dart';
 import '../../utilities/app_size.dart';
 import '../../utilities/colors.dart';
+import '../authentication/screen_login.dart';
 
 class UpdateUserInfo extends StatefulWidget {
   final String userId, name, email, address, city, country;
@@ -66,7 +67,12 @@ class _UpdateUserInfoState extends State<UpdateUserInfo>
         .show();
 
     Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (builder) => const UserList()));
+      MaterialPageRoute(
+        builder: (builder) => UserDetails(
+          userId: widget.userId,
+        ),
+      ),
+    );
   }
 
   TextEditingController _nameController = TextEditingController();
@@ -141,133 +147,158 @@ class _UpdateUserInfoState extends State<UpdateUserInfo>
       );
     });
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(AllTexts.updateUserInfo),
-      ),
-      endDrawer: const MyDrawer(),
-      body: ListView(
-        padding: MyPadding.appPadding,
-        children: [
+    return WillPopScope(
+      onWillPop: () async {
+        return await AllDialogue.backDialogue(
+          context: context,
+          onTap: dialogueNav,
+          title: AllTexts.signOut,
+          subTitle: AllTexts.signOutSub,
+        );
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(Icons.arrow_back),
+          ),
+          title: const Text(AllTexts.updateUserInfo),
+        ),
+        endDrawer: const MyDrawer(),
+        body: ListView(
+          padding: MyPadding.appPadding,
+          children: [
 // simple icon for update
-          Gap.gapH30,
-          const Icon(
-            Icons.upload_outlined,
-            color: AllColors.primaryColor,
-            size: 50,
-          ),
-          Gap.gapH50,
-
-          Form(
-            key: _fromKeyUpdateUser,
-            child: Column(
-              children: [
-                // text field: store name
-                AllInput.generalInput(
-                  context: context,
-                  controller: _nameController,
-                  textInputType: TextInputType.text,
-                  textInputAction: TextInputAction.next,
-                  hint: AllTexts.nameHint,
-                  label: AllTexts.name,
-                  prefixIcon: Icons.account_box_outlined,
-                  validatorFunction: (value) {
-                    if (value!.isEmpty) {
-                      return "Field is required !!";
-                    }
-                    return null;
-                  },
-                ),
-                Gap.gapH15,
-
-                // text field: email
-                AllInput.generalInput(
-                  context: context,
-                  controller: _emailController,
-                  textInputType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
-                  hint: AllTexts.emailHint,
-                  label: AllTexts.email,
-                  prefixIcon: Icons.mark_email_read_outlined,
-                  validatorFunction: (value) {
-                    String pattern =
-                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
-                    RegExp regExp = RegExp(pattern);
-                    if (value!.isEmpty) {
-                      return "Field is required !!";
-                    } else if (!regExp.hasMatch(value)) {
-                      return 'Please enter valid email';
-                    }
-                    return null;
-                  },
-                ),
-                Gap.gapH15,
-
-                // text field: address
-                AllInput.generalInput(
-                  context: context,
-                  controller: _addressController,
-                  textInputType: TextInputType.text,
-                  textInputAction: TextInputAction.next,
-                  hint: AllTexts.addressHint,
-                  label: AllTexts.address,
-                  prefixIcon: Icons.location_on_outlined,
-                  validatorFunction: (value) {
-                    if (value!.isEmpty) {
-                      return "Field is required !!";
-                    }
-                    return null;
-                  },
-                ),
-                Gap.gapH15,
-
-                // text field: city
-                AllInput.generalInput(
-                  context: context,
-                  controller: _cityController,
-                  textInputType: TextInputType.text,
-                  textInputAction: TextInputAction.next,
-                  hint: AllTexts.cityHint,
-                  label: AllTexts.city,
-                  prefixIcon: Icons.location_city,
-                  validatorFunction: (value) {
-                    if (value!.isEmpty) {
-                      return "Field is required !!";
-                    }
-                    return null;
-                  },
-                ),
-                Gap.gapH15,
-
-                // text field: country
-                AllInput.generalInput(
-                  context: context,
-                  controller: _countryController,
-                  textInputType: TextInputType.text,
-                  textInputAction: TextInputAction.next,
-                  hint: AllTexts.countryHint,
-                  label: AllTexts.country,
-                  prefixIcon: Icons.my_location_outlined,
-                  validatorFunction: (value) {
-                    if (value!.isEmpty) {
-                      return "Field is required !!";
-                    }
-                    return null;
-                  },
-                ),
-                Gap.gapH30,
-              ],
+            Gap.gapH30,
+            const Icon(
+              Icons.upload_outlined,
+              color: AllColors.primaryColor,
+              size: 50,
             ),
-          ),
+            Gap.gapH50,
 
-          // update button
-          AllButton.generalButton(
-            context: context,
-            btnText: AllTexts.updateCap,
-            onTap: _updateUser,
-            enable: enableButton,
-          ),
-        ],
+            Form(
+              key: _fromKeyUpdateUser,
+              child: Column(
+                children: [
+                  // text field: store name
+                  AllInput.generalInput(
+                    context: context,
+                    controller: _nameController,
+                    textInputType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    hint: AllTexts.nameHint,
+                    label: AllTexts.name,
+                    prefixIcon: Icons.account_box_outlined,
+                    validatorFunction: (value) {
+                      if (value!.isEmpty) {
+                        return "Field is required !!";
+                      }
+                      return null;
+                    },
+                  ),
+                  Gap.gapH15,
+
+                  // text field: email
+                  AllInput.generalInput(
+                    context: context,
+                    controller: _emailController,
+                    textInputType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    hint: AllTexts.emailHint,
+                    label: AllTexts.email,
+                    prefixIcon: Icons.mark_email_read_outlined,
+                    validatorFunction: (value) {
+                      String pattern =
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+                      RegExp regExp = RegExp(pattern);
+                      if (value!.isEmpty) {
+                        return "Field is required !!";
+                      } else if (!regExp.hasMatch(value)) {
+                        return 'Please enter valid email';
+                      }
+                      return null;
+                    },
+                  ),
+                  Gap.gapH15,
+
+                  // text field: address
+                  AllInput.generalInput(
+                    context: context,
+                    controller: _addressController,
+                    textInputType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    hint: AllTexts.addressHint,
+                    label: AllTexts.address,
+                    prefixIcon: Icons.location_on_outlined,
+                    validatorFunction: (value) {
+                      if (value!.isEmpty) {
+                        return "Field is required !!";
+                      }
+                      return null;
+                    },
+                  ),
+                  Gap.gapH15,
+
+                  // text field: city
+                  AllInput.generalInput(
+                    context: context,
+                    controller: _cityController,
+                    textInputType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    hint: AllTexts.cityHint,
+                    label: AllTexts.city,
+                    prefixIcon: Icons.location_city,
+                    validatorFunction: (value) {
+                      if (value!.isEmpty) {
+                        return "Field is required !!";
+                      }
+                      return null;
+                    },
+                  ),
+                  Gap.gapH15,
+
+                  // text field: country
+                  AllInput.generalInput(
+                    context: context,
+                    controller: _countryController,
+                    textInputType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    hint: AllTexts.countryHint,
+                    label: AllTexts.country,
+                    prefixIcon: Icons.my_location_outlined,
+                    validatorFunction: (value) {
+                      if (value!.isEmpty) {
+                        return "Field is required !!";
+                      }
+                      return null;
+                    },
+                  ),
+                  Gap.gapH30,
+                ],
+              ),
+            ),
+
+            // update button
+            AllButton.generalButton(
+              context: context,
+              btnText: AllTexts.updateCap,
+              onTap: _updateUser,
+              enable: enableButton,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void dialogueNav() {
+    Navigator.of(context).pop();
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (builder) => const Login(),
       ),
     );
   }

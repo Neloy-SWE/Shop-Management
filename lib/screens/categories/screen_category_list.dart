@@ -3,6 +3,7 @@ import 'package:shop_management/screens/categories/screen_add_new_category.dart'
 
 import '../../api/api_call_category/api_call_category_list.dart';
 import '../../components/custom_button.dart';
+import '../../components/custom_dialogue.dart';
 import '../../components/custom_divider.dart';
 import '../../components/custom_drawer.dart';
 import '../../components/custom_loader.dart';
@@ -14,7 +15,9 @@ import '../../utilities/all_text.dart';
 import '../../utilities/app_size.dart';
 import '../../utilities/colors.dart';
 import '../../utilities/image_path.dart';
+import '../authentication/screen_login.dart';
 import '../products/screen_product_list.dart';
+import '../shop/screen_homepage.dart';
 
 class CategoryList extends StatefulWidget {
   const CategoryList({Key? key}) : super(key: key);
@@ -70,89 +73,119 @@ class _CategoryListState extends State<CategoryList>
   List<CategoryListData> categoryListData = [];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(AllTexts.categoryList),
-      ),
-      endDrawer: const MyDrawer(),
-      body: ListView(
-        padding: MyPadding.appPadding,
-        children: [
-          // simple icon for users list
-          Gap.gapH30,
-          const Icon(
-            Icons.fact_check_outlined,
-            color: AllColors.primaryColor,
-            size: 50,
-          ),
-          Gap.gapH20,
-
-          // add new category button
-          AllButton.borderedButton(
-            context: context,
-            btnText: AllTexts.addNewCategory,
-            onTap: () {
-              Navigator.of(context).push(
+    return WillPopScope(
+      onWillPop: () async {
+        return await AllDialogue.backDialogue(
+          context: context,
+          onTap: dialogueNav,
+          title: AllTexts.signOut,
+          subTitle: AllTexts.signOutSub,
+        );
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (builder) => const AddNewCategory(),
+                  builder: (builder) => const HomePage(),
                 ),
               );
             },
+            icon: const Icon(Icons.arrow_back),
           ),
-          Gap.gapH30,
+          title: const Text(AllTexts.categoryList),
+        ),
+        endDrawer: const MyDrawer(isHome: false),
+        body: ListView(
+          padding: MyPadding.appPadding,
+          children: [
+            // simple icon for users list
+            Gap.gapH30,
+            const Icon(
+              Icons.fact_check_outlined,
+              color: AllColors.primaryColor,
+              size: 50,
+            ),
+            Gap.gapH20,
 
-          // category list title
-          Text(
-            "${AllTexts.categoryList} (${categoryListData.length})",
-            style: Theme.of(context).textTheme.caption,
-          ),
-          Gap.gapH10,
+            // add new category button
+            AllButton.borderedButton(
+              context: context,
+              btnText: AllTexts.addNewCategory,
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (builder) => const AddNewCategory(),
+                  ),
+                );
+              },
+            ),
+            Gap.gapH30,
+
+            // category list title
+            Text(
+              "${AllTexts.categoryList} (${categoryListData.length})",
+              style: Theme.of(context).textTheme.caption,
+            ),
+            Gap.gapH10,
 
 
-          isLoading
-              ? Column(
-            children: [
-              Gap.gapH50,
-              Align(
-                alignment: Alignment.center,
-                child: AllLoader.generalLoader(
-                  loaderColor: AllColors.primaryColor,
-                  loaderWidth: 2,
-                  loaderSize: 30,
+            isLoading
+                ? Column(
+              children: [
+                Gap.gapH50,
+                Align(
+                  alignment: Alignment.center,
+                  child: AllLoader.generalLoader(
+                    loaderColor: AllColors.primaryColor,
+                    loaderWidth: 2,
+                    loaderSize: 30,
+                  ),
                 ),
-              ),
-            ],
-          )
-              : categoryListData.isEmpty
-              ? Column(
-            children: [
-              Gap.gapH50,
-              Image.asset(
-                ImagePath.error,
-                height: 200,
-              ),
-              Text(
-                AllTexts.noDataFound,
-                style: Theme.of(context).textTheme.headline2,
-              ),
-            ],
-          )
-              :
+              ],
+            )
+                : categoryListData.isEmpty
+                ? Column(
+              children: [
+                Gap.gapH50,
+                Image.asset(
+                  ImagePath.error,
+                  height: 200,
+                ),
+                Text(
+                  AllTexts.noDataFound,
+                  style: Theme.of(context).textTheme.headline2,
+                ),
+              ],
+            )
+                :
 
-          // category list
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: MyPadding.padding10,
-            itemCount: categoryListData.length,
-            itemBuilder: (context, index) {
-              return _categoryList(categoryListData: categoryListData[index]);
-            },
-          ),
-        ],
+            // category list
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: MyPadding.padding10,
+              itemCount: categoryListData.length,
+              itemBuilder: (context, index) {
+                return _categoryList(categoryListData: categoryListData[index]);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
+
+  void dialogueNav() {
+    Navigator.of(context).pop();
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (builder) => const Login(),
+      ),
+    );
+  }
+
   Widget _categoryList({required CategoryListData categoryListData}) {
     return InkWell(
       onTap: () {

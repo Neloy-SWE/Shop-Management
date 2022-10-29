@@ -3,8 +3,8 @@ import 'package:shop_management/api/api_call_users/api_call_user_details.dart';
 import 'package:shop_management/screens/users/screen_update_user_info.dart';
 import 'package:shop_management/screens/users/screen_user_list.dart';
 import 'package:shop_management/utilities/all_text.dart';
-
 import '../../components/custom_button.dart';
+import '../../components/custom_dialogue.dart';
 import '../../components/custom_drawer.dart';
 import '../../components/custom_loader.dart';
 import '../../components/custom_snack_bar.dart';
@@ -13,6 +13,7 @@ import '../../managers/manager_exception.dart';
 import '../../models/model_users/model_user_details.dart';
 import '../../utilities/app_size.dart';
 import '../../utilities/colors.dart';
+import '../authentication/screen_login.dart';
 
 class UserDetails extends StatefulWidget {
   final String userId;
@@ -71,94 +72,113 @@ class _UserDetailsState extends State<UserDetails>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (builder) => const UserList(),
-              ),
-            );
-          },
-          icon: const Icon(Icons.arrow_back),
+    return WillPopScope(
+      onWillPop: () async {
+        return await AllDialogue.backDialogue(
+          context: context,
+          onTap: dialogueNav,
+          title: AllTexts.signOut,
+          subTitle: AllTexts.signOutSub,
+        );
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (builder) => const UserList(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.arrow_back),
+          ),
+          title: const Text(AllTexts.userDetails),
         ),
-        title: const Text(AllTexts.userDetails),
-      ),
-      endDrawer: const MyDrawer(),
-      body: name.isEmpty
-          ? Column(
-              children: [
-                Gap.gapH50,
-                Align(
-                  alignment: Alignment.center,
-                  child: AllLoader.generalLoader(
-                    loaderColor: AllColors.primaryColor,
-                    loaderWidth: 2,
-                    loaderSize: 30,
+        endDrawer: const MyDrawer(),
+        body: name.isEmpty
+            ? Column(
+                children: [
+                  Gap.gapH50,
+                  Align(
+                    alignment: Alignment.center,
+                    child: AllLoader.generalLoader(
+                      loaderColor: AllColors.primaryColor,
+                      loaderWidth: 2,
+                      loaderSize: 30,
+                    ),
                   ),
-                ),
-              ],
-            )
-          : ListView(
-              padding: MyPadding.appPadding,
-              children: [
-                // simple icon for user profile
-                const Icon(
-                  Icons.account_circle_outlined,
-                  color: AllColors.primaryColor,
-                  size: 150,
-                ),
+                ],
+              )
+            : ListView(
+                padding: MyPadding.appPadding,
+                children: [
+                  // simple icon for user profile
+                  const Icon(
+                    Icons.account_circle_outlined,
+                    color: AllColors.primaryColor,
+                    size: 150,
+                  ),
 
-                // user name
-                Text(
-                  name,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headline1!.copyWith(
-                        fontSize: 30,
-                      ),
-                ),
+                  // user name
+                  Text(
+                    name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headline1!.copyWith(
+                          fontSize: 30,
+                        ),
+                  ),
 
-                // user mail
-                Text(
-                  email,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-                Gap.gapH15,
+                  // user mail
+                  Text(
+                    email,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                  Gap.gapH15,
 
-                Text(
-                  location,
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.caption,
-                ),
-                Gap.gapH30,
+                  Text(
+                    location,
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.caption,
+                  ),
+                  Gap.gapH30,
 
-                // update user info
-                AllButton.borderedButton(
-                  context: context,
-                  btnText: AllTexts.updateUserInfo,
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (builder) => UpdateUserInfo(
-                            userId: widget.userId,
-                            name: name,
-                            email: email,
-                            address: address,
-                            city: city,
-                            country: country),
-                      ),
-                    );
-                  },
-                ),
-                Gap.gapH30,
-              ],
-            ),
+                  // update user info
+                  AllButton.borderedButton(
+                    context: context,
+                    btnText: AllTexts.updateUserInfo,
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (builder) => UpdateUserInfo(
+                              userId: widget.userId,
+                              name: name,
+                              email: email,
+                              address: address,
+                              city: city,
+                              country: country),
+                        ),
+                      );
+                    },
+                  ),
+                  Gap.gapH30,
+                ],
+              ),
+      ),
+    );
+  }
+
+  void dialogueNav() {
+    Navigator.of(context).pop();
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (builder) => const Login(),
+      ),
     );
   }
 }

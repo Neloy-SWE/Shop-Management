@@ -77,7 +77,6 @@ class _HomePageState extends State<HomePage>
       optionName: AllTexts.orders,
       navOption: const Orders(),
     ),
-
     OptionManager(
       optionIcon: Icons.shopping_bag_outlined,
       optionName: AllTexts.cart,
@@ -117,7 +116,7 @@ class _HomePageState extends State<HomePage>
           automaticallyImplyLeading: false,
           title: const Text(AllTexts.myShop),
         ),
-        endDrawer: const MyDrawer(),
+        endDrawer: const MyDrawer(isHome: false),
         body: ListView(
           padding: MyPadding.appPadding,
           children: [
